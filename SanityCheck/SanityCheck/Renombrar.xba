@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Renombrar" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo Renombrar *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+  
+ Option Explicit
+ Dim  oDlgRenombrar
+ 
+Sub msg
+Call trad_Renombrar
+
+ If  Msgbox (Ren_Txt(16), 4+32+256, E_Txt(0) &amp; Extension) = 6 then
+  Print &quot;has pulsado si&quot;&apos;    Call _Aux.GuardaRecarga
+ else 
+ Exit sub
+ End If
+end sub
+
+ Rem ############
+Sub Dlg_Renombrar
+   Call L10n.Trad_Renombrar
+   If  ThisComponent.HasLocation = False OR ThisComponent.IsModified = True Then
+     If  Msgbox (Ren_Txt(16), 4+32+256, E_Txt(0) &amp; Extension) = 6 then
+       Call _Aux.GuardaRecarga
+     Else 
+       Exit sub
+     End If
+   End If
+   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   oDlgRenombrar = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgRenombrar&quot;))
+   With oDlgRenombrar.Model
+     .Title = Ren_Txt(0) &amp; Extension
+     .Height = 80
+     .Step = 1
+     .PositionX = 255 : .PositionY = 50
+     .getbyname(&quot;Btn_Salir&quot;).Label = Ren_Txt(1)
+     .getbyname(&quot;Btn_Volver&quot;).Label = Ren_Txt(2)
+     .getbyname(&quot;Btn_Renombrar&quot;).Label = Ren_Txt(3)
+     .getbyName(&quot;Lbl_Selec&quot;).Label = Ren_Txt(5)
+     .getbyName(&quot;Ch_Secciones&quot;).Label = Ren_Txt(10)
+     .getbyName(&quot;Ch_Indice&quot;).Label = Ren_Txt(9)
+     .getbyName(&quot;Ch_Tablas&quot;).Label = Ren_Txt(7)
+     .getbyName(&quot;Ch_Imgs&quot;).Label = Ren_Txt(6)
+     .getbyName(&quot;Ch_Marcos&quot;).Label = Ren_Txt(8)
+     .getbyname(&quot;Tx_Registro&quot;).Text = &quot;&quot;
+     .getbyname(&quot;Tx_Ayuda&quot;).text = Ren_Txt(4)
+   End With
+   oDlgRenombrar.execute
+End Sub
+
+ Rem ############
+Sub Casillas_Renombrar(oEv)
+
+  oDlgRenombrar = oEv.Source.Context
+ Dim Imgs, Marcos, Tablas, Secciones, Indice, suma
+   With oDlgRenombrar.getModel
+     Secciones = .getbyname(&quot;Ch_Secciones&quot;).State
+     Indice = .getbyname(&quot;Ch_Indice&quot;).State
+     Tablas = .getbyname(&quot;Ch_Tablas&quot;).State
+     Imgs = .getbyname(&quot;Ch_Imgs&quot;).State
+     Marcos = .getbyname(&quot;Ch_Marcos&quot;).State
+     suma = Secciones + Indice + Tablas + Imgs + Marcos
+     If suma &lt;&gt; 0 Then
+       .getbyname(&quot;Btn_Renombrar&quot;).State = 1
+     Else
+       .getbyname(&quot;Btn_Renombrar&quot;).State = 0
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnBtn_Volver(oEv)
+  oDlgRenombrar = oEv.Source.Context
+  oDlgRenombrar.Model.Step = 1
+  oDlgRenombrar.Model.Height = 80
+End Sub
+
+ Rem ############
+Sub OnBtn_Ayuda(oEv)
+   oDlgRenombrar = oEv.Source.Context
+   With oDlgRenombrar.getModel
+     If .Step = 1 Then
+       .Step = 3
+       .Height = 100
+     Else
+       .Step = 1
+       .Height = 80
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnBtn_Renombrar(oEv)
+   oDlgRenombrar = oEv.Source.Context
+ Dim Imgs , Marcos, Tablas, Indice, Secciones, s
+   With oDlgRenombrar.Model
+     s = .getbyname(&quot;Tx_Registro&quot;).Text
+     Secciones = .getbyname(&quot;Ch_Secciones&quot;).State
+     Indice = .getbyname(&quot;Ch_Indice&quot;).State
+     Tablas = .getbyname(&quot;Ch_Tablas&quot;).State
+     Imgs = .getbyname(&quot;Ch_Imgs&quot;).State
+     Marcos = .getbyname(&quot;Ch_Marcos&quot;).State
+   End With
+ Dim suma As Integer : suma = Imgs + Marcos + Tablas + Secciones + Indice
+   If suma = 0 Then : MsgBox (Ren_Txt(5), 0+64+0, I_Txt(0) &amp; Extension ) : Exit Sub : End If
+   If Secciones = 1 Then : : s = s &amp; F_Renombra_Sec &amp; Chr(13) : End If
+   If Indice = 1 Then : s = s &amp; F_Renombra_Indice &amp; Chr(13) : End If
+   If Tablas = 1 Then : s = s &amp; F_Renombra(&quot;Tablas&quot;) &amp; Chr(13) : End If
+   If Imgs = 1 Then : s = s &amp; F_Renombra(&quot;Imagenes&quot;) &amp; Chr(13) : End If
+   If Marcos = 1 Then : s = s &amp;  F_Renombra(&quot;Marcos&quot;) &amp; Chr(13) : End If
+   s = s &amp; &quot;  ==============================  &quot;  
+   With oDlgRenombrar.Model
+     .getbyname(&quot;Tx_Registro&quot;).Text = s
+     .Height = 80
+     .Step = 2
+   End With
+End Sub
+
+  Rem ############
+ Function F_Renombra_Sec(Optional separador AS String)
+   Call L10n.Trad_Renombrar &apos; Call _Aux.Carga_Tools &apos;Cargados desde diálogo
+ Dim oSecciones As Object : oSecciones = ThisComponent.TextSections
+ Dim i As Integer, j as Integer, s As String
+   j = 0
+   Dim secciones() : Secciones = Array(&quot;SEC_LOGO&quot;,&quot;SEC_GUIDE&quot;,&quot;SEC_TITLE&quot;,&quot;SEC_COPYRIGHT&quot;,&quot;SEC_DISPLAYAREA&quot;)
+   For i = 0 to Ubound(Secciones)
+     If oSecciones.HasbyName(secciones(i)) then j= j+1
+   Next
+   If j &lt;&gt; 5 Then
+     s = Ren_Txt(17) &amp; Chr(13) &amp; join(Secciones,&quot; - &quot;)
+     F_Renombra_Sec = s
+     Exit function
+   End If
+
+ Dim prefijo AS String, Contador AS String
+   prefijo = ConvertFromURL(GetFileNameWithoutExtension(ThisComponent.getURL, &quot;/&quot;))
+   prefijo = &quot;sec_&quot; &amp; Left(Replace(prefijo,&quot; &quot;,&quot;&quot;),6)
+&apos; Dim i AS Integer, j as Integer
+ Dim oSeccion as Object, nombre AS String
+   If IsMissing(separador) Then : separador = &quot;-&quot; : End If
+   j = 0  
+&apos;   For i = 7 To oSecciones.Count -1 &apos;el Í­ndice añade 2 secciones ocultas?
+   For i = 5 To oSecciones.Count -1 &apos;el Í­ndice añade 2 secciones ocultas? 
+     oSeccion = oSecciones.getbyIndex(i)  
+     If j &lt; 10 Then : contador = &quot;00&quot; &amp; cStr(j)
+     ElseIf j &lt; 100 Then : contador = &quot;0&quot; &amp; cStr(j)
+     Else : contador = &quot;&quot; &amp; cStr(j)
+     End If
+     nombre = prefijo &amp; separador &amp; contador 
+     If Not oSecciones.hasByName(nombre) Then
+       oSeccion.Name = nombre
+     Else
+       separador = &quot;_&quot;
+       nombre = prefijo &amp; separador &amp; contador Rem solución temporal para nombres duplicados
+       oSeccion.Name = nombre
+     End If
+       j = j + 1
+   Next
+   If j = 0 then &apos;el Í­ndice añade 2 secciones
+     F_Renombra_Sec = Ren_Txt(11)
+   Else
+     F_Renombra_Sec = Ren_Txt(10) &amp; Ren_Txt(13)
+   End If
+End Function
+
+ Rem ############
+Sub F_Renombra_Indice() As String
+ Rem Renombra el índice si es de contenido
+ Rem y sólo hay un índice
+ Rem =====================================
+&apos;   Call L10n.Trad_Renombrar &apos; Call _Aux.Carga_Tools &apos;Cargados desde diálogo
+ Dim oIndexes As Object, nombre As String
+   oIndexes = ThisComponent.getDocumentIndexes()
+   nombre = Left(ConvertFromURL(GetFileNameWithoutExtension(ThisComponent.getURL(), &quot;/&quot;)),6)
+   If oIndexes.getCount() &lt;&gt; 1 Then
+     F_Renombra_Indice = Ren_Txt(14)
+   Else
+     If oIndexes.getByIndex(0).supportsService(&quot;com.sun.star.text.ContentIndex&quot;) Then
+       oIndexes.getByIndex(0).Name = &quot;toc_&quot; &amp; nombre
+       F_Renombra_Indice = Ren_Txt(15)
+       oIndexes.getByIndex(0).update()&apos;Si no se actualiza no adquiere formato.
+     End If
+   End If
+End Sub
+
+ Rem ############
+Function F_Renombra(Objetos As String, Optional separador ) As String
+  If IsMissing(separador) Then : separador = &quot;-&quot; : End If
+&apos;   Call _Aux.Carga_Tools&apos; Ya cargado con el diálogo
+ Dim oDoc As Object : oDoc = ThisComponent
+ Dim Items As Object, prefijo As String
+ Dim Traduc As String
+   If Objetos = &quot;Tablas&quot; Then : Items = ThisComponent.TextTables() : prefijo = &quot;tb_&quot; : Traduc = Ren_Txt(7) : End If
+   If Objetos = &quot;Imagenes&quot; Then : Items = oDoc.GraphicObjects() : prefijo = &quot;img_&quot; : Traduc = Ren_Txt(6) : End If
+   If Objetos = &quot;Marcos&quot; Then : Items = oDoc.TextFrames() : prefijo = &quot;fram_&quot; : Traduc = Ren_Txt(8) : End If
+   If Items.getCount() = 0 Then : F_Renombra = Ren_Txt(12) &amp; Objetos : Exit Function : End If
+ Dim n_archivo As String, nombre As String, contador As String
+ Dim oItem As Object, i As Integer
+   n_archivo = Replace(ConvertFromURL(GetFileNameWithoutExtension(oDoc.getURL, &quot;/&quot;)),&quot; &quot;,&quot;&quot;)
+   &apos;n_archivo =n_archivo,&quot; &quot;,&quot;&quot;)
+   n_archivo = Left(n_archivo,6)
+   For i = 0 To Items.Count-1
+     oItem  = Items.getByIndex(i)
+     If i &lt; 10 Then : contador = &quot;00&quot; &amp; cStr(i)
+     ElseIf i &lt; 100 Then : contador = &quot;0&quot; &amp; cStr(i)
+     Else : contador = &quot;&quot; &amp; cStr(i)
+     End If
+     nombre = prefijo &amp; n_archivo &amp; separador &amp; contador &apos;Nombres sin espacios
+     If Not Items.hasByName(nombre) Then
+       oItem.Name = nombre
+     Else
+       separador = &quot;_&quot;   Rem solución nombres duplicados
+       nombre = prefijo &amp; Replace(n_archivo,&quot; &quot;,&quot;&quot;) &amp; separador &amp; contador
+       oItem.Name = nombre
+     End If
+   Next
+
+   If Objetos = &quot;Imagenes&quot; Then
+     Dim oImg : oImg = Items.getbyIndex(0)
+     oImg.Name = &quot; LibreOfficeLogo&quot;
+   End If
+   F_Renombra = Traduc &amp; Ren_Txt(13)
+End Function
+
+ Rem ############
+Sub Corregir_NombresObjetos
+ Rem Recargar Doc, descomentar la linea adecuada y ejecutar la macro
+&apos;   F_Renombra(&quot;Imagenes&quot;,&quot;$&quot;) : F_Renombra(&quot;Imagenes&quot;)
+&apos;   F_Renombra(&quot;Marcos&quot;,&quot;$&quot;) : F_Renombra(&quot;Marcos&quot;)
+&apos;   F_Renombra(&quot;Tablas&quot;)&apos;,&quot;$&quot;) : F_Renombra(&quot;Tablas&quot;)
+&apos;   F_Renombra_Sec(&quot;$&quot;) : F_Renombra_Sec
+End Sub 
+ Rem ================= Fin Renombrar ==================================================  
+</script:module>

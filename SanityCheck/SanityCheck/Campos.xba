@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Campos" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo Campos *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+  
+ Option Explicit
+ Dim oDlgCampos
+
+ Rem ############
+Sub Dlg_Campos
+   Call L10n.Trad_Campos &apos; la biblioteca Tools se carga al cargar la traducción  
+   If  ThisComponent.HasLocation = False Then : MsgBox (C_Txt(16), 0+48+0, C_Txt(0) &amp; Extension) : Exit Sub : End If
+   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   oDlgCampos = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgCampos&quot;))
+   Call Campos.Cargar_Parametros
+   oDlgCampos.execute
+End Sub
+
+ Rem ############
+Sub Cargar_Parametros
+ Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
+ Dim oUDP : oUDP = oDocprops().UserDefinedProperties
+ Dim archivo : archivo = FileNameoutofPath(ThisComponent.getURL())
+   With oDlgCampos.getModel
+     .Title = archivo &amp; Extension
+     .Step = 1
+     .getbyname(&quot;Lbl_DocT&quot;).label = C_Txt(1)
+     .getbyname(&quot;Lbl_Conex&quot;).label = C_Txt(2)
+     .getbyname(&quot;Lbl_Guía&quot;).label = C_Txt(3)
+     .getbyname(&quot;Lbl_Version&quot;).label = C_Txt(4)
+     .getbyname(&quot;Lbl_Asunto&quot;).label = C_Txt(18)
+     .getbyname(&quot;Fr_Coment&quot;).label = C_Txt(5)
+     .getbyname(&quot;Fr_Titulo&quot;).label = C_Txt(6)
+     .getbyname(&quot;Fr_Publicacion&quot;).label = C_Txt(7)
+     .getbyname(&quot;Btn_Corregir&quot;).label = C_Txt(9)
+     .getbyname(&quot;Btn_Cambia&quot;).label = C_Txt(10)
+     .getbyname(&quot;Lbl_Establecidas&quot;).label = C_Txt(13)
+     .getbyname(&quot;List_Mes&quot;).StringItemList = Lista
+
+     .getbyname(&quot;Lbl_DocTitle&quot;).label = oDocprops.Title
+     .getbyname(&quot;Lbl_AsuntoT&quot;).label = oDocProps.Subject     
+     .getbyname(&quot;Tx_Coment&quot;).Text = oDocProps.Description     
+     .getbyname(&quot;Tx_Ayuda&quot;).Text = C_Txt(19)
+
+     .getbyname(&quot;Tx_Guia&quot;).Text = _Aux.F_Consulta_UDP(&quot;Guide Name&quot;)
+     .getbyname(&quot;Tx_Cap_N&quot;).Text = _Aux.F_Consulta_UDP(&quot;Chapter Number&quot;)
+     .getbyname(&quot;Tx_Cap_T&quot;).Text = _Aux.F_Consulta_UDP(&quot;Chapter Title&quot;)
+     .getbyname(&quot;Lbl_Mes&quot;).Label = _Aux.F_Consulta_UDP(&quot;Month&quot;)
+
+      If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
+       .getbyname(&quot;Lbl_Plantilla&quot;).label = oDocprops.TemplateName
+     Else
+       .getbyname(&quot;Lbl_Plantilla&quot;).label = C_Txt(8)
+     End If
+
+     If Not oUDP.getPropertySetInfo().hasPropertyByName(&quot;LibreOffice Version&quot;) Then
+       .getbyname(&quot;Num_Version&quot;).Value = 24
+       .getbyname(&quot;Num_Sub&quot;).Value = 2
+     Else
+       Dim version
+       version = Split(_Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;),&quot;.&quot;)
+&apos;Print ubound(version) 
+         If UBound(version) &lt;&gt; -1 then
+           .getbyname(&quot;Num_Version&quot;).Value = version(0)
+         Elseif UBound(version) = 1 then 
+           .getbyname(&quot;Num_Sub&quot;).Value = version(1)
+         End If
+     End If
+
+     If _Aux.F_Consulta_UDP(&quot;Year&quot;) = &quot;&quot; Then
+       .getbyname(&quot;Num_Ano&quot;).Value = 2024
+     Else
+       .getbyname(&quot;Num_Ano&quot;).Value = cSng(_Aux.F_Consulta_UDP(&quot;Year&quot;))
+     End If
+&apos; habilito controles     
+     .getbyname(&quot;Num_Version&quot;).Enabled = True
+     .getbyname(&quot;Num_Sub&quot;).Enabled = True
+     .getbyname(&quot;Tx_Guia&quot;).Enabled = True
+     .getbyname(&quot;Tx_Cap_N&quot;).Enabled = True
+     .getbyname(&quot;Tx_Cap_T&quot;).Enabled = True
+     .getbyname(&quot;Lbl_Flecha&quot;).EnableVisible = True
+     .getbyname(&quot;List_Mes&quot;).EnableVisible = True
+     .getbyname(&quot;Num_Ano&quot;).Enabled = True
+     .getbyname(&quot;Lbl_Establecidas&quot;).EnableVisible = False
+     .getbyname(&quot;Btn_Corregir&quot;).EnableVisible = False
+     .getbyname(&quot;Btn_Salir&quot;).Label = C_Txt(12)
+     .getbyname(&quot;Btn_Cambia&quot;).EnableVisible = True
+     .getbyname(&quot;Tx_Coment&quot;).Enabled = True &apos;.ReadOnly = False
+   End With
+End Sub
+
+ Rem ############
+Sub Cargar_Parametros2
+ Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
+&apos; deshabilito controles y cargo nuevos datos
+   With oDlgCampos.getModel
+     .getbyname(&quot;Lbl_DocTitle&quot;).label = oDocprops.Title
+     .getbyname(&quot;Num_Version&quot;).Enabled = False
+     .getbyname(&quot;Num_Sub&quot;).Enabled = False
+     .getbyname(&quot;Tx_Guia&quot;).Enabled = False
+     .getbyname(&quot;Tx_Cap_N&quot;).Enabled = False
+     .getbyname(&quot;Tx_Cap_T&quot;).Enabled = False
+     .getbyname(&quot;Lbl_Mes&quot;).Label = _Aux.F_Consulta_UDP(&quot;Month&quot;)
+     .getbyname(&quot;Lbl_Flecha&quot;).EnableVisible = False
+     .getbyname(&quot;List_Mes&quot;).EnableVisible = False
+     .getbyname(&quot;Num_Ano&quot;).Enabled = False
+     .getbyname(&quot;Lbl_Establecidas&quot;).EnableVisible = True
+     .getbyname(&quot;Btn_Corregir&quot;).EnableVisible = True
+     .getbyname(&quot;Btn_Salir&quot;).Label = C_Txt(11)
+     .getbyname(&quot;Btn_Cambia&quot;).EnableVisible = False
+     .getByName(&quot;Lbl_AsuntoT&quot;).label = oDocprops.Subject
+     .getbyname(&quot;Tx_Coment&quot;).Enabled = False&apos;.ReadOnly = True
+     .getbyname(&quot;Tx_Coment&quot;).Text =  oDocprops.Description
+   End With
+End Sub
+
+ Rem ############
+Sub Onbtn_Establecer(oEv)
+ Dim Dato As String
+ Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
+   oDlgCampos = oEv.Source.Context
+   If oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() = &quot;&quot; Then
+     MsgBox (C_Txt(17), 0+48+0, C_Txt(0) &amp; Extension)
+     Exit Sub
+   End If
+   With oDlgCampos.getModel
+     Dato = .getbyname(&quot;Tx_Guia&quot;).Text : _Aux.Establece_UDP(&quot;Guide Name&quot;, Dato)
+     Dato = .getbyname(&quot;Num_Version&quot;).Value &amp; &quot;.&quot; &amp; .getbyname(&quot;Num_Sub&quot;).Value : _Aux.Establece_UDP(&quot;LibreOffice Version&quot;, Dato)
+     Dato = .getbyname(&quot;Tx_Cap_N&quot;).Text : _Aux.Establece_UDP(&quot;Chapter Number&quot;, Dato)
+     Dato = .getbyname(&quot;Tx_Cap_T&quot;).Text : _Aux.Establece_UDP(&quot;Chapter Title&quot;, Dato)
+     Dato =  oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() : _Aux.Establece_UDP(&quot;Month&quot;, Dato)
+     Dato = cStr(.getbyname(&quot;Num_Ano&quot;).Value) : _Aux.Establece_UDP(&quot;Year&quot;, Dato)
+     Dim Titulo
+     If .getbyname(&quot;Tx_Cap_N&quot;).Text &lt;&gt; &quot;&quot; Then
+       Titulo =  .getbyName(&quot;Tx_Cap_N&quot;).Text &amp; &quot;, &quot; &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text
+     Else
+       Titulo = .getbyname(&quot;Tx_Cap_T&quot;).Text
+     End If
+     Dato = .getbyName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;) &amp; &quot; - &quot; &amp; Titulo 
+     oDocprops.Title = Dato
+     Dato = &quot;LibreOffice - &quot; &amp; .GetByName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot; &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
+     oDocprops.Subject = Dato
+     Dato = _Aux.F_Consulta_UDP(&quot;Guide Name&quot;) &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;) &amp; Chr(13)
+     Dato = Dato &amp; &quot;Contibutor: The LibreOffice Documentation Team&quot; &amp; Chr(13)&apos;No accesible desde Basic (v24,2,1,2)
+     Dato = Dato &amp; &quot;Publisher: The Document Foundation&quot; &apos;No accesible desde Basic (v24,2,1,2)
+     oDocprops.Description = Dato 
+   End With
+   _Aux.F_Elimina_UDP (&quot;LibreOffive Version&quot;)
+   Call Campos.Cargar_Parametros2
+End Sub
+
+ Rem ############
+Sub onBtn_Revisar(oEv)
+   oDlgCampos = oEv.Source.Context
+   Call Campos.Cargar_Parametros
+End Sub
+
+ Rem ############
+Sub OnBtn_Ayuda(oEv)
+   oDlgEstilos = oEv.Source.Context
+   With oDlgEstilos.getModel
+     If .Step = 1 Then
+       .Step = 2
+       .Height = 130
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;↫&quot;
+     Else
+       .Step = 1
+       .Height = 190
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
+     End If
+   End With
+End Sub
+ Rem ================= Fin Campos ===========================================
+</script:module>

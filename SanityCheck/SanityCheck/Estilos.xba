@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Estilos" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo Estilos *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+  
+ Option Explicit
+ Public estiloPU(15) As String
+ Public estiloCU(25) As String
+ Public P_Uso As String
+ Dim oDlgEstilos As Object
+ Dim C_Uso, a_P_SinUso As Variant, a_C_SinUso As Variant
+ Dim Contador As Integer
+
+ Rem ############
+Sub CargaEstilos_PU_Guias
+ Rem Estilos usuario de párrafo de la plantilla 24x 
+ Rem ======================================================
+   estiloPU(0) = &quot;Body Text, Indented 2&quot;
+   estiloPU(1) = &quot;Body Text, List Intro&quot;
+   estiloPU(2) = &quot;Body Text, Note&quot;
+   estiloPU(3) = &quot;Code&quot;
+   estiloPU(4) = &quot;Column Contents&quot;
+   estiloPU(5) = &quot;Definition Term&quot;
+   estiloPU(6) = &quot;Definition Term 2&quot;
+   estiloPU(7) = &quot;Formula&quot;
+   estiloPU(8) = &quot;Guide Name&quot;
+   estiloPU(9) = &quot;Heading 1 First&quot;
+   estiloPU(10) = &quot;Heading Caution&quot;
+   estiloPU(11) = &quot;Heading Note&quot;
+   estiloPU(12) = &quot;Heading Tip&quot;
+   estiloPU(13) = &quot;Legend Numbered&quot;
+   estiloPU(14) = &quot;Listing&quot;
+   estiloPU(15) = &quot;New Chapter&quot;
+&apos;   estiloPU(5) = &quot;Comment&quot; &apos; Nuevo estilo para comentarios 24x necesario???
+End Sub
+
+ Rem ############
+Sub CargaEstilos_CU_Guias
+ Rem Estilos usuario de caracter de la plantilla 24x
+ Rem ======================================================
+   estiloCU(0) = &quot;Bullet Symbols&quot;
+   estiloCU(1) = &quot;ch2_Libreoffice&quot;
+   estiloCU(2) = &quot;ch2_libreoffice.Comment&quot;
+   estiloCU(3) = &quot;ch2_libreoffice.Error&quot;
+   estiloCU(4) = &quot;ch2_libreoffice.Comment.Single&quot;
+   estiloCU(5) = &quot;ch2_libreoffice.Keyword&quot;
+   estiloCU(6) = &quot;ch2_libreoffice.Keyword.Declaration&quot;
+   estiloCU(7) = &quot;ch2_libreoffice.Keyword.Type&quot;
+   estiloCU(8) = &quot;ch2_libreoffice.Literal&quot;
+   estiloCU(9) = &quot;ch2_libreoffice.Literal.Number&quot;
+   estiloCU(10) = &quot;ch2_libreoffice.Literal.Number.Integer&quot;
+   estiloCU(11) = &quot;ch2_libreoffice.Literal.Number.Float&quot;
+   estiloCU(12) = &quot;ch2_libreoffice.Literal.String&quot;
+   estiloCU(13) = &quot;ch2_libreoffice.Literal.String.Double&quot;
+   estiloCU(14) = &quot;ch2_libreoffice.Name&quot;
+   estiloCU(15) = &quot;ch2_libreoffice.Name.Function&quot;
+   estiloCU(16) = &quot;ch2_libreoffice.Name.Variable&quot;
+   estiloCU(17) = &quot;ch2_libreoffice.Operator&quot;
+   estiloCU(18) = &quot;ch2_libreoffice.Operator.Word&quot;
+   estiloCU(19) = &quot;ch2_libreoffice.Punctuation&quot;
+   estiloCU(20) = &quot;ch2_libreoffice.Text&quot;
+   estiloCU(21) = &quot;ch2_libreoffice.Text.Whitespace&quot;
+   estiloCU(22) = &quot;Code&quot;
+   estiloCU(23) = &quot;Keystroke&quot;
+   estiloCU(24) = &quot;Superscript&quot;
+   estiloCU(25) = &quot;Subscript&quot;
+End Sub
+
+ Rem ############
+Sub CompEstilos
+   Call L10n.Trad_Estilos
+   If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub
+   Call _Aux.EliminaComentarios(E_Txt(0))&apos; Evito que se dupliquen comentarios
+   Avisos_Estilos_Ajenos(&quot;P&quot;)
+   Avisos_Estilos_Ajenos(&quot;C&quot;)
+   Call DialogoEstilos
+End Sub
+
+ Rem ############
+Function  Avisos_Estilos_Ajenos(Familia As String)
+ Rem Recopila los estilos ajenos a las guías de la documentación
+ Rem Muestra mensajes para eliminar los no aplicados y avisar
+ Rem de los aplicados.
+ Rem Argumentos: P = estilos de párrafo / C = de carácter
+ Rem ======================================================
+   If (Not GlobalScope.BasicLibraries.isLibraryLoaded(&quot;Tools&quot;)) Then
+     GlobalScope.BasicLibraries.LoadLibrary(&quot;Tools&quot;)
+   End If
+ Dim oEstilos As Object, oEstilo As Object, Estilo_G As Object, N_Familia As String
+   If Familia = &quot;P&quot; Then
+     N_Familia = &quot;Estilos de parrafo&quot;
+     oEstilos = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;)
+     Call CargaEstilos_PU_Guias &apos;Carga estilos usuario de las guías
+     Estilo_G = estiloPU
+     P_Uso = &quot;&quot; &apos;reset
+   ElseIf Familia = &quot;C&quot; Then
+     N_Familia = &quot;Estilos de carácter&quot;
+     oEstilos = ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;)
+     Call CargaEstilos_CU_Guias
+     Estilo_G = estiloCU
+     C_Uso = &quot;&quot; &apos;reset
+   End If
+ Dim i As Integer, u As Integer, s As Integer, enUso() As Variant, sinUso() As Variant
+   u = -1 : s = -1
+   For i = 0 To oEstilos.getCount -1
+     oEstilo = oEstilos.getByIndex(i)
+     If oEstilo.isUserDefined Then
+       If oEstilo.isInUse Then
+         ReDim Preserve enUso(0 To u+1)
+         enUso(u+1) = oEstilo.Name
+         u = UBound(enUso)
+       ElseIf Not oEstilo.isInUse Then
+         ReDim Preserve sinUso(0 To s+1)
+         sinUso(s+1) = oEstilo.Name
+         s = UBound(sinUso)
+       End If
+     End If
+   Next
+   BubbleSortList(sinUso)
+   sinUso = _Aux.F_RestaMatrices(Estilo_G,sinUso)&apos;matriz sin estilos guías
+   If UBound(sinUso) = -1 Then
+     ReDim sinUso(0)
+     sinUso(0) = E_Txt(8)
+   End If
+   If Familia = &quot;P&quot; Then a_P_SinUso = sinUso &apos;matriz Listado Parrafos
+   If Familia = &quot;C&quot; Then a_C_SinUso = sinUso &apos;matriz Listado Caracteres
+   BubbleSortList(enUso)&apos;(Tools) Array principal para estilo usados
+   enUso = _Aux.F_RestaMatrices(Estilo_G,enUso)  &apos;matriz sin estilos guías
+   If UBound(enUso) = -1 Then
+     If Familia = &quot;P&quot; Then
+       P_Uso = E_Txt(8)
+     ElseIf Familia = &quot;C&quot; Then
+       C_Uso = E_Txt(8)
+     EndIf
+   ElseIf UBound(enUso) &lt;&gt; -1 Then
+     If Familia = &quot;P&quot; Then
+       P_Uso = _Aux.F_MatrizCuadroTexto(enUso) &apos;Convierte la matriz en texto (cuadro de texto estilos párrafo)
+       Call F_Comentar_Parrafos(enUso) &apos;Comenta los párrafos
+     ElseIf Familia = &quot;C&quot; Then
+       C_Uso = _Aux.F_MatrizCuadroTexto(enUso) &apos;Convierte la matriz en texto (cuadro de texto estilos caracter)
+       Call F_ResaltaCarAjenos(enUso)&apos; Resalta los caracteres
+     End If
+  End If
+End Function
+
+ Rem ############
+Sub DialogoEstilos
+  DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+  oDlgEstilos = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgEstilos&quot;))
+   With oDlgEstilos.getModel
+     .Step = 1
+     .Title = E_Txt(0) &amp; Extension
+     .getByName(&quot;Lbl_Estilos&quot;).label = E_Txt(1)
+     .getByName(&quot;Lbl_Aplicados&quot;).label = E_Txt(2)
+     .getByName(&quot;Lbl_NoUsados&quot;).label = E_Txt(3)
+     .getByName(&quot;Lbl_Parrafo&quot;).label = E_Txt(4)
+     .getByName(&quot;Lbl_Caracter&quot;).label = E_Txt(5)
+     .getByName(&quot;Btn_Eliminar_P&quot;).label = E_Txt(7)
+     .getByName(&quot;Btn_Eliminar_C&quot;).label = E_Txt(7)
+     .getByName(&quot;Lst_Eliminar_P&quot;).StringItemList = a_P_SinUso
+     .getByName(&quot;Lst_Eliminar_C&quot;).StringItemList = a_C_SinUso
+     .getByName(&quot;Tx_P_Uso&quot;).Text = (P_Uso)
+     .getByName(&quot;Tx_C_Uso&quot;).Text= (C_Uso)
+     .getByName(&quot;Tx_Ayuda&quot;).Text= E_Txt(18)
+     .getByName(&quot;Btn_Salir&quot;).label = E_Txt(19)
+     .getByName(&quot;Btn_Sustituir&quot;).label = E_Txt(20)
+     oDlgEstilos.getControl(&quot;Btn_Eliminar_P&quot;).Enable = False
+     oDlgEstilos.getControl(&quot;Btn_Eliminar_C&quot;).Enable = False
+     If a_P_SinUso(0) = E_Txt(8) Then
+       .getByName(&quot;Btn_Eliminar_P&quot;).enableVisible = False
+       .getByName(&quot;Lbl_InfoP&quot;).label = &quot;&quot;
+     Else
+       .getByName(&quot;Btn_Eliminar_P&quot;).enableVisible = True
+       .getByName(&quot;Lbl_InfoP&quot;).label = E_Txt(6)
+     End If
+     If a_C_SinUso(0) = E_Txt(8) Then
+       .getByName(&quot;Btn_Eliminar_C&quot;).enableVisible = False
+       .getByName(&quot;Lbl_InfoC&quot;).label = &quot;&quot;
+     Else
+       .getByName(&quot;Btn_Eliminar_C&quot;).enableVisible = True
+       .getByName(&quot;Lbl_InfoC&quot;).label = E_Txt(6)
+     End If
+      If P_Uso = E_Txt(8) AND C_Uso = E_Txt(8) Then
+       .getByName(&quot;Btn_Sustituir&quot;).enableVisible = False
+     Elseif InStr(C_Uso,&quot;Menu Path&quot;) &lt;&gt; 0 Then
+       .getByName(&quot;Btn_Sustituir&quot;).enableVisible = True
+     End If
+   End With
+ oDlgEstilos.execute()
+End Sub
+
+ Rem ############
+Sub OnBtn_Ayuda(oEv)
+   oDlgEstilos = oEv.Source.Context
+   With oDlgEstilos.getModel
+     If .Step = 1 Then
+       .Step = 2
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;↫&quot;
+     Else
+       .Step = 1
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnLstBox_P_Change(oEv)
+   oDlgEstilos = oEv.Source.Context
+   With oDlgEstilos
+     If .getControl(&quot;Lst_Eliminar_P&quot;).SelectedItem &lt;= -1 Then&apos;0
+        .getControl(&quot;Btn_Eliminar_P&quot;).Enable = False
+     Else
+        .getControl(&quot;Btn_Eliminar_P&quot;).Enable = True
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnLstBox_C_Change(oEv)
+   oDlgEstilos = oEv.Source.Context
+     With oDlgEstilos
+       If .getControl(&quot;Lst_Eliminar_C&quot;).SelectedItem &lt;= -1 Then&apos;0
+         .getControl(&quot;Btn_Eliminar_C&quot;).Enable = False
+       Else
+         .getControl(&quot;Btn_Eliminar_C&quot;).Enable = True
+       End If
+     End With
+End Sub
+
+ Rem ############
+Sub OnBtEliminar_P(oEv)
+ Dim oCtrl As Object, selPos As Integer, Eliminar As Variant
+   oDlgEstilos = oEv.Source.Context
+   oCtrl = oDlgEstilos.getControl(&quot;Lst_Eliminar_P&quot;)
+   selPos = oCtrl.getSelectedItemPos
+   With oDlgEstilos.getModel
+     If oCtrl.getSelectedItem = E_Txt(8) Then
+       .getByName(&quot;Btn_Eliminar_P&quot;).enableVisible = False
+       Exit Sub
+     Else
+       Beep
+       Eliminar = MsgBox (E_Txt(9) &amp; oCtrl.getSelectedItem &amp; E_Txt(11), 4+48+256, E_Txt(12) &amp; Extension)
+       If Eliminar = 6 Then
+        Call EliminarEstilo (&quot;P&quot;,oCtrl.getSelectedItem,selPos)
+       ElseIf Eliminar = 0 OR Eliminar = 7 Then
+         oCtrl.SelectItemPos(selPos,False)&apos;Limpio selección
+       End If
+     End If
+     If oCtrl.ItemCount = 0 Then
+       oCtrl.addItem(E_Txt(8),1) &apos;Item,Posición
+       .getByName(&quot;Lbl_InfoP&quot;).label = &quot;&quot;
+       .getByName(&quot;Btn_Eliminar_P&quot;).enableVisible = False
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnBtEliminar_C(oEv)
+ Dim  oCtrl As Object, selPos As Integer, Eliminar As Variant
+   oDlgEstilos = oEv.Source.Context
+   oCtrl = oDlgEstilos.getControl(&quot;Lst_Eliminar_C&quot;)
+   selPos = oCtrl.getSelectedItemPos()
+   With oDlgEstilos.getModel
+     If oCtrl.getSelectedItem = E_Txt(8) Then
+       .getByName(&quot;Btn_Eliminar_C&quot;).enableVisible = False
+       Exit Sub
+     Else
+       Beep
+       Eliminar = MsgBox(E_Txt(10) &amp; oCtrl.getSelectedItem &amp; E_Txt(11),4+48+256, E_Txt(13) &amp; Extension)
+       If Eliminar = 6 Then
+         Call EliminarEstilo (&quot;C&quot;,oCtrl.getSelectedItem,selPos)
+       ElseIf Eliminar = 0 OR Eliminar = 7 Then
+         oCtrl.SelectItemPos(selPos,False) &apos;Limpio selección
+       End If
+     End If
+     If oCtrl.ItemCount = 0 Then
+       oCtrl.addItem(E_Txt(8),1)
+       .getByName(&quot;Lbl_InfoC&quot;).label = &quot;&quot;
+       .getByName(&quot;Btn_Eliminar_C&quot;).enableVisible = False
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub EliminarEstilo(Familia As String, ItemName As String, ItemPos As Integer)
+ Dim  Listbox As String, Enumera As String
+   If Familia = &quot;P&quot; Then
+     Familia = &quot;ParagraphStyles&quot;
+     Listbox = &quot;Lst_Eliminar_P&quot;
+   ElseIf Familia = &quot;C&quot; Then
+     Familia = &quot;CharacterStyles&quot;
+     Listbox = &quot;Lst_Eliminar_C&quot;
+   End If
+   If ThisComponent.StyleFamilies.getByName(Familia).HasByName(ItemName) Then
+     ThisComponent.StyleFamilies.getByName(Familia).removeByName(ItemName)
+   End If
+ Rem Resetea controles
+   oDlgEstilos.getControl(Listbox).RemoveItems(ItemPos,1)&apos;(posición y numero de elementos)
+   oDlgEstilos.getControl(&quot;Btn_Eliminar_P&quot;).Enable = False
+   oDlgEstilos.getControl(&quot;Btn_Eliminar_C&quot;).Enable = False
+End Sub
+
+ Rem ############
+Sub F_Comentar_Parrafos(Matriz As Variant)
+ Rem Recorre el documento buscando estilos de párrafo ajenos
+ Rem y agrega comentarios a los párrafos con esos estilos aplicados
+ Rem ======================================================
+On Error Resume Next
+ Dim oParEnum
+   Contador = 0
+ Rem 1 comprobar los párrafos del cuerpo de texto
+    oParEnum = ThisComponent.Text.createEnumeration()
+    _Aux.ImplParaStyleCheck(Matriz, oParEnum)
+ Rem 2 comprobar los párrafos de los marcos
+ Dim oFrameEnum, oFrame
+   oFrameEnum = ThisComponent.TextFrames.createEnumeration()
+   Do While oFrameEnum.hasMoreElements()
+     oFrame = oFrameEnum.nextElement()
+     oParEnum = oFrame.Text.createEnumeration()
+     _Aux.ImplParaStyleCheck(Matriz, oParEnum)
+   Loop
+ Rem 3 comprobar los párrafos en las tablas
+ Dim oTables As Object, oTable As Object, oRows As Object, oColumns As Object
+ Dim nRow As Integer, ncol As Integer, oCell As Object, k As Integer
+   oTables =  ThisComponent.TextTables
+   For k=0 To oTables.Count - 1
+     oTable = oTables.getByIndex(k)
+     oRows = oTable.getRows()
+     oColumns = oTable.getColumns()
+       For nRow = 0 To oRows.Count - 1
+         For ncol = 0 To oColumns.Count - 1
+           oCell = oTable.getCellByPosition(ncol, nRow)
+           oParEnum = oCell.Text.createEnumeration()
+           _Aux.ImplParaStyleCheck(Matriz, oParEnum)
+         Next
+       Next
+    Next
+   If Contador &lt;&gt; 0 Then
+     MsgBox (E_Txt(14) &amp; Chr(13) &amp; Contador &amp; E_Txt(15) &amp; Chr(13) &amp;  E_Txt(16), 0+64+0, E_Txt(0) &amp; Extension)
+   End If
+End Sub
+
+ Rem ############
+Function F_ResaltaCarAjenos(Matriz As Variant)
+ Rem Devuelve True si  N_Estilo es un estilo ajeno
+ Rem (No está en la matriz de estilos de carácter de usuario) 
+ Rem ==================================================
+ Dim s As string, oEstilos As Object, oEstilo As Object, i As Integer
+   oEstilos = ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;)
+   For i = LBound(Matriz) to UBound(Matriz)
+     oEstilo = oEstilos.getByName(Matriz(i))
+     If oEstilo.CharBackColor &lt;&gt; 0 then
+       oEstilo.CharBackColor = 0
+       oEstilo.CharColor = RGB(255,255,100)
+     End If
+   Next i
+End Function
+
+ Rem ############
+Sub OnBtn_Sustituir(oEv)
+Call L10n.Trad_Estilos
+   oDlgEstilos = oEv.Source.Context
+ Dim s AS string , i As Integer
+ Dim Parrafos : Parrafos = ThisComponent.StyleFamilies.ParagraphStyles
+ Dim Antiguos()
+   Antiguos = Array(&quot;Text Body List Intro&quot;,&quot;Text Body Indent 2&quot;,&quot;Text Note&quot;,&quot;First Heading&quot;,&quot;Caption Code Listing&quot;,&quot;Caption Table Listing&quot;,&quot;Guide Title&quot;,&quot;Guide Subtitle&quot;,)
+ Dim Nuevos()
+   Nuevos = Array(&quot;Body Text, List Intro&quot;,&quot;Body Text, Indented 2&quot;,&quot;Body Text, Note&quot;,&quot;Heading 1 First&quot;,&quot;Listing&quot;,&quot;Table&quot;,&quot;Title&quot;,&quot;Subtitle&quot;)
+   For i = 0 to UBound(Antiguos)
+     If inStr(P_Uso,Antiguos(i)) &lt;&gt; 0 then 
+       s = s &amp; F_Sust_E_P (Antiguos(i), (Nuevos(i))) &amp; Chr(13)
+     End If
+   Next
+
+ Dim SinComas(): SinComas = Array (&quot;Body Text List Intro&quot;,&quot;Body Text Indented 2&quot;,&quot;Body Text Note&quot;)
+ Dim ConComas(): ConComas = Array (&quot;Body Text, List Intro&quot;,&quot;Body Text, Indented 2&quot;,&quot;Body Text, Note&quot;)
+   For i = 0 to UBound(SinComas)
+     If inStr(P_Uso,SinComas(i)) &lt;&gt; 0 then 
+       s = s &amp; F_Sust_E_P (SinComas(i), (ConComas(i))) &amp; Chr(13)
+     End If
+   Next
+
+ Dim Caracteres : Caracteres = ThisComponent.StyleFamilies.CharacterStyles
+   If Caracteres.hasbyName(&quot;MenuPath&quot;) then
+     If Caracteres.getbyName(&quot;MenuPath&quot;).isInUse Then 
+       s = s &amp; F_Cambia_E_Car(&quot;MenuPath&quot;, &quot;Strong Emphasis&quot;)
+       MsgBox (s, 0+64+0, E_Txt(20) &amp; Extension)
+     End If
+   End If   
+       If Msgbox (E_Txt(23), 4+32+256, E_Txt(0) &amp; Extension) = 6 then
+         oDlgEstilos.EndExecute
+         Call _Aux.GuardaRecarga
+         Call CompEstilos
+       Else
+        oDlgEstilos.EndExecute         
+       End If
+End Sub
+
+ Rem ############
+Function F_Sust_E_P (E_Buscado As String, E_Remplazo As String ) As String
+ Rem Con buscar/Remplazar solo para estilos de Párrafo
+ Rem En Estilos de Writer se debe usar el nombre localizado
+ Rem ====================================
+ Dim Parrafos As Object, s As String
+   Parrafos = ThisComponent.StyleFamilies.ParagraphStyles
+   Call Trad_Estilos
+
+   If Parrafos.hasbyName(E_Buscado) AND Parrafos.hasbyName(E_Remplazo) then
+   E_Buscado = Parrafos.getbyName(E_Buscado).DisplayName
+   E_Remplazo = Parrafos.getbyName(E_Remplazo).DisplayName
+
+     Dim Busqueda As Object
+     Busqueda = ThisComponent.CreateReplaceDescriptor
+       If Parrafos.getbyname(E_Buscado).isInuse then
+         With Busqueda
+           .SearchString = E_Buscado
+           .ReplaceString = E_Remplazo
+           .SearchStyles = True    
+         End with
+         ThisComponent.ReplaceAll(Busqueda)
+         s =  &quot;- &quot;&quot;&quot; &amp; E_Buscado &amp; E_Txt(21) &amp; E_Remplazo &amp; &quot;&quot;&quot; &quot;
+       End If
+   End If 
+   F_Sust_E_P = s  
+End Function
+
+ Rem ############
+ Rem Sustituye estilos de carácter
+ Rem ===============================
+Function F_Cambia_E_Car(E_Buscado as String, E_Remplazo as String)
+ Dim oSearch  As Variant, oFound As Variant  
+ Dim SrchAttributes(0) As New com.sun.star.beans.PropertyValue
+ Dim oFRange As Variant  
+ Dim i&amp;
+   oSearch = ThisComponent.createSearchDescriptor()
+   oSearch.SearchString = &quot;.*&quot; &apos; Cualquier carácter
+   oSearch.SearchRegularExpression = True
+   oSearch.SearchStyles = True &apos;Necesario para buscar atributos
+   SrchAttributes(0).Name = &quot;CharWeight&quot;
+   SrchAttributes(0).Value = com.sun.star.awt.FontWeight.BOLD
+   oSearch.SetSearchAttributes(SrchAttributes())
+   oFound = ThisComponent.findAll(oSearch) 
+   If not IsNull(oFound) Then
+     For i = 0 To oFound.getCount()-1
+       oFRange = oFound.getByIndex(i)
+       If oFRange.CharStyleName = E_Buscado then
+         oFRange.CharStyleName =  E_Remplazo
+       End If
+     Next i
+     F_Cambia_E_Car =  &quot;- &quot;&quot;&quot; &amp; E_Buscado &amp; E_Txt(21) &amp; E_Remplazo &amp; &quot;&quot;&quot;  &quot;
+   Else 
+     F_Cambia_E_Car = E_Txt(22)
+   EndIf
+End Function
+ Rem =================Fin Estilos===========================================================
+</script:module>

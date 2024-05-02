@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="_Aux" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo _Aux *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+ 
+ Option Explicit
+ 
+ Rem ############
+Function F_CompPlantilla
+ Dim  oEstilos As Object, oEstilo As Variant, i As Integer, contador as integer
+ Dim sLink As String, s As String
+ Dim oDocprops As Object : oDocprops = ThisComponent.getDocumentProperties
+   Call L10n.Trad_Aux
+   Call CargaEstilos_PU_Guias
+   For i = 0 to UBound(estiloPU)
+     oEstilos = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;)
+     oEstilo = estiloPu(i)
+     If Not oEstilos.hasByName(oEstilo) Then
+       contador = contador + 1
+       s = s &amp; Chr(13) &amp; Chr(9) &amp; oestilo 
+     End If
+   next
+   If Contador &lt;&gt; 0 then
+     If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
+       slink = A_Txt(5) &amp; oDocprops.TemplateName
+     Else 
+       sLink = A_Txt(6)  
+     End If
+     Msgbox (A_Txt(7) &amp; s &amp; Chr(13) &amp; sLink &amp; Chr(13) &amp; A_Txt(8),0+16+0, A_Txt(4) &amp; Extension)
+   End If  
+   F_CompPlantilla = Contador
+End Function 
+ 
+ Rem ############
+Function F_Prueba_Sel()As Boolean &apos;pasar prueba selección
+ Rem Devuelve 1 si estamos en texto y podemos continuar (correcto)
+ Rem Devuelve 0 si estamos en un objeto o sucede otro error (mal)
+ Call L10n.Trad_Aux
+ Dim oSel : oSel= ThisComponent.getCurrentSelection
+   On Error GoTo ERRORES
+   If Not oSel.supportsService(&quot;com.sun.star.text.TextRanges&quot;) Then 
+     MsgBox (A_Txt(1) &amp; Chr(13) &amp; Chr(13) &amp; A_Txt(3), 0+0+64, Extension)&apos;Cursor en un objeto
+     F_Prueba_Sel = 0
+     Exit Function
+   End If
+ERRORES:
+   If Err = 0 Then : F_Prueba_Sel = 1 : Exit Function
+   ElseIf Err = 91 Then : MsgBox  (A_Txt(2) &amp; Chr(13) &amp; Chr(13) &amp; A_Txt(3), 0+64+0, Extension)&apos; Cursor en comentario
+   ElseIf Err &lt;&gt; 0 Then : MsgBox (&quot;Error n.&quot; &amp; Err  &amp; &quot;  Linea n. &quot; &amp; Erl &amp; Chr(13) &amp; Error, 0+48+0, &quot;Error&quot; &amp; Extension)
+   End If
+   F_Prueba_Sel = 0
+End Function
+
+ Rem ############
+Sub Carga_Tools
+   If GlobalScope.BasicLibraries.hasByName(&quot;Tools&quot;) Then
+     If Not GlobalScope.BasicLibraries.isLibraryLoaded(&quot;Tools&quot;) Then
+       GlobalScope.BasicLibraries.LoadLibrary(&quot;Tools&quot;)
+     End If
+   Else
+     MsgBox (&quot;La biblioteca Tools no existe , la macro dará errores&quot;, 0+48+0, Extension)
+   End If
+End Sub
+
+ Rem ############
+Function F_Conv (Color As String ) As Long
+ Dim a : a() = Split(Color,&quot;,&quot;)
+   F_Conv =  RGB(a(0),a(1),a(2))
+End Function
+
+ Rem ############
+Function F_GuiaVer
+ dim s as Variant
+ Dim oUDP : oUDP = ThisComponent.getDocumentProperties().UserDefinedProperties
+ If Not oUDP.getPropertySetInfo().hasPropertyByName(&quot;LibreOffice Version&quot;) Then
+   s = &quot;No hay información de la versión de esta guía, se asume que es anterior a la 20&quot;
+ Else
+   s = oUDP.getPropertyValue(&quot;LibreOffice Version&quot;)
+ End If
+ F_GuiaVer = s
+End Function
+
+ Rem ############
+Function F_LOVersion() As Double
+ Rem Devuelve la versión de LibreOffice instalada
+ Rem ==================================
+ Dim oSet, oCfgProvider
+ Dim aAux(0) As New com.sun.star.beans.PropertyValue
+   oCfgProvider = CreateUNOService(&quot;com.sun.star.configuration.ConfigurationProvider&quot;)
+   aAux(0).Name = &quot;nodepath&quot;
+   aAux(0).Value = &quot;/org.openoffice.Setup/Product&quot;
+   oSet = oCfgProvider.createInstanceWithArguments(&quot;com.sun.star.configuration.ConfigurationAccess&quot;, aAux())
+
+ Rem Corrige problema separador decimal (config. Regional)
+ Rem Basic opera con . pero las conversiones las hace con coma en Español o punto en inglés
+ Rem En español CDbl(&quot;7.5&quot;) = 75 / CDbl(&quot;7,5&quot;)= 7,5
+ Dim s : s = split(oSet.getByName(&quot;ooSetupVersion&quot;),&quot;.&quot;) 
+ Dim C : C = CDbl(s(0)) + CDbl(s(1))/10 
+  F_LOVersion = C
+&apos;  Print C
+End Function
+
+ Rem ############
+  Rem Devuelve la versión SanityCheck
+Function F_Extension&apos;(identificateur As String) As String
+ dim sv As Object, e as variant, x as variant
+   sv = GetDefaultContext().getByName(&quot;/singletons/com.sun.star.deployment.PackageInformationProvider&quot;)
+   e = sv.getExtensionList()
+   for each x in e
+     if  x(0) = &quot;vnd.bantoniof.sanitycheck&quot;  then
+       F_Extension = &quot; - SanityCheck &quot; &amp; x(1)
+       Exit Function
+     end if
+   next
+   F_Extension = &quot; - SanityCheck 1x (no instalada)&quot; &apos;extension pas trouvée
+End Function
+	
+ Rem ############
+Sub ImplParaStyleCheck(Matriz As Object, oParEnum As Object)
+ Rem Ayuda para la función F_ComentarParrafos
+ Rem ======================================================
+ Dim oPar As Object, oCursor As Object
+ Dim bFound As Boolean, sStyle As String, i As Integer
+   Do While oParEnum.hasMoreElements()
+     oPar = oParEnum.nextElement()
+     If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
+       sStyle = oPar.ParaStyleName
+       bFound = False&apos; Reset
+       For i = 0 To UBound(Matriz)
+         If sStyle = Matriz(i) Then
+           bFound = True
+         End If
+       Next
+       If (bFound) = True Then
+         oCursor = oPar.getText().createTextCursorByRange(oPar)
+&apos;         oCursor.gotoStartOfParagraph(False)
+         oCursor.gotoEndOfParagraph(False)&apos; com final parrafo
+        Call _Aux.InsertAnnotation (oPar, oCursor, sStyle &amp; Chr(13) &amp; E_Txt(17), E_Txt(0) )
+        Contador= Contador +1
+       End If
+     End If
+   Loop
+End Sub
+
+ Rem ############
+Sub InsertAnnotation(oParSection As Object, oCursor As Object, stexto As String, Optional Autor)
+ Dim Fecha As New com.sun.star.util.DateTime
+   If IsMissing(Autor) Then : Autor = F_Extension : End If
+   With Fecha
+     .Day = Day(Now) : .Month = Month(Now): .Year = Year(Now)
+     .Hours = Hour(Now) : .Minutes = Minute(Now) : .Seconds = Second(Now)
+   End With
+ Dim oAnno As Object
+   oAnno = ThisComponent.createInstance(&quot;com.sun.star.text.TextField.Annotation&quot;)
+   oAnno.Content = stexto
+   oAnno.Author = Autor &apos;_Aux.F_NombreUsuario
+   oAnno.DateTimeValue = Fecha
+   oParSection.Text.insertTextContent(oCursor, oAnno, True)
+End Sub
+
+ Rem ############
+Function F_NombreUsuario
+ Dim aProps(0) As New com.sun.star.beans.PropertyValue
+ Dim oRegKey, oConfig As Object
+   aProps(0).Name  = &quot;nodepath&quot;
+   aProps(0).Value = &quot;/org.openoffice.UserProfile/Data/&quot;
+   oConfig = CreateUNOService(&quot;com.sun.star.configuration.ConfigurationProvider&quot;)
+   oRegKey = oConfig.createInstanceWithArguments(&quot;com.sun.star.configuration.ConfigurationUpdateAccess&quot;, aProps())
+   F_NombreUsuario = oRegKey.givenname &amp; &quot; &quot; &amp; oRegKey.sn
+End Function
+
+ Rem ############
+Function F_Consulta_UDP(ByVal Propiedad)
+ Dim oUDP : oUDP = ThisComponent.getDocumentProperties().UserDefinedProperties
+   If Not oUDP.getPropertySetInfo().hasPropertyByName(Propiedad) Then
+     F_Consulta_UDP = &quot;&quot;
+   Else
+     F_Consulta_UDP = oUDP.getPropertyValue(Propiedad)
+   End If
+End Function
+
+ Rem ############
+Sub F_Elimina_UDP(sProp)
+ Dim oUDP
+   oUDP = ThisComponent.getDocumentProperties().UserDefinedProperties
+   If oUDP.getPropertySetInfo().hasPropertyByName(sProp) Then
+     Establece_UDP (sProp, sProp &amp; C_Txt(15))
+     oUDP.RemoveProperty(sProp)
+   end If
+End Sub
+
+ Rem ############
+Sub Establece_UDP(sProp, sVal)
+ Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties()
+ Dim oUDP : oUDP = oDocprops().UserDefinedProperties
+   If Not oUDP.getPropertySetInfo().hasPropertyByName(sProp) Then
+     oUDP.addProperty(sProp, _
+     com.sun.star.beans.PropertyAttribute.MAYBEVOID + _
+     com.sun.star.beans.PropertyAttribute.REMOVEABLE + _
+     com.sun.star.beans.PropertyAttribute.MAYBEDEFAULT, sVal)
+    Else
+     oUDP.setPropertyValue(sProp, sVal)
+    End If
+&apos;removeProperty(name)
+End Sub
+
+ Rem ############
+ Rem Evita comentarios duplicados al ejecutar 2 veces
+ Rem una macro que pone comentarios
+ Rem ====================================================== 
+Sub EliminaComentarios(Autor)
+&apos;   If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
+ Dim oEnum As Object, oField As Object, s As String
+   oEnum = ThisComponent.getTextFields().createEnumeration()
+   Do While oEnum.hasMoreElements()
+     oField = oEnum.nextElement()
+     If oField.supportsService(&quot;com.sun.star.text.TextField.Annotation&quot;) Then
+       s = oField.Author
+       If s = Autor Then
+         oField.dispose()
+       End If
+     End If
+   Loop
+End Sub
+
+ Rem ############
+Function F_BuscarEnMatriz(Matriz(), Texto As String) As Boolean
+ Rem busca texto en matriz,
+ Rem Devuelve True o 1 si encuentra el texto en la matriz
+ Rem Devuelve False o O si no lo encuentra
+ Rem ======================================================
+ Dim i As Integer
+   For i = LBound(Matriz) To UBound(Matriz())
+     If InStr(Join(Matriz), Texto) &lt;&gt; 0 Then
+       F_BuscarEnMatriz = True
+       Exit Function
+     End If
+   Next i
+   F_BuscarEnMatriz = False
+End Function
+
+ Rem ############
+Function F_ElementoEnMatriz(Matriz(), IndiceSup As Integer, Elemento As String) As Boolean
+ Rem variante de BuscarEnMatriz pero indicando el índice mayor en el que buscar
+ Rem útil si se quiere saber, por ejemplo, si está entre los 10 primeros.
+ Rem Devuelve True o 1 si lo encuentra en la matriz
+ Rem Devuelve False o O si no lo encunentra
+ Rem ======================================================
+ Dim i As Integer
+   For i = LBound(Matriz()) To IndiceSup
+     If UCase(Matriz(i)) = UCase(Elemento) Then
+       F_ElementoEnMatriz = True
+       Exit Function
+     End If
+     Next
+     F_ElementoEnMatriz = False
+End Function
+
+ Rem ############
+Function F_RestaMatrices(Grande, Chica) As Variant
+ Rem Resta a la matriz Grande los elementos definidos
+ Rem en la matriz Chica (si existen)
+ Rem ======================================================
+ Dim i As Integer, Resultado() As Variant, n As Integer
+   For i = 0 To UBound(Chica)
+     If FieldInArray(Grande(), UBound(Grande), Chica(i)) = False Then
+       If UBound(Resultado) = -1 Then
+         ReDim Resultado(0)
+         Resultado(0) = Chica(i)
+       Else
+         n = UBound(Resultado) +1
+         ReDim Preserve Resultado(n)
+         Resultado(n) = Chica(i)
+       End If
+     End If
+   Next
+   F_RestaMatrices = Resultado
+End Function
+
+ Rem ############
+Function F_MatrizCuadroTexto(Matriz As Variant) As String
+ Rem Convierte una matriz en texto con saltos de linea
+ Rem para mostrar su contenido en Msgbox o cuadros de texto
+ Rem ======================================================
+ Dim i As Integer, s As String
+   For i = 0 To UBound(Matriz)
+     s = s &amp; Chr(9) &amp; Matriz(i) &amp; CHR$(13) &apos;matriz(1)
+   Next
+   F_MatrizCuadroTexto = s
+End Function
+
+ Rem ############ posible incorporación? Recargar documento.
+Sub ActualizarTodo
+ Dim document   As Object
+ Dim dispatcher As Object
+   document   = ThisComponent.CurrentController.Frame
+   dispatcher = CreateUNOService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+   dispatcher.executeDispatch(document, &quot;.uno:UpdateAll&quot;, &quot;&quot;, 0, Array())
+End Sub
+
+ Rem ############
+Sub GuardaRecarga
+   If (ThisComponent.isModified()) Then
+     If (ThisComponent.hasLocation() AND (Not ThisComponent.isReadOnly())) Then
+       ThisComponent.store()
+     Else
+       setModified(False)
+     End If
+   End If
+ Dim document   as object
+ Dim dispatcher as object
+   document   = ThisComponent.CurrentController.Frame
+   dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+   dispatcher.executeDispatch(document, &quot;.uno:Reload&quot;, &quot;&quot;, 0, Array())
+End Sub
+
+ Rem ############
+Function F_NtoDN (estilo as String)
+ Rem Devuelve el Nombre del estilo localizado (Párrafos)
+ Dim Parrafos : Parrafos = ThisComponent.StyleFamilies.ParagraphStyles
+   If Parrafos.hasbyname(estilo) Then
+     F_NtoDN = Parrafos.getbyName(estilo).DisplayName
+   End If
+End Function
+&apos;============================== Fin _Aux =================================
+</script:module>

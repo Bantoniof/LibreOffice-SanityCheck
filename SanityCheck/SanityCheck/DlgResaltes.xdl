@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="DlgResaltes" dlg:tab-index="0" dlg:left="200" dlg:top="120" dlg:width="242" dlg:height="56" dlg:page="1" dlg:closeable="true" dlg:moveable="true" dlg:title="Resaltado de estilos">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:text-color="0xc9211e" dlg:font-height="10" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="1" dlg:font-height="24" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="2" dlg:font-height="10" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="3" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="4" dlg:text-color="0x468a1a" dlg:font-height="11" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="5" dlg:font-height="11" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="6" dlg:text-color="0xff" dlg:font-height="24" dlg:font-weight="150"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:button dlg:id="CommandButton2" dlg:tab-index="4" dlg:left="34" dlg:top="209" dlg:width="0" dlg:height="2" dlg:page="1" dlg:value="CommandButton1"/>
+  <dlg:text dlg:id="Label9" dlg:tab-index="5" dlg:left="102" dlg:top="223" dlg:width="4" dlg:height="0" dlg:page="1" dlg:value="Label8"/>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Errores" dlg:tab-index="9" dlg:left="47" dlg:top="24" dlg:width="131" dlg:height="8" dlg:page="1" dlg:value="¡La definición de estilos contiene errores!"/>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Errores" dlg:tab-index="11" dlg:left="200" dlg:top="25" dlg:width="18" dlg:height="16" dlg:value="𓂀" dlg:valign="center">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Resaltes.OnBtErrores?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:text dlg:style-id="2" dlg:id="Lbl_Sintaxis" dlg:tab-index="8" dlg:left="18" dlg:top="32" dlg:width="91" dlg:height="10" dlg:page="2" dlg:value="Errores de sintáxis:"/>
+  <dlg:button dlg:style-id="3" dlg:id="Btn_Detalles" dlg:tab-index="1" dlg:left="195" dlg:top="9" dlg:width="30" dlg:height="12" dlg:page="1" dlg:tabstop="true" dlg:value="Detalles" dlg:valign="top" dlg:grab-focus="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Resaltes.OnBtDetalles?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:text dlg:style-id="3" dlg:id="Lbl_NoPresentes" dlg:tab-index="3" dlg:left="124" dlg:top="144" dlg:width="104" dlg:height="16" dlg:page="1" dlg:value="Lbl_NoPresentes" dlg:align="center" dlg:multiline="true"/>
+  <dlg:text dlg:style-id="4" dlg:id="Lbl_NCambios" dlg:tab-index="7" dlg:left="28" dlg:top="10" dlg:width="12" dlg:height="10" dlg:page="1" dlg:value="Lbl_NCambios" dlg:align="right" dlg:valign="center"/>
+  <dlg:text dlg:style-id="5" dlg:id="Lbl_Info" dlg:tab-index="6" dlg:left="47" dlg:top="10" dlg:width="128" dlg:height="10" dlg:page="1" dlg:value="Lbl_Info" dlg:valign="center"/>
+  <dlg:textfield dlg:id="Tx_C_Encontrados" dlg:tab-index="12" dlg:left="123" dlg:top="60" dlg:width="104" dlg:height="81" dlg:page="1" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true"/>
+  <dlg:textfield dlg:id="Tx_P_Encontrados" dlg:tab-index="13" dlg:left="13" dlg:top="60" dlg:width="104" dlg:height="161" dlg:page="1" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true"/>
+  <dlg:textfield dlg:id="Tx_Perdidos" dlg:tab-index="14" dlg:left="124" dlg:top="160" dlg:width="104" dlg:height="60" dlg:page="1" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true"/>
+  <dlg:text dlg:style-id="3" dlg:id="Lbl_P_Cambiados" dlg:tab-index="2" dlg:left="13" dlg:top="52" dlg:width="104" dlg:height="8" dlg:page="1" dlg:value="Lbl_P_Cambiados" dlg:align="center"/>
+  <dlg:text dlg:style-id="3" dlg:id="Lbl_C_Cambiados" dlg:tab-index="15" dlg:left="126" dlg:top="52" dlg:width="99" dlg:height="8" dlg:page="1" dlg:value="Lbl_C_Cambiados" dlg:align="center"/>
+  <dlg:textfield dlg:id="Tx_ListaErrores" dlg:tab-index="10" dlg:left="13" dlg:top="45" dlg:width="215" dlg:height="171" dlg:page="2" dlg:tabstop="false" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Errores"/>
+  <dlg:text dlg:id="Lbl_Nota" dlg:tab-index="16" dlg:left="16" dlg:top="35" dlg:width="174" dlg:height="17" dlg:page="1" dlg:value="Lbl_Nota" dlg:multiline="true"/>
+  <dlg:button dlg:style-id="6" dlg:id="Btn_Ayuda" dlg:tab-index="0" dlg:left="5" dlg:top="4" dlg:width="18" dlg:height="18" dlg:tabstop="true" dlg:value="?">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Resaltes.OnBtAyuda?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:textfield dlg:id="Tx_Ayuda" dlg:tab-index="17" dlg:left="13" dlg:top="32" dlg:width="215" dlg:height="171" dlg:page="3" dlg:tabstop="false" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Ayuda"/>
+ </dlg:bulletinboard>
+</dlg:window>

@@ -1,0 +1,649 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" oor:name="Addons" oor:package="org.openoffice.Office">
+
+	<node oor:name="AddonUI">
+		<node oor:name="OfficeToolBar"><!-- Inicio Herramientas -->
+			<node oor:name="SanityCheck.OfficeToolBar" oor:op="replace">
+
+				<node oor:name="m001" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Resaltes.AlternarResalte?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Toggle Highlight</value>
+						<value xml:lang="pt-BR">Alternar destaque</value>
+						<value xml:lang="es-ES">Alternar resalte</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="m002" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>private:separator</value>
+					</prop>
+				</node>
+
+				<node oor:name="m003" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Campos.Dlg_Campos?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Document fields</value>
+						<value xml:lang="pt-BR">Campos do documento</value>
+						<value xml:lang="es-ES">Campos del documento</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="m004" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Renombrar.Dlg_Renombrar?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Rename objects</value>
+						<value xml:lang="pt-BR">Renomear objetos</value>
+						<value xml:lang="es-ES">Renombrar objetos</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="m005" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>private:separator</value>
+					</prop>
+				</node>
+
+				<node oor:name="m006" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Estilos.CompEstilos?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Check styles</value>
+						<value xml:lang="pt-BR">Verificar estilos</value>
+						<value xml:lang="es-ES">Verificar estilos</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="m007" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Formatos.Dlg_Formatos?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Direct format cleanup</value>
+						<value xml:lang="pt-BR">Limpeza de formato direto</value>
+						<value xml:lang="es-ES">Limpieza de formato directo</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="m008" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Tablas.Dlg_Tablas?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Tables adjust</value>
+						<value xml:lang="pt-BR">Ajuste de tabelas</value>
+						<value xml:lang="es-ES">Ajuste de tablas</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="m009" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Imagenes.AjusteFiguras?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Figures adjust</value>
+						<value xml:lang="pt-BR">Ajuste de figuras</value>
+						<value xml:lang="es-ES">Ajuste de figuras</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="m010" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Imagenes.Dlg_Imagenes?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Browse images</value>
+						<value xml:lang="pt-BR">Percorrer imagens</value>
+						<value xml:lang="es-ES">Recorrer imágenes</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+			</node><!-- Sanity Toolbar -->
+		</node> <!-- Office Toolbar -->
+
+
+		<node oor:name="OfficeMenuBar"><!--Inicio Menu -->
+			<node oor:name="SanityCheck.OfficeMenuBar" oor:op="replace">
+				<prop oor:name="Context" oor:type="xs:string">
+					<value>com.sun.star.text.TextDocument</value>
+				</prop>
+				<prop oor:name="Title" oor:type="xs:string">
+					<value>LO SanityCheck</value>
+					<value xml:lang="pt-BR">LO SanityCheck</value>
+					<value xml:lang="es-ES">LO SanityCheck</value>
+				</prop>
+
+				<node oor:name="Submenu"><!-- Submenu 1 -->
+
+				<node oor:name="m001" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Resaltes.AlternarResalte?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Toggle Highlight</value>
+						<value xml:lang="pt-PT">Alternar destaque</value>
+						<value xml:lang="es-ES">Alternar resalte</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="m002" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value></value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>private:separator</value>
+					</prop>
+				</node>
+
+				<node oor:name="m003" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Prepare document</value>
+						<value xml:lang="pt-BR">Preparar documento</value>
+						<value xml:lang="es-ES">Preparar documento</value>
+					</prop>
+
+					<node oor:name="Submenu"><!-- Submenu 2 -->
+
+					<node oor:name="m001" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Campos.Dlg_Campos?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Document Fields</value>
+							<value xml:lang="pt-BR">Campos do documento</value>
+							<value xml:lang="es-ES">Campos del documento</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+
+					<node oor:name="m002" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Renombrar.Dlg_Renombrar?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Rename objects</value>
+							<value xml:lang="pt-BR">Renomear objetos</value>
+							<value xml:lang="es-ES">Renombrar objetos</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+					</node>
+				</node>
+
+				<node oor:name="m004" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Clean and adjust</value>
+						<value xml:lang="pt-BR">Limpeza e ajustes</value>
+						<value xml:lang="es-ES">Limpieza y ajustes</value>
+					</prop>
+
+					<node oor:name="Submenu"><!-- Submenu 3 -->
+
+					<node oor:name="m001" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Estilos.CompEstilos?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Check styles</value>
+							<value xml:lang="pt-BR">Verificar estilos</value>
+							<value xml:lang="es-ES">Verificar estilos</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+
+					<node oor:name="m002" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Formatos.Dlg_Formatos?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Direct format cleanup</value>
+							<value xml:lang="pt-BR">Limpeza de formato direto</value>
+							<value xml:lang="es-ES">Limpieza de formato directo</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+
+					<node oor:name="m003" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Tablas.Dlg_Tablas?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Tables adjust</value>
+							<value xml:lang="pt-BR">Ajuste de tabelas</value>
+							<value xml:lang="es-ES">Ajuste de tablas</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+
+					<node oor:name="m004" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Imagenes.AjusteFiguras?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Figures adjust</value>
+							<value xml:lang="pt-BR">Ajuste de figuras</value>
+							<value xml:lang="es-ES">Ajuste de figuras</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+
+					<node oor:name="m005" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Imagenes.Dlg_Imagenes?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Browse images</value>
+							<value xml:lang="pt-BR">Percorrer imagems</value>
+							<value xml:lang="es-ES">Recorrer im&#225;genes</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+
+					</node><!-- SubMenu 3 -->
+					</node><!-- SubMenu 2 -->
+
+				<node oor:name="m005" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>private:separator</value>
+					</prop>
+				</node>
+
+				</node><!-- Submenu 1 -->
+			</node><!-- Sanity Menu Bar -->
+		</node><!-- Office MenuBar 2 -->
+
+
+		<node oor:name="OfficeNotebookBar"><!-- Inicio Omnibarra -->
+			<node oor:name="SanityCheck.OfficeOmniBar" oor:op="replace">
+
+				<node oor:name="omb01" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>private:separator</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb02" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Resaltes.AlternarResalte?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Toggle Highlight</value>
+						<value xml:lang="pt-BR">Alternar destaque</value>
+						<value xml:lang="es-ES">Alternar resalte</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb03" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Campos.Dlg_Campos?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Document fields</value>
+						<value xml:lang="pt-BR">Campos do documento</value>
+						<value xml:lang="es-ES">Campos del documento</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb04" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Renombrar.Dlg_Renombrar?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Rename objects</value>
+						<value xml:lang="pt-BR">Renomear objetos</value>
+						<value xml:lang="es-ES">Renombrar objetos</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb05" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Estilos.CompEstilos?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Check styles</value>
+						<value xml:lang="pt-BR">Verificar estilos</value>
+						<value xml:lang="es-ES">Verificar estilos</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb06" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Formatos.Dlg_Formatos?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Direct format cleanup</value>
+						<value xml:lang="pt-BR">Limpeza de formato direto</value>
+						<value xml:lang="es-ES">Limpieza de formato directo</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb07" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Tablas.Dlg_Tablas?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Tables adjust</value>
+						<value xml:lang="pt-BR">Ajuste de tabelas</value>
+						<value xml:lang="es-ES">Ajuste de tablas</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb08" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Imagenes.AjusteFiguras?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Figures adjust</value>
+						<value xml:lang="pt-BR">Ajuste de figuras</value>
+						<value xml:lang="es-ES">Ajuste de figuras</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb09" oor:op="replace">
+					<prop oor:name="Title" oor:type="xs:string">
+							<value>Browse images</value>
+							<value xml:lang="pt-BR">Percorrer imagems</value>
+							<value xml:lang="es-ES">Recorrer im&#225;genes</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Imagenes.Dlg_Imagenes?language=Basic&amp;location=application</value>
+						
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+				</node>
+
+				<node oor:name="omb10" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>private:separator</value>
+					</prop>
+				</node>
+
+			</node><!-- Fin Sanitycheck Omnibarra -->
+		</node><!-- Fin Omnibarra -->
+
+
+
+		<node oor:name="Images"><!-- Imágenes --> 
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Resaltes" oor:op="replace">
+				<prop oor:name="URL" oor:type="xs:string">
+					<value>vnd.sun.star.script:SanityCheck.Resaltes.AlternarResalte?language=Basic&amp;location=application</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Resaltes.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Resaltes.svg</value>
+					</prop>
+				</node>
+			</node>
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Campos" oor:op="replace">
+				<prop oor:name="URL" oor:type="xs:string">
+					<value>vnd.sun.star.script:SanityCheck.Campos.Dlg_Campos?language=Basic&amp;location=application</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Campos.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Campos.svg</value>
+					</prop>
+				</node>
+			</node>
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Renombrar" oor:op="replace">
+				<prop oor:name="URL" oor:type="xs:string">
+					<value>vnd.sun.star.script:SanityCheck.Renombrar.Dlg_Renombrar?language=Basic&amp;location=application</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Renombrar.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Renombrar.svg</value>
+					</prop>
+				</node>
+			</node>
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Estilos" oor:op="replace">
+				<prop oor:name="URL" oor:type="xs:string">
+					<value>vnd.sun.star.script:SanityCheck.Estilos.CompEstilos?language=Basic&amp;location=application</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Estilos.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Estilos.svg</value>
+					</prop>
+				</node>
+			</node>
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Formatos" oor:op="replace">
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Formatos.Dlg_Formatos?language=Basic&amp;location=application</value>
+						</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Formatos.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Formatos.svg</value>
+					</prop>
+				</node>
+			</node>
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Tablas" oor:op="replace">
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Tablas.Dlg_Tablas?language=Basic&amp;location=application</value>
+						</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Tablas.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Tablas.svg</value>
+					</prop>
+				</node>
+			</node>
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Figuras" oor:op="replace">
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Imagenes.AjusteFiguras?language=Basic&amp;location=application</value>
+						</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Figuras.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Figuras.svg</value>
+					</prop>
+				</node>
+			</node>
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Imagenes" oor:op="replace">
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Imagenes.Dlg_Imagenes?language=Basic&amp;location=application</value>
+						</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Imagenes.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Imagenes.svg</value>
+					</prop>
+				</node>
+			</node>
+
+		</node><!-- Fin Imágenes -->
+
+
+		
+	</node><!-- Fin Addon UI -->
+</oor:component-data>

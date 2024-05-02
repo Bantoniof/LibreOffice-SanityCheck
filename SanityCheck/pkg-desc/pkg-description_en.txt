@@ -1,0 +1,4 @@
+SanityCheck.oxt
+Copyright (c) 2024 B. Antonio Fernández
+
+Templates and macros for reviewing LibreOffice guides 2X.x

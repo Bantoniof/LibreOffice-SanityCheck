@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Formatos" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo Formatos *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+  
+ Option Explicit
+ Dim PBcounter As Integer, oDlgFmt As Object
+ Public E_Num(6) As String
+
+ Rem ############
+Sub E_Numerados
+ E_Num(0) = &quot;Legend Numbered&quot;
+ E_Num(1) = &quot;Numbering 1&quot;
+ E_Num(2) = &quot;Numbering 1 Cont.&quot;
+ E_Num(3) = &quot;Numbering 2&quot;
+ E_Num(4) = &quot;Numbering 2 Cont.&quot;
+ E_Num(5) = &quot;Numbering 3&quot;
+ E_Num(6) = &quot;Numbering 3 Cont.&quot;
+End Sub
+
+ Rem ############
+Sub Dlg_Formatos
+   If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub
+   Call L10n.Trad_Formatos
+   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   oDlgFmt = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFormatos&quot;))
+   With oDlgFmt.getModel
+     .Step = 1
+     .Title = F_Txt(0) &amp; Extension &apos; N diálogo
+     .Height = 75
+     .getbyName(&quot;Ch_Text&quot;).Label = F_Txt(2)
+     .getbyName(&quot;Ch_Par&quot;).Label = F_Txt(3)
+     .getbyName(&quot;Ch_Num&quot;).Label = F_Txt(4)
+     .getbyname(&quot;Btn_Limpiar&quot;).Label = F_Txt(5)
+     .getbyname(&quot;Btn_Salir&quot;).Label = F_Txt(6)
+     .getbyname(&quot;Btn_Volver&quot;).Label = F_Txt(7)&apos;paso2
+     .getbyname(&quot;Tx_Ayuda&quot;).Text = F_Txt(1)
+     .getbyname(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
+   End With
+   oDlgFmt.execute
+End Sub
+
+ Rem ############
+Sub onBtn_Salir(oEv)
+   oDlgFmt = oEv.Source.Context
+   oDlgFmt.EndExecute
+End Sub
+
+ Rem ############
+Sub OnBtn_Volver(oEv)
+   oDlgFmt = oEv.Source.Context
+   With oDlgFmt.Model
+   .Height = 75
+   .Step = 1
+   .getbyname(&quot;Btn_Salir&quot;).PositionY = 55
+   .getbyname(&quot;Btn_Ayuda&quot;).EnableVisible = True
+   End With
+End Sub
+
+ Rem ############
+Sub OnBtn_Ayuda(oEv)
+   oDlgFmt = oEv.Source.Context
+   With oDlgFmt.Model
+     If .Step = 1 Then
+       .Step = 3
+       .Height = 122
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;↫&quot;
+       .getbyname(&quot;Btn_Salir&quot;).EnableVisible = False
+     Else
+       .Step = 1
+       .Height = 75
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
+       .getbyname(&quot;Btn_Salir&quot;).EnableVisible = True
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnBtn_Limpiar(oEv)
+   oDlgFmt = oEv.Source.Context
+ Dim Txt As Integer , Par As Integer , Num As Integer , Suma As Integer
+ Dim Pregunta As Variant, s As String
+   Suma = 0 : s = &quot;&quot;
+   With oDlgFmt.Model
+     .Height = 122
+     .getbyname(&quot;Btn_Ayuda&quot;).EnableVisible = False
+     Txt = .getbyname(&quot;Ch_Text&quot;).State
+     Par = .getbyname(&quot;Ch_Par&quot;).State
+     Num = .getbyname(&quot;Ch_Num&quot;).State
+     Suma = Txt + Par + Num
+     If Suma = 0 then: MsgBox (F_Txt(15), 0+64+0, F_Txt(0) &amp; Extension): Exit Sub : End If
+     .Step = 2
+     oDlgFmt.getControl(&quot;Btn_Volver&quot;).Enable = False
+     oDlgFmt.getControl(&quot;Btn_Salir&quot;).Enable = False
+     .getbyname(&quot;Btn_Salir&quot;).PositionY = 105
+     .getbyname(&quot;Btn_Salir&quot;).PositionX = 152
+     If Txt = 1 Then
+       .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
+       s = Formatos.LimpiaTexto &amp; Chr(13)
+     End If
+     If Par = 1 Then
+       Pregunta = Msgbox (F_Txt(18), 1+64+128 ,F_Txt(0) &amp; Extension)     
+       If Pregunta = 1 Then 
+         .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
+         s = s &amp; Formatos.LimpiaParrafos &amp; Chr(13)
+       Else
+        s = &quot;El formato de párrafos no se ha limpiado&quot;  
+       End If 
+     End If
+     If Num = 1 Then
+       Pregunta = Msgbox (F_Txt(17), 1+64+128 ,F_Txt(0) &amp; Extension)
+       If Pregunta = 1 Then
+         .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
+         s = s &amp; F_Listados &amp; Chr(13)
+         s = s &amp; Formatos.LimpiaNumerados &amp; Chr(13)
+       Else
+         s = F_Txt(8)
+       End If
+     End If
+     .getbyname(&quot;Tx_Registro&quot;).Text = s
+     .getbyname(&quot;Ch_Text&quot;).State = 0
+     .getbyname(&quot;Ch_Par&quot;).State = 0
+     .getbyname(&quot;Ch_Num&quot;).State = 0
+     oDlgFmt.getControl(&quot;Btn_Volver&quot;).Enable= True
+     oDlgFmt.getControl(&quot;Btn_Salir&quot;).Enable = True
+   End With
+End Sub
+
+ Rem ############
+Sub OnCasillaFormatos(oEv)
+   oDlgFmt = oEv.Source.Context
+ Dim Txt As Integer , Par As Integer , Num As Integer , Suma As Integer, s As String
+   With oDlgFmt.getModel
+     Txt = .getbyname(&quot;Ch_Text&quot;).State
+     Par = .getbyname(&quot;Ch_Par&quot;).State
+     Num = .getbyname(&quot;Ch_Num&quot;).State
+     Suma = Txt + Par + Num
+     If Suma &lt;&gt; 0 Then
+       .getbyname(&quot;Btn_Limpiar&quot;).State = 1
+     Else
+       .getbyname(&quot;Btn_Limpiar&quot;).State = 0
+     End If
+   End With
+End Sub
+ Rem ############
+Function LimpiaTexto
+ Rem Limpia el formato Directo del texto (no párrafos)
+ Rem En el cuerpo de texto, tablas y Marcos
+ Rem ======================================================
+
+   Call L10n.Trad_Formatos
+Rem Texto en general (incluidas tablas)
+ Dim oCursor As Object : oCursor = ThisComponent.Text.createTextCursor()
+   oCursor.gotoStart(True)
+   oCursor.gotoEnd(True)
+   oCursor.setAllPropertiesToDefault
+Rem Texto en Marcos de texto (empleado también para leyendas)
+   On Error Resume Next
+ Dim oFrameEnum As Object, oFrame As Object, oFCursor As Object
+   oFrameEnum = ThisComponent.TextFrames.createEnumeration()
+   Do While oFrameEnum.hasMoreElements()
+     oFrame = oFrameEnum.nextElement()     
+     oFCursor = oFrame.text.createTextCursor()
+     oFCursor.gotostart(False)
+     oFCursor.gotoEnd(True)
+     oFCursor.setAllPropertiesToDefault
+   Loop
+Rem Texto en Cuadros de texto (DIBUJO) Desactivado por cuadro en página contraportada &apos; Posible eliminación
+&apos; Dim oDpage As Object, oShape As Object, otexto As String,i As Integer
+&apos;   oDpage = ThisComponent.getdrawpages().getbyindex(0)
+&apos;   For i = 0 To oDpage.count -1
+&apos;     oShape = oDpage.getbyindex(i)
+&apos;     If oShape.supportsService(&quot;com.sun.star.drawing.TextShape&quot;) Then
+&apos;       otexto = oShape.String &apos; Al copiar el texto en una variable, se quita el formato.
+&apos;       oShape.String = otexto &apos; sobreescribo el texto con el de la variable (sin formato)
+&apos;     End If
+&apos;   Next
+   Call _Aux.ActualizarTodo
+   LimpiaTexto = F_Txt(9)
+End Function
+
+ Rem ############
+Function LimpiaParrafos
+ Rem Limpia el formato directo de párrafos (sangrías, listas etc.)
+ Rem En todos los párrafos excepto los Numerados
+ Rem ======================================================
+   Call L10n.Trad_Formatos
+   Call Formatos.E_Numerados
+   oProgressBar = ThisComponent.CurrentController.getStatusIndicator()
+   oProgressBar.start( F_Txt(13), ThisComponent.ParagraphCount)
+   oProgressBar.setValue( 1 ) : PBcounter = 0
+ Dim oParEnum As Object, oPar As Object
+   oParEnum = ThisComponent.Text.createEnumeration()
+ Dim oCursor As Object : oCursor = ThisComponent.Text.createTextCursor
+   oCursor.gotoStart(False)
+    Do While oParEnum.hasMoreElements()
+       oPar = oParEnum.nextElement()
+       Wait 2 : PBcounter = PBcounter + 1 : oProgressBar.setValue(PBcounter)
+       If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
+         oCursor.gotoRange(oPar.Anchor,False)
+         oCursor.gotoendOfparagraph(True)
+            If _Aux.F_BuscarEnMatriz(E_Num, oPar.Parastylename) = False Then
+             oPar.NumberingLevel = 0 &apos;no sé si es necesario
+             oPar.NumberingStyleName = &quot;&quot;
+             oCursor.setAllPropertiesToDefault Rem Resetea TODOS los Párrafos
+           End If
+       End If
+    Loop
+   Call _Aux.ActualizarTodo
+   LimpiaParrafos =  F_Txt(10)
+   oProgressBar.End
+End Function
+
+ Rem ############
+Function F_Listados &apos;F_Listados
+ Rem Cambia el estilo anterior a lista 1 o Numeración 1
+ Rem si es Cuerpo de texto por Body Text List Intro (fallo generalizado)
+   Call L10n.Trad_Formatos
+   Call _Aux.EliminaComentarios(F_Txt(20))
+   &apos; Evito que se dupliquen comentarios
+ Dim oEstilos As Object: oEstilos = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;)
+ Dim E_CTxT :  E_CTxT = oEstilos.getByName(&quot;Text body&quot;).DisplayName
+ Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
+   oProgressbar.start( F_Txt(13), ThisComponent.ParagraphCount ) &apos; x2 si se unen
+   oProgressbar.setValue(1) : PBcounter = 0
+ Dim contarMarcados As Integer : contarMarcados= 0
+ Dim oParEnum As Object, oPar As Object
+ Dim bFound As Boolean, P_Lista As String ,P_Anterior As String
+ Dim cursor_Lista As Object, cursor_Ant As Object, i As Integer
+   oParEnum = ThisComponent.Text.createEnumeration()
+   Do While oParEnum.hasMoreElements()
+     oPar = oParEnum.nextElement()
+     Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
+     If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
+       P_Lista = oPar.ParaStyleName
+       bFound = False
+         If P_Lista = &quot;List&quot;_
+           OR P_Lista = &quot;Numbering 1&quot; _
+           OR P_Lista = &quot;List 1&quot; _
+           OR P_Lista = &quot;Definition Term&quot; Then &apos;+OR
+           bFound = True
+         End If
+       If (bFound) = True Then
+         cursor_Lista = oPar.getText().createTextCursorByRange(oPar)
+         cursor_Ant = oPar.getText().createTextCursorByRange(oPar)
+         cursor_Ant.gotoPreviousParagraph(False)
+         cursor_Ant.gotoEndOfParagraph(false) &apos; -para el comentario
+         If cursor_Ant.ParaStyleName = &quot;Text body&quot; Then
+  Call _Aux.InsertAnnotation (oPar, cursor_Ant, E_CTxT &amp;  F_Txt(23) &amp; CHr(13) &amp; &quot;Body Text, List Intro&quot;, F_Txt(20))
+           cursor_Ant.ParaStyleName = &quot;Body Text, List Intro&quot;
+           contarMarcados = contarMarcados +1
+         End If
+       End If
+     End If
+   Loop
+   If contarMarcados &lt;&gt; 0 Then
+    F_Listados = Chr(9) &amp; contarMarcados &amp; F_Txt(22)
+   End If 
+   oProgressBar.End
+ End Function
+
+ Rem ############
+Function LimpiaNumerados
+ Rem Limpia el formato directo de párrafos Numerados (matriz E_P_Num)
+ Rem y reinicia la numeración si el estilo del párrafo anterior
+ Rem  está en el mismo orden en la matriz E_P_Ant.
+ Rem inserta un comentario en párrafos cuando no se da esta coincidencia
+ Rem Evita comentarios en los párrafos si el estilo anterior está en la matriz E_Validos
+  Rem ======================================================
+   Call L10n.Trad_Formatos
+   Call _Aux.EliminaComentarios(F_Txt(0))&apos; Evito que se dupliquen comentarios
+ Dim E_P_Num As Variant, E_P_Ant As Variant, E_Validos As Variant
+   E_P_Ant = Array(&quot;Body Text, List Intro&quot;,&quot;Numbering 1&quot;,&quot;Numbering 2&quot;)&apos;,&quot;Text body&quot;)
+   E_P_Num = Array(&quot;Numbering 1&quot;,&quot;Numbering 2&quot;,&quot;Numbering 3&quot;)&apos;,&quot;myIndentPlusNumbering&quot;)
+   E_Validos = Array(&quot;Numbering 1&quot;,&quot;Numbering 2&quot;,&quot;Numbering 3&quot;,&quot;Legend Numbered&quot;,&quot;Heading 1&quot;,&quot;Heading 2&quot;,&quot;Heading 3&quot;,&quot;Heading 4&quot;,&quot;Definition Term&quot;, &quot;List 2&quot;) &apos;,&quot;Figure&quot;
+ Dim oEstilos As Object: oEstilos = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;)
+ Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
+   oProgressbar.start( F_Txt(13), ThisComponent.ParagraphCount ) &apos; x2 si se unen
+   oProgressbar.setValue(1) : PBcounter = 0
+ Dim contarMarcados As Integer : contarMarcados= 0
+ Dim oParEnum As Object, oPar As Object
+ Dim bFound As Boolean, P_Numerado As String ,P_Anterior As String
+ Dim cursor_Num As Object, cursor_Ant As Object, cursor_Post As Object, i As Integer
+   oParEnum = ThisComponent.Text.createEnumeration()
+   Do While oParEnum.hasMoreElements()
+     oPar = oParEnum.nextElement()
+     Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
+     If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
+       P_Numerado = oPar.ParaStyleName
+       bFound = False&apos; Reset variable
+       For i = 0 To UBound(E_P_Num)
+         If P_Numerado = E_P_Num(i) Then&apos; ej Num 1 -desde MATRIZ
+           bFound = True
+           P_Anterior = E_P_Ant(i)&apos;ej Bodytext,ListIntro - desde MATRIZ
+         End If
+       Next
+       If (bFound) = True Then
+ Rem Coloco cursores y reseteo formato
+         cursor_Num = oPar.getText().createTextCursorByRange(oPar)
+         cursor_Num.gotoEndOfParagraph(false) &apos; -para el comentario
+         oPar.NumberingStyleName = &quot;&quot;
+         oPar.NumberingLevel = 0
+         cursor_Num.setAllPropertiesToDefault
+ Rem comparo estilo en cursor Anterior con párrafo Matriz P_Anterior
+         cursor_Ant = oPar.getText().createTextCursorByRange(oPar)
+         cursor_Ant.gotoPreviousParagraph(False)
+         If cursor_Ant.ParaStyleName = P_Anterior Then&apos; ej  TBL-Intro = TBL-Intro
+ Rem reinicio numeracion en Cursor Numerado
+           cursor_Num.NumberingStartValue = 1 
+ Rem reinicio numeración después de títulos y el las leyendas numeradas
+         ElseIf cursor_Ant.ParaStyleName &lt;&gt; P_Anterior Then
+            Call Renum_Num1_Tras_Titulos
+           Call ReiniciarLeyendasNum 
+ Rem evito comentarios en (E_Validos) y comento los posibles reinicios.
+           If _Aux.F_BuscarEnMatriz(E_Validos,cursor_Ant.ParaStyleName) = False Then
+             Dim E_Num : E_Num = oEstilos.getByName(cursor_Num.ParaStyleName).DisplayName
+             Dim E_Ant : E_Ant = oEstilos.getByName(cursor_Ant.ParaStyleName).DisplayName
+             Call _Aux.InsertAnnotation (oPar, cursor_Num, E_Num &amp; Chr(13) &amp; F_Txt(14) &amp; E_Ant, F_Txt(0))
+             contarMarcados = contarMarcados +1
+           End If
+         End If
+       End If
+     End If
+   Loop
+   oProgressbar.End
+   If contarMarcados &lt;&gt; 0 Then
+    LimpiaNumerados = F_Txt(11) &amp; Chr(9) &amp; contarMarcados &amp; F_Txt(12)
+   Else
+    LimpiaNumerados = F_Txt(11) &amp; Chr(13) &amp; F_Txt(16)
+   End If 
+ End Function
+
+ Rem ############
+Sub Renum_Num1_Tras_Titulos
+ Dim oParEnum, oPar, P_Titulo, bFound ,i 
+ Dim E_Titulos : E_Titulos = Array(&quot;Heading 1&quot;,&quot;Heading 2&quot;,&quot;Heading 3&quot;,&quot;Definition Term&quot;) 
+ Dim cursor_Num as Object
+   oParEnum = ThisComponent.Text.createEnumeration()
+   Do While oParEnum.hasMoreElements()
+     oPar = oParEnum.nextElement()
+     If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
+       P_Titulo = oPar.ParaStyleName
+       bFound = False&apos; Reseteo variable
+       For i = 0 To UBound(E_Titulos)
+         If  P_Titulo = E_Titulos(i) Then
+           bFound = True
+          End If
+       Next
+         If (bFound) = True Then
+           cursor_Num = oPar.getText().createTextCursorByRange(oPar)
+           cursor_Num.gotoNextParagraph(False)
+           If cursor_Num.ParaStyleName = &quot;Numbering 1&quot; Then
+             cursor_Num.NumberingStartValue = 1
+           End If
+         End If 
+     End If
+   Loop
+End sub
+
+ Rem ############
+Sub ReiniciarLeyendasNum
+ Dim  oSec, oSubSecs, oSubSec, oCursor, i
+   If Not ThisComponent.TextSections.HasByName(&quot;SEC_DISPLAYAREA&quot;) Then
+     MsgBox (F_Txt(21) , 0+64+0, F_Txt(0) &amp; Extension)
+     Exit Sub
+   End If
+   On Error goto ERRORES
+   oSec = ThisComponent.TextSections().getByName(&quot;SEC_DISPLAYAREA&quot;)&apos;.getChildSections
+   oSubSecs = oSec.getChildSections
+   oCursor = ThisComponent.Text.CreateTextCursor
+   For i = LBound(oSubSecs) To UBound(oSubSecs)
+     oCursor.gotoRange(oSubSecs(i).getAnchor.Start,False)
+     If oCursor.ParaStyleName = &quot;Legend Numbered&quot; Then
+       oCursor.NumberingStartValue = 1
+     End If
+   Next
+ERRORES:
+   If Err &lt;&gt; 0 Then
+     MsgBox ( &quot;Error: &quot; &amp; Err  &amp; &quot;  Linea n. &quot; &amp; Erl &amp; Chr(13)  &amp; Chr(13) &amp; Error, 0+48+0, F_Txt(0) &amp; Extension)
+   End If
+End Sub
+ Rem ==================== Fin Formatos ==================================
+</script:module>

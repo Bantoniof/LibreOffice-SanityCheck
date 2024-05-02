@@ -1,0 +1,4 @@
+SanityCheck.oxt
+Copyright (c) 2024 B. Antonio Fernández
+
+Plantillas y macros para la revisión de las guías de LibreOffice 2X.x

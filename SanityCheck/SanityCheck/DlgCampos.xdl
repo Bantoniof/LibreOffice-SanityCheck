@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:style-id="6" dlg:id="Campos" dlg:left="133" dlg:top="112" dlg:width="240" dlg:height="191" dlg:page="2" dlg:closeable="true" dlg:moveable="true" dlg:title="Nombre del archivo">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:font-height="9" dlg:font-weight="100"/>
+  <dlg:style dlg:style-id="1" dlg:font-height="10" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="2" dlg:text-color="0xff" dlg:font-height="11" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="3" dlg:font-height="10"/>
+  <dlg:style dlg:style-id="4" dlg:text-color="0xff" dlg:font-height="24" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="5" dlg:background-color="0xffffff" dlg:font-height="11" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="6" dlg:font-weight="150"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:text dlg:id="Lbl_Guía" dlg:tab-index="14" dlg:left="19" dlg:top="31" dlg:width="24" dlg:height="10" dlg:page="1" dlg:value="Guía:" dlg:valign="center"/>
+  <dlg:text dlg:id="Lbl_Version" dlg:tab-index="15" dlg:left="125" dlg:top="31" dlg:width="51" dlg:height="10" dlg:page="1" dlg:value="Lbl_Version" dlg:valign="center"/>
+  <dlg:textfield dlg:id="Tx_Guia" dlg:tab-index="4" dlg:left="43" dlg:top="31" dlg:width="77" dlg:height="10" dlg:page="1" dlg:value="Tx_Guia"/>
+  <dlg:button dlg:id="Btn_Cambia" dlg:tab-index="10" dlg:left="105" dlg:top="174" dlg:width="46" dlg:height="12" dlg:page="1" dlg:value="Establecer">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Campos.Onbtn_Establecer?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:text dlg:id="Lbl_Plantilla" dlg:tab-index="16" dlg:left="84" dlg:top="72" dlg:width="110" dlg:height="8" dlg:page="1" dlg:value="Lbl_Plantilla" dlg:valign="center"/>
+  <dlg:numericfield dlg:id="Num_Ano" dlg:tab-index="8" dlg:left="160" dlg:top="53" dlg:width="42" dlg:height="12" dlg:page="1" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value-min="2024" dlg:value-max="2050" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="Num_Version" dlg:tab-index="5" dlg:left="179" dlg:top="31" dlg:width="19" dlg:height="10" dlg:page="1" dlg:align="right" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value="24" dlg:value-min="6" dlg:value-max="44"/>
+  <dlg:numericfield dlg:id="Num_Sub" dlg:tab-index="6" dlg:left="202" dlg:top="31" dlg:width="15" dlg:height="10" dlg:page="1" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value="2" dlg:value-min="1" dlg:value-max="12"/>
+  <dlg:text dlg:id="Label5" dlg:tab-index="20" dlg:left="33" dlg:top="71" dlg:width="0" dlg:height="8" dlg:page="1" dlg:value="Label5" dlg:valign="center"/>
+  <dlg:text dlg:id="Lbl_DocTitle" dlg:tab-index="19" dlg:left="84" dlg:top="85" dlg:width="110" dlg:height="8" dlg:page="1" dlg:value="Lbl_DocTitle" dlg:valign="center"/>
+  <dlg:textfield dlg:id="Tx_Cap_T" dlg:tab-index="3" dlg:left="83" dlg:top="15" dlg:width="135" dlg:height="10" dlg:page="1" dlg:maxlength="60" dlg:value="Tx_Cap_T"/>
+  <dlg:textfield dlg:style-id="0" dlg:id="Tx_Cap_N" dlg:tab-index="1" dlg:left="20" dlg:top="15" dlg:width="57" dlg:height="10" dlg:page="1" dlg:valign="center" dlg:value="Tx_Cap_N"/>
+  <dlg:text dlg:style-id="1" dlg:id="Lbl_Establecidas" dlg:tab-index="21" dlg:left="17" dlg:top="174" dlg:width="88" dlg:height="12" dlg:page="1" dlg:value="Lbl_Establecidas" dlg:align="center" dlg:valign="center"/>
+  <dlg:button dlg:id="Btn_Salir" dlg:tab-index="11" dlg:left="167" dlg:top="174" dlg:width="35" dlg:height="12" dlg:page="1" dlg:value="Cancelar" dlg:button-type="cancel"/>
+  <dlg:text dlg:id="Lbl_DocT" dlg:tab-index="18" dlg:left="18" dlg:top="85" dlg:width="60" dlg:height="8" dlg:page="1" dlg:value="Lbl_DocT" dlg:valign="center"/>
+  <dlg:text dlg:id="Lbl_Conex" dlg:tab-index="13" dlg:left="18" dlg:top="72" dlg:width="60" dlg:height="8" dlg:page="1" dlg:value="Lbl_Conex" dlg:valign="center"/>
+  <dlg:menulist dlg:id="List_Mes" dlg:tab-index="7" dlg:left="19" dlg:top="53" dlg:width="73" dlg:height="12" dlg:page="1" dlg:spin="true" dlg:linecount="12"/>
+  <dlg:titledbox dlg:id="Fr_Publicacion" dlg:tab-index="22" dlg:left="12" dlg:top="43" dlg:width="212" dlg:height="27" dlg:page="1">
+   <dlg:title dlg:value="Fr_Publicacion"/>
+  </dlg:titledbox>
+  <dlg:titledbox dlg:id="Fr_Titulo" dlg:tab-index="24" dlg:left="12" dlg:top="5" dlg:width="212" dlg:height="24" dlg:page="1">
+   <dlg:title dlg:value="Fr_Titulo"/>
+  </dlg:titledbox>
+  <dlg:button dlg:id="Btn_Corregir" dlg:tab-index="12" dlg:left="118" dlg:top="174" dlg:width="35" dlg:height="12" dlg:page="1" dlg:value="Btn_Corregir">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Campos.onBtn_Revisar?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:text dlg:style-id="2" dlg:id="Lbl_Flecha" dlg:tab-index="25" dlg:left="93" dlg:top="53" dlg:width="17" dlg:height="11" dlg:page="1" dlg:value="-–˃" dlg:align="center" dlg:valign="center"/>
+  <dlg:text dlg:style-id="3" dlg:id="Lbl_Mes" dlg:tab-index="23" dlg:left="114" dlg:top="52" dlg:width="39" dlg:height="12" dlg:page="1" dlg:value="noviembre" dlg:align="center" dlg:valign="center"/>
+  <dlg:textfield dlg:id="Tx_Coment" dlg:tab-index="9" dlg:left="20" dlg:top="114" dlg:width="198" dlg:height="48" dlg:page="1" dlg:vscroll="true" dlg:multiline="true"/>
+  <dlg:titledbox dlg:id="Fr_Coment" dlg:tab-index="26" dlg:left="12" dlg:top="104" dlg:width="212" dlg:height="63" dlg:page="1">
+   <dlg:title dlg:value="Fr_Coment"/>
+  </dlg:titledbox>
+  <dlg:button dlg:style-id="4" dlg:id="Btn_Ayuda" dlg:tab-index="0" dlg:left="213" dlg:top="77" dlg:width="20" dlg:height="20" dlg:value="?">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Campos.OnBtn_Ayuda?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:text dlg:id="Lbl_Asunto" dlg:tab-index="27" dlg:left="18" dlg:top="94" dlg:width="60" dlg:height="8" dlg:page="1" dlg:value="Lbl_Asunto" dlg:valign="center"/>
+  <dlg:text dlg:id="Lbl_AsuntoT" dlg:tab-index="28" dlg:left="84" dlg:top="94" dlg:width="110" dlg:height="8" dlg:page="1" dlg:value="Lbl_AsuntoT" dlg:valign="center"/>
+  <dlg:textfield dlg:id="Tx_Ayuda" dlg:tab-index="29" dlg:left="9" dlg:top="9" dlg:width="201" dlg:height="105" dlg:page="2" dlg:valign="top" dlg:multiline="true" dlg:value="Tx_Ayuda"/>
+  <dlg:text dlg:style-id="5" dlg:id="Lbl_coma" dlg:tab-index="2" dlg:left="78" dlg:top="15" dlg:width="3" dlg:height="11" dlg:page="1" dlg:value="," dlg:align="center" dlg:tabstop="false"/>
+  <dlg:text dlg:style-id="5" dlg:id="Lbl_Punto" dlg:tab-index="17" dlg:left="197" dlg:top="31" dlg:width="5" dlg:height="11" dlg:page="1" dlg:value="." dlg:align="center" dlg:valign="center"/>
+ </dlg:bulletinboard>
+</dlg:window>

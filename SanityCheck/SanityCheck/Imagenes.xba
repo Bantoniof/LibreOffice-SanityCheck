@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Imagenes" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo Imagenes *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+  
+ Option Explicit
+ Dim oImgs As Object
+ Dim oImg As Object
+ Dim Indice_Img As Integer
+ Dim Ultima_Img As Integer
+ Dim vCursor As Object &apos; CursorVisible
+ Dim oDlgImgs As Object
+ Dim oDlgFiguras As Object
+ Dim Dlg_Activo As Boolean &apos;dlg No modal evita ejecuciones múltiples
+ Dim Dlg_Mostrado As Boolean &apos; dlg No modal para cerrar el diálogo
+ Dim oProgressBar
+ Dim PBcounter As Integer
+
+ Rem ############
+Sub AjusteFiguras
+   Call L10n.Trad_Imagenes
+   If Not ThisComponent.HasLocation Then : MsgBox (I_Txt(34), 0+48+0, I_Txt(0) &amp; Extension ) : Exit Sub : End If
+   oImgs = ThisComponent.GraphicObjects()
+   If oImgs.getCount = 0 Then : MsgBox (I_Txt(39), 0+48+0, I_Txt(0) &amp; Extension) : Exit Sub  : End If
+   If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
+   Dlg_Figuras(F_Ajuste_Imagenes_Marcos)
+End Sub
+
+ Rem ############
+Function F_Ajuste_Imagenes_Marcos
+ Rem Ajusta imágenes y luego llama a las funciones
+ Rem F_Ajuste_Marcos para ajustar los marcos 
+ Rem y F_Descripciones_Marcos
+ Rem (marcos e imágenes) y comentarios en imágenes con defectos
+ Rem ======================================================
+   Call _Aux.EliminaComentarios(I_Txt(0))&apos; Evito que se dupliquen comentarios
+   If Not ThisComponent.HasLocation Then : MsgBox (I_Txt(34), 0+48+0, I_Txt(0) &amp; Extension ) : Exit Function : End If
+   If _Aux.F_Prueba_Sel = 0 Then : Exit Function : End If
+     Rem 1º: Formato de imagen (Obligatorio  antes de formato marcos)
+ Dim i As Integer
+ Static s As String
+   oImgs = ThisComponent.GraphicObjects()
+   If oImgs.getCount = 0 Then : MsgBox (I_Txt(39), 0+48+0, I_Txt(0) &amp; Extension) : Exit Function  : End If
+   oProgressBar = ThisComponent.CurrentController.getStatusIndicator()
+   oProgressBar.start( I_Txt(32), oImgs.Count * 2 )
+   oProgressBar.setValue( 1 )
+   PBcounter = 0
+
+   oImg = oImgs.getbyIndex(0)
+     With oImg
+       .VertOrient = 2
+       .AnchorType = 1
+       .TopMargin = 2500
+       .Name = &quot; LibreOffice Logo&quot;
+       .Title = &quot;LibreOffice Logo&quot;
+       .Description = &quot;LibreOffice Logo&quot;       
+       If _Aux.F_LOVersion &gt;= 7.5 Then 
+         oImg.Decorative = True
+       End If
+       If ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).hasbyName(&quot;New Chapter&quot;) Then
+        .getAnchor.ParaStyleName = &quot;New Chapter&quot;
+       End If
+     End With
+
+   For i = 1 To oImgs.Count-1 &apos; con i = 1 evito que me cambie el logo 
+   Wait 2
+   PBcounter = PBcounter + 1
+   oProgressBar.setValue(PBcounter)
+   oImg = oImgs.getByIndex(i)
+    With oImg
+      .AnchorType = 1
+      .VertOrient = 1
+      .VertOrientRelation = 0
+      .RelativeHeight = 0
+      .RelativeHeightRelation = 0
+      .RelativeWidth = 0
+      .RelativeWidthRelation = 0
+       If Not isEmpty(oImg.anchor.TextFrame) Then   
+        .getAnchor.ParaStyleName = &quot;Figure&quot;
+      End If
+    End With
+   Next
+   s = I_Txt(40)
+   s = s &amp; F_Ajuste_Marcos    &apos;Ajuste de marcos
+   s = s &amp; F_Descripciones_Marcos &apos;Comentarios y Descripciones  Marcos
+   s = s &amp; F_Desc_Comm_Imgs &apos;Comentarios y Descripciones Imgs
+   
+   F_Ajuste_Imagenes_Marcos = s
+
+End Function
+
+ Rem ############
+Function F_Ajuste_Marcos
+   If isEmpty(oProgressBar) Then
+     oProgressBar = ThisComponent.CurrentController.getStatusIndicator()
+     oProgressBar.start( I_Txt(32), 1 )
+     oProgressBar.setValue( 1 )
+     PBcounter = 0
+   End If
+ Dim oFrames As Object, oFrame As Object, oFCursor As Object, i As Integer
+ Rem Ajuste Marcos
+   oFrames = ThisComponent.TextFrames()
+   For i = 0 To oFrames.getcount -1
+     Wait 2
+     PBcounter = PBcounter + 1
+     oProgressBar.setValue( PBcounter )
+     oFrame = oFrames.getByIndex(i)
+     With oFrame Rem Formato Marco
+       .getAnchor().ParaStyleName = &quot;Figure&quot;
+       .AnchorType = 1
+       .SizeType = 0 &apos;Variable
+       .height = 100&apos; 
+       .FrameIsAutomaticHeight = True &apos;(anchura automática -después)
+       .VertOrient = 1
+       .IsSyncHeightToWidth = False
+       .IsSyncWidthToHeight = False
+       .RelativeHeight = 0
+       .RelativeHeightRelation = 0
+       .RelativeWidth = 0
+       .RelativeWidthRelation = 0
+     End With
+   Next
+ Dim s as String 
+   s= s &amp; Chr(13) &amp; I_Txt(42)
+   F_Ajuste_Marcos = s
+End Function
+
+ Rem ############
+Function F_Descripciones_Marcos
+ Dim oFrames As Object, oFrame As Object, oFCursor As Object, oCursor As Object
+ Dim oEnum As Object, oPar as Object, s as String, i As Integer, Contador As Integer
+   On Error Resume Next
+   Contador = 0
+   oFrames = ThisComponent.TextFrames() 
+   For i = 0 To oFrames.getcount -1
+     PBcounter = PBcounter + 1 
+     oFrame = oFrames.getByIndex(i)
+     If oFrame.supportsService(&quot;com.sun.star.text.TextContent&quot;) Then 
+       oFCursor = oFrame.Text.createTextCursor() Rem Cursor dentro del marco
+       oEnum = oFrame.Anchor.createEnumeration
+       oFCursor.gotoStart(False)
+       oFCursor.goRight(1, True) Rem primer carácter (vací­o = Objeto)
+ Rem 0 Marcos de solo texto - Revisión Leyendas y Descripciones
+ Rem 1 Comentario marco texto
+       If oFCursor.String &lt;&gt; &quot;&quot; Then
+         oFrame.Description = Left(oFrame.String,40) &amp; &quot;…&quot;
+         Contador = Contador + 1
+         Call _Aux.InsertAnnotation(ThisComponent, oFrame.Anchor, I_Txt(45), I_Txt(0)) 
+ Rem 2 MARCOS CON IMÁGENES  - Ancho auto, Compruebo leyenda, Formateo para la descripción y avisos
+       ElseIf oFCursor.String = &quot;&quot; Then
+         oFrame.WidthType = 0 &apos;Anchura Automática  
+         If InStr(oFrame.String,&quot;: &quot;) &lt;&gt; 0 Then &apos;leyenda correcta
+           oFrame.Description = Split(oFrame.String,&quot;: &quot;, 2)(1)&apos; Aplico leyenda como descripción
+         Else &apos;leyenda mal formada
+           oFCursor.gotoend(False)
+           oFCursor.gotoStartofParagraph(True)
+           oFrame.Description = oFCursor.getString
+           Contador = Contador + 1 
+           Call _Aux.InsertAnnotation(Thiscomponent, oFrame.anchor, I_Txt(46), I_Txt(0))
+         End If
+ Rem Estilo de párrafo como Caption
+         oFCursor.gotoStart(False) Rem inicio del marco
+         oFCursor.goRight(1, False) Rem Mismo punto sin selec (asi no borra imagen)
+         If Not oFCursor.isEndOfParagraph Then
+           oFCursor.String = Chr(13) Rem Salto Parrafo y estilo de Leyenda
+         End If
+         oFCursor.gotoNextParagraph(False)
+         oFCursor.ParaStyleName =&quot;Figure&quot; &apos;Antes Caption
+       End If
+     End IF &apos;com.sun.star.text.Text 
+   Next
+   s = s &amp; Chr(13) &amp; I_Txt(43)
+   If contador &lt;&gt; 0 then
+   s = s &amp; Chr(13) &amp; Contador &amp; I_Txt(36)
+   End If
+   F_Descripciones_Marcos = s 
+End Function   
+
+Function F_Desc_Comm_Imgs
+ Rem Descripciones imágenes en marcos y comentarios
+ Rem en imágenes escala / recortes
+ Rem =========================================== 
+ Dim oImgs As Object, oImg As Object, s As String, i As integer 
+ Dim oRec As Object, SinRecortes As Integer
+ Dim Aspecto As Variant, Escala As Variant, Contador As Integer
+ Dim oEnum As Object, oPar As Object, oCursor As Object
+   oImgs = ThisComponent.GraphicObjects()
+   Contador = 0
+   For i = 0 To oImgs.getcount -1
+     PBcounter = PBcounter + 1
+     oImg = oImgs.getByIndex(i)
+     If Not isEmpty(oImg.anchor.TextFrame) Then
+       oImg.Description = oImg.anchor.TextFrame.Description
+       oImg.Title = oImg.Description
+     End If
+     oEnum = oImg.Anchor.createEnumeration
+     oPar = oEnum.nextElement() 
+ Rem Imagen recortada, comentario
+     oRec = oImg.GraphicCrop() : SinRecortes = oRec.Right + oRec.Left + oRec.Top + oRec.Bottom
+     If SinRecortes &lt;&gt; 0 then&apos;Imagen recortada
+       oCursor = oPar.getText().createTextCursorByRange(oPar)
+       oCursor.gotoEndOfParagraph(False) &apos; Antes start
+       Contador = Contador + 1
+       Call _Aux.InsertAnnotation(oPar, oCursor, I_Txt(47), I_Txt(0))
+     End If
+ Rem Imagen deformada, comentario
+     Aspecto = Format(oImg.ActualSize.Width / oImg.ActualSize.Height, &quot;###00.0&quot;)
+     Escala = Format(oImg.Width / oImg.Height, &quot;###00.0&quot;)
+     If Aspecto &lt;&gt; Escala AND SinRecortes = 0 Then
+       oCursor = oPar.getText().createTextCursorByRange(oPar)
+       oCursor.gotoEndOfParagraph(False) &apos; antes start
+       Contador = Contador +1
+       Call _Aux.InsertAnnotation(oPar, oCursor, I_Txt(48), I_Txt(0))
+     End If
+   Next
+   oProgressBar.End
+   s = s &amp; Chr(13) &amp; I_Txt(44)
+   If contador &lt;&gt; 0 then
+     s = s &amp; Chr(13) &amp; Contador &amp; I_Txt(37)
+   End If 
+   F_Desc_Comm_Imgs = s
+End Function
+
+ Rem ############ ================ Diálogo figuras =========
+Sub Dlg_Figuras(Registro as String)
+   Call L10n.Trad_Imagenes
+     DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+     oDlgFiguras = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFiguras&quot;))
+   With oDlgFiguras.Model
+     .Title = I_Txt(0) &amp; Extension
+     .getbyname(&quot;Btn_Img&quot;).Label = I_Txt(49)
+     .GetByName(&quot;Btn_Salir&quot;).Label = I_Txt(8)
+     .getbyname(&quot;Tx_Registro&quot;).text = Registro
+   End With
+   oDlgFiguras.execute
+End Sub
+
+ Rem ############
+Sub OnBtn_Img(oEv)
+   oDlgFiguras = oEv.Source.Context
+   oDlgFiguras.EndExecute
+   Call Dlg_Imagenes
+End Sub
+
+ Rem ############
+  Sub Dlg_Imagenes
+   Call L10n.Trad_Imagenes
+   If  ThisComponent.HasLocation = False Then : MsgBox (I_Txt(34),0+48+0, I_Txt(0) &amp; Extension) : Exit Sub : End If
+   If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
+   Dlg_Mostrado = False
+   DLg_Activo = False
+   oImgs = ThisComponent.GraphicObjects()
+   Ultima_Img = oImgs.getCount -1
+   If Ultima_Img &lt; 0 Then : MsgBox (I_Txt(39), 0+48+0, I_Txt(0) &amp; Extension) : Exit Sub  : End If
+   Indice_Img = 0
+   oImg = oImgs.getbyIndex(Indice_Img)
+   vCursor = ThisComponent.CurrentController.getViewCursor()
+   vCursor.jumptoFirstPage(False)
+   If  Dlg_Activo = False Then
+     Dlg_Activo = True
+     Dlg_Mostrado = True
+     DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+     oDlgImgs = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgImagenes&quot;))
+     With oDlgImgs.Model()
+       .TiTle = I_Txt(0) &amp; Extension : .PositionX = 530: .PositionY = 60: .Step = 1
+       .GetByName(&quot;Btn_Img_Name&quot;).Label = I_Txt(1)
+       .GetByName(&quot;Btn_Ancla&quot;).Label = I_Txt(2)
+       .GetByName(&quot;Btn_Desc_Marco&quot;).Label = I_Txt(1)
+       .GetByName(&quot;Btn_Editar&quot;).Label = I_Txt(3)
+       .GetByName(&quot;Btn_De_Marco&quot;).Label = I_Txt(4)
+       .GetByName(&quot;Btn_Recorte&quot;).Label = I_Txt(5)
+       .GetByName(&quot;Btn_Anterior&quot;).Label = I_Txt(6)
+       .GetByName(&quot;Btn_Siguiente&quot;).Label = I_Txt(7)
+       .GetByName(&quot;Btn_Salir&quot;).Label = I_Txt(8)
+       .GetByName(&quot;Fr_Marco&quot;).Label = I_Txt(10)
+       .GetByName(&quot;Fr_Desc&quot;).Label = I_Txt(11)
+       .GetByName(&quot;Lbl_Anclaje&quot;).Label = I_Txt(12)
+       .GetByName(&quot;Tx_Ayuda&quot;).Text = I_Txt(9)
+     End With
+     Call Imagenes.Cargar_Parametros
+     Do While Dlg_Mostrado = True
+       Wait 200
+       oDlgImgs.SetVisible(True)
+     Loop
+     oDlgImgs.dispose
+     Dlg_Activo= False
+   End If
+End Sub
+
+ Rem ############
+Sub Cargar_Parametros
+   If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
+   If Ultima_Img &lt; 0 Then : Dlg_Mostrado = False : MsgBox (I_Txt(35), 0+48+0, I_Txt(0) &amp; Extension) : Exit Sub : End If   &apos;si se borran todas las imágenes
+   Ultima_Img = oImgs.getCount -1
+   oImg = oImgs.getbyIndex(Indice_Img)
+   vCursor.gotoRange(oImg.Anchor,False)
+   With oDlgImgs.getModel
+ Dim Img_ancla As String , Recorte As String
+     Select Case oImg.Anchortype
+       Case 0 : Img_ancla = I_Txt(13)
+       Case 1 : Img_ancla = I_Txt(14)
+       Case 2 : Img_ancla = I_Txt(15)
+       Case 3 : Img_ancla = I_Txt(16)
+       Case 4 : Img_ancla = I_Txt(17)
+     End Select
+ Dim secuencia
+     If Not isempty(oImg.Anchor.TextFrame) Then
+       secuencia = &quot; (&quot; &amp; Split(oImg.Anchor.getText.String,&quot;: &quot;,2)(0) &amp; &quot; )&quot;
+     Else
+       secuencia = &quot; ( &quot; &amp; I_Txt(26) &amp; &quot; )&quot;
+     End If
+       .getByName(&quot;Fr_Img&quot;).label = I_Txt(18)
+       .GetByName(&quot;Lbl_Img_N&quot;).Label = I_Txt(20) &amp; Indice_Img +1 &amp; &quot; / &quot; &amp; Ultima_Img +1 &amp; secuencia
+       .getByName(&quot;Tx_Nombre_Img&quot;).text = oImg.Name
+       .getByName(&quot;Tx_Desc_Img&quot;).TextColor = RGB(0,0,0) &apos; RESET
+       .getByName(&quot;Tx_Desc_Marco&quot;).TextColor = RGB(0,0,0) &apos; RESET
+&apos;      .getByName(&quot;Btn_Leyendas&quot;).EnableVisible = False &apos; RESET
+     If Indice_Img = 0 Then
+       .getByName(&quot;Btn_Anterior&quot;).EnableVisible = False
+       .getByName(&quot;Btn_Siguiente&quot;).EnableVisible = True
+       With .getByName(&quot;Lbl_Ultima&quot;)
+         .EnableVisible = True : .label = I_Txt(19) : .PositionX = 70 : .PositionY = 159
+       End With
+     ElseIf Indice_Img = Ultima_Img Then
+       .getByName(&quot;Btn_Siguiente&quot;).EnableVisible = False
+       .getByName(&quot;Btn_Anterior&quot;).EnableVisible = True
+       .getByName(&quot;Btn_Salir&quot;).state = 1
+       With .getByName(&quot;Lbl_Ultima&quot;)
+         .EnableVisible = True : .label = I_Txt(21) : .PositionX = 128 : .PositionY = 159
+       End With
+     Else
+       .getByName(&quot;Lbl_Ultima&quot;).EnableVisible = False
+       .getByName(&quot;Btn_Siguiente&quot;).EnableVisible = True
+       .getByName(&quot;Btn_Anterior&quot;).EnableVisible = True
+       .getByName(&quot;Btn_Salir&quot;).state = 0
+     End If
+     If oImg.AnchorType &lt;&gt; 1 Then
+       .getByName(&quot;Lbl_Ancla&quot;).TextColor = RGB(200,0,0)
+       .getByName(&quot;Lbl_Ancla&quot;).label = Img_ancla
+       .getByName(&quot;Btn_Ancla&quot;).Enabled = True
+     Else
+       .getByName(&quot;Lbl_Ancla&quot;).TextColor = RGB(0,120,0)
+       .getByName(&quot;Lbl_Ancla&quot;).label = Img_ancla
+       .getByName(&quot;Btn_Ancla&quot;).Enabled = False
+     End If
+  Dim DescMarco As String
+     If Not isempty(oImg.Anchor.TextFrame()) Then
+       DescMarco = oImg.Anchor.TextFrame().Description
+     Else
+       DescMarco = &quot;&quot;
+     End If
+ Dim oRec : oRec = oImg.GraphicCrop()
+     If oRec.Right + oRec.Left + oRec.Top + oRec.Bottom &lt;&gt; 0 Then
+       .getByName(&quot;Btn_Recorte&quot;).EnableVisible = True
+       .getByName(&quot;Lbl_Recorte&quot;).TextColor = RGB(200,0,0)
+       .getByName(&quot;Lbl_Recorte&quot;).label = I_Txt(22)
+     Else
+       .getByName(&quot;Btn_Recorte&quot;).EnableVisible = False
+       .getByName(&quot;Lbl_Recorte&quot;).TextColor = RGB(0,120,0)
+       .getByName(&quot;Lbl_Recorte&quot;).label = I_Txt(23)
+     End If
+ Dim Aspecto As String, Escala As String
+     Aspecto = Format(oImg.ActualSize.Width / oImg.ActualSize.Height, &quot;###00.0&quot;)
+     Escala = Format(oImg.Width / oImg.Height, &quot;###00.0&quot;)
+     If Aspecto &lt;&gt; Escala Then
+       .getbyName(&quot;Lbl_Escala&quot;).label= I_Txt(24)
+       .getByName(&quot;Lbl_Escala&quot;).TextColor = RGB(200,0,0)
+     Else
+       .getbyName(&quot;Lbl_Escala&quot;).label = I_Txt(25)
+       .getByName(&quot;Lbl_Escala&quot;).TextColor = RGB(0,120,0)
+     End If
+     If isEmpty(oImg.Anchor.TextFrame()) Then
+       .getByName(&quot;Tx_Desc_Marco&quot;).Enabled = False
+       .getByName(&quot;Tx_Desc_Marco&quot;).Text = I_Txt(26)
+       .getByName(&quot;Tx_Desc_Img&quot;).Text = oImg.Description
+       .getByName(&quot;Btn_Desc_Marco&quot;).Enabled = False
+       .getByName(&quot;Btn_De_Marco&quot;).Enabled =False
+     ElseIf Not isEmpty(oImg.Anchor.TextFrame()) Then
+       .getByName(&quot;Tx_Desc_Marco&quot;).Enabled = True
+       .getByName(&quot;Btn_Desc_Marco&quot;).Enabled = True
+       .getByName(&quot;Btn_De_Marco&quot;).Enabled = True
+       .getByName(&quot;Tx_Desc_Marco&quot;).Text = &quot;&quot; &apos; RESET
+       .getByName(&quot;Tx_Desc_Img&quot;).Text = oImg.Description
+       .getByName(&quot;Tx_Desc_Marco&quot;).Text = oImg.Anchor.TextFrame.Description
+     End If
+   End With
+End Sub
+
+
+
+ Rem ############
+Sub OnBtn_Anterior(oEv)
+   oDlgImgs = oEv.Source.Context
+   If oImgs.getCount -1 &lt;&gt; Ultima_Img Then
+     Ultima_Img = oImgs.getCount -1
+     MsgBox (I_Txt(27), 0+64+0, I_Txt(0) &amp; Extension)
+     Indice_Img = 0
+   ElseIf Not Indice_Img &lt; 0 Then
+     Indice_Img = Indice_Img -1
+   End If
+   Call Imagenes.Cargar_Parametros
+End Sub
+
+ Rem ############
+Sub OnBtn_Siguiente(oEv)
+   oDlgImgs = oEv.Source.Context
+   If  oImgs.getCount -1 &lt;&gt; Ultima_Img Then
+     Ultima_Img = oImgs.getCount -1
+     Indice_Img = 0
+     MsgBox (I_Txt(27), 0+64+0, I_Txt(0) &amp; Extension)
+   ElseIf Indice_Img &lt; Ultima_Img Then
+     Indice_Img = Indice_Img + 1
+   End If
+   Call Imagenes.Cargar_Parametros
+End Sub
+
+ Rem ############
+Sub OnBtn_Salir
+   Dlg_Mostrado = False
+   Dlg_Activo = False
+   MsgBox (I_Txt(28), 0+64+0, I_Txt(0) &amp; Extension)
+End Sub
+
+ Rem ############
+Sub OnBtn_Ayuda(oEv)
+   oDlgImgs = oEv.Source.Context
+   With oDlgImgs.getModel
+     If .Step = 1 Then
+       .Step = -1
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;↫&quot;
+     Else
+       .Step = 1
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnTx_Nombre_Img(oEv)
+   oDlgImgs = oEv.Source.Context
+   oDlgImgs.getModel.getByName(&quot;Tx_Nombre_Img&quot;).TextColor = RGB(120,0,0)
+End Sub
+
+ Rem ############
+Sub OnBtn_Cambiar_Nombre_Img(oEv)
+ On Error GoTo ERRORES:
+   oDlgImgs = oEv.Source.Context
+   If oDlgImgs.getModel.getByName(&quot;Tx_Nombre_Img&quot;).Text = &quot;&quot; Then
+     MsgBox (I_Txt(30), 0+48+0, &quot;Error&quot; &amp; Extension)
+     oDlgImgs.getModel.getByName(&quot;Tx_Nombre_Img&quot;).Text = oImg.Name
+     Exit Sub
+   Else
+     oImg.Name = oDlgImgs.getModel.getByName(&quot;Tx_Nombre_Img&quot;).Text
+     oDlgImgs.getModel.getByName(&quot;Tx_Nombre_Img&quot;).TextColor = RGB(0,120,0)
+   End If
+ERRORES:
+   If Err = 1 Then
+     MsgBox (Chr(13) &amp; I_Txt(31), 0+48+0, &quot;Error&quot; &amp; Extension)
+   End If
+End Sub
+
+ Rem ############
+Sub OnBtn_Ancla(oEv)
+   oDlgImgs = oEv.Source.Context
+   oImg.AnchorType = 1
+   With oDlgImgs.getModel
+     .getByName(&quot;Lbl_Ancla&quot;).label = I_Txt(14)
+     .getByName(&quot;Lbl_Ancla&quot;).TextColor = RGB(0,120,0)
+   End With
+End Sub
+
+ Rem ############
+Sub OnTx_Desc_Marco(oEv)
+   oDlgImgs = oEv.Source.Context
+   oDlgImgs.getModel.getByName(&quot;Tx_Desc_Marco&quot;).TextColor = RGB(120,0,0)
+End Sub
+
+ Rem ############
+Sub OnBtn_Cambiar_Desc_Marco(oEv)
+   oDlgImgs = oEv.Source.Context
+   oImg.Anchor.TextFrame.Description = oDlgImgs.getModel.getByName(&quot;Tx_Desc_Marco&quot;).Text
+   oDlgImgs.getModel.getByName(&quot;Tx_Desc_Marco&quot;).TextColor = RGB(0,120,0)
+End Sub
+
+ Rem ############
+Sub OnTx_Desc_Img(oEv)
+   oDlgImgs = oEv.Source.Context
+   oDlgImgs.getModel.getByName(&quot;Tx_Desc_Img&quot;).TextColor = RGB(120,0,0)
+End Sub
+
+ Rem ############
+Sub OnBtn_Cambiar_Desc_Img(oEv)
+   oDlgImgs = oEv.Source.Context
+   oImg.Description = oDlg.getModel.getByName(&quot;Tx_Desc_Img&quot;).Text
+   oDlgImgs.getModel.getByName(&quot;Tx_Desc_Img&quot;).TextColor = RGB(0,120,0)
+End Sub
+
+ Rem ############
+Sub OnBtn_Desde_Marco(oEv)
+   oDlgImgs = oEv.Source.Context
+   oImg.Description = oImg.Anchor.TextFrame.Description
+   oDlgImgs.getModel.getByName(&quot;Tx_Desc_Img&quot;).Text = oImg.Description
+   oDlgImgs.getModel.getByName(&quot;Tx_Desc_Img&quot;).TextColor = RGB(0,120,0)
+End Sub
+
+ Rem ############
+Sub OnBtn_Editar_pulsado(oEv)
+   oDlgImgs = oEv.Source.Context
+ Dim Miimagen : Miimagen = ThisComponent.GraphicObjects.getbyName(oImg.Name)
+   ThisComponent.getCurrentController.Select(Miimagen)
+End Sub
+
+ Rem ############
+Sub OnBtn_Editar_soltado(oEv)
+   oDlgImgs = oEv.Source.Context
+ Dim Document As Object, Dispatcher As Object
+   Document = ThisComponent.Currentcontroller.Frame
+   Dispatcher = CreateUNOService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+   Dispatcher.executeDispatch(Document, &quot;.uno:ExternalEdit&quot;, &quot;&quot;, 0, Array())
+End Sub
+ Rem ================= Fin Imagenes ===========================================================
+</script:module>

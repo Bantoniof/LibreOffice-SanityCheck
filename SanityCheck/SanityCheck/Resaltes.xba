@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Resaltes" script:language="StarBasic"> Rem  *****  BASIC  (&quot;Módulo Resaltes&quot;) *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+  
+ Option Explicit
+ Const Rosado As String = &quot;250,220,230&quot;    &apos; Text Body List Intro
+ Const Amar1 As String = &quot;255,228,181&quot;     &apos; Lista1, Lista1 Cont. 
+ Const Amar2 As String = &quot;255, 255, 204&quot;   &apos; Lista2, Lista2 Cont.
+ Const Amar3 As String = &quot;240,234,214&quot;     &apos; Leyendas, Contenido de listas, Column Contents
+ Const Verde As String = &quot;050,205,050&quot;     &apos; KeyStroke
+ Const Verde1 As String = &quot;190, 220,190&quot;   &apos; Num1, Num1 Cont.
+ Const Verde2 As String = &quot;220, 240,220&quot;   &apos; Num2, Num2 Cont.
+ Const Verde3 As String = &quot;230, 250, 230&quot;  &apos; Num3, Num3 Cont.
+ Const Azul As String = &quot;050,170,220&quot;      &apos; New Chapter, Subscript, Superscript
+ Const Azul1 As String = &quot;200,210,220&quot;     &apos; Figura (imagenes)
+ Const Azul2 As String = &quot;210,230,245&quot;     &apos; Definition Term
+ Const Azul3 As String = &quot;210,240,255&quot;     &apos; Definition Term 2
+ Const Gris1 As String = &quot;240,240,240&quot;     &apos; Cuerpo de texto
+ Const Gris2 As String = &quot;240,240,230&quot;     &apos; Contenido de tabla
+ Const Rojo As String = &quot;255,055,000&quot;      &apos; Destacado y Muy destacado
+ Const Morado As String = &quot;225,180,250&quot;    &apos; Sin uso
+ Const Negro As String = &quot;001,001,001&quot;     &apos; Sin uso  (0, 0, 0 = Auto)
+ Const Linea As Integer = 1 &apos; sencillo= 1 ,doble = 2 , grueso= 12
+ Dim Enum_P_Encontrados As String, Enum_C_Encontrados As String
+ Dim Enum_Perdidos As String, Enum_Errores As String
+ Dim  i_errores As Integer, i_encontrados As Integer
+ Dim  oDlgResaltes As Object, Colorea As Boolean
+
+ Rem ############
+Sub AlternarResalte
+   Call _Aux.Carga_Tools
+   Call L10n.Trad_Resaltes
+   If IsNull(oDlgResaltes) Then Call Resaltar
+End Sub
+
+ Rem ############
+Sub Resaltar
+ Rem Definición de resaltes para aplicar:
+ Rem Uso:  CambiaParrafo o CambiaCaracter  Nombre_Estilo, Resalte, Color, Linea, Color2
+ Rem  [&quot;Estilo&quot;   [F,L o S]  Color  [1,2,12]  Color subrayado
+ Rem  (La linea puede ser Auto en el caso de  subrayado)
+ Dim oEstilo As Object, i As Integer
+ Rem reinicio contadores y enumeraciones
+   Enum_P_Encontrados = &quot;&quot; : Enum_C_Encontrados = &quot;&quot; : Enum_Perdidos = &quot;&quot; : Enum_Errores = &quot;&quot;
+   i_encontrados = 0 : i_errores = 0
+ Rem  Estilo Patrón para Alternar los resaltes (Cuerpo de texto.)
+   oEstilo = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).getByName(&quot;Text body&quot;)
+   If oEstilo.getPropertyValue(&quot;ParaBackColor&quot;) = -1 Then
+     Colorea = True &apos;Variable para la comprobación del resaltado
+   Else
+     Colorea = False
+    End If
+  CambiaParrafo(&quot;Text body&quot;,&quot;F&quot;,F_Conv(Gris1))
+&apos;== Párrafos Predeterminados ==
+   CambiaParrafo(&quot;List 1&quot;,&quot;F&quot;,F_Conv(Amar1))
+   CambiaParrafo(&quot;List 1 Cont.&quot;,&quot;F&quot;,F_Conv(Amar1))
+   CambiaParrafo(&quot;List 2&quot;,&quot;F&quot;,F_Conv(Amar2))
+   CambiaParrafo(&quot;List 2 Cont.&quot;,&quot;F&quot;,F_Conv(Amar1))
+   CambiaParrafo(&quot;List Contents&quot;,&quot;F&quot;,F_Conv(Amar3))   
+   CambiaParrafo(&quot;Numbering 1&quot;,&quot;F&quot;,F_Conv(Verde1))
+   CambiaParrafo(&quot;Numbering 1 Cont.&quot;,&quot;F&quot;,F_Conv(Verde1))
+   CambiaParrafo(&quot;Numbering 2&quot;,&quot;F&quot;,F_Conv(Verde2))
+   CambiaParrafo(&quot;Numbering 2 Cont.&quot;,&quot;F&quot;,F_Conv(Verde1))
+   CambiaParrafo(&quot;Numbering 3&quot;,&quot;F&quot;,F_Conv(Verde3))
+   CambiaParrafo(&quot;Numbering 3 Cont.&quot;,&quot;F&quot;,F_Conv(Verde1))
+   CambiaParrafo(&quot;Table Contents&quot;,&quot;F&quot;,F_Conv(Gris2))
+   CambiaParrafo(&quot;Figure&quot;,&quot;F&quot;,F_Conv(Azul1))
+   CambiaParrafo(&quot;Caption&quot;,&quot;F&quot;,F_Conv(Amar3))
+&apos;== Caracter Predeterminados ==
+   CambiaCaracter(&quot;Emphasis&quot;,&quot;F&quot;,F_Conv(Rojo))
+   CambiaCaracter(&quot;Strong Emphasis&quot;,&quot;F&quot;,F_Conv(Rojo))
+&apos;== Parrafos Usuario ==
+   CambiaParrafo(&quot;Definition Term&quot;,&quot;F&quot;,F_Conv(Azul2))
+   CambiaParrafo(&quot;Definition Term 2&quot;,&quot;F&quot;,F_Conv(Azul3))&apos;solo fondo
+   CambiaParrafo(&quot;Body Text, List Intro&quot;,&quot;F&quot;,F_Conv(Rosado))&apos;solo fondo
+   CambiaParrafo(&quot;Body Text, Note&quot;,&quot;F&quot;,F_Conv(Gris1))&apos;solo fondo
+   CambiaParrafo(&quot;Heading 1 First&quot;,&quot;F&quot;,F_Conv(Azul1))&apos;solo fondo
+   CambiaParrafo(&quot;New Chapter&quot;,&quot;F&quot;,F_Conv(Azul))&apos;solo fondo
+   CambiaParrafo(&quot;Legend Numbered&quot;,&quot;F&quot;,F_Conv(Amar3))
+   CambiaParrafo(&quot;Column Contents&quot;,&quot;F&quot;,F_Conv(Amar3))
+&apos;== Caracter Usuario ==
+   CambiaCaracter(&quot;Keystroke&quot;,&quot;F&quot;,F_Conv(Verde))
+   CambiaCaracter(&quot;Code&quot;,&quot;S&quot;,&quot;Auto&quot;,1) &apos;Subrayado de Color Auto
+   CambiaCaracter(&quot;Subscript&quot;,&quot;S&quot;,F_Conv(Azul),12)
+   CambiaCaracter(&quot;Superscript&quot;,&quot;S&quot;,F_Conv(Azul),12)
+&apos;== Para Comprobar Errores en definición
+&apos;   CambiaParrafo (&quot;Code&quot;,&quot;J&quot;,&quot;Auto&quot;,Linea)
+&apos;   CambiaCaracter (&quot;J&quot;,&quot;Auto&quot;,Linea)
+      Call DialogoResaltes
+End Sub
+
+ Rem ############
+Sub CambiaParrafo (Nombre  As String, Resalte As String,_
+        Color , Optional Linea As String, Optional Color2 )
+&apos; =========================================================================
+ Dim oEstilos As Object,  oEstilo As Object, Resalta As String, Tipo As Integer
+   On Local Error GoTo CONTROL_ERRORES
+     &apos;por si no se olvida definir el color y se define Linea
+   If Not IsMissing (Color) AND (Color = 1 XOR Color = 2 XOR Color = 12) Then
+     i_errores = i_errores + 1
+     Enum_Errores =  Enum_Errores &amp; Nombre &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13)_
+        &amp; Chr(9) &amp; R_Txt(13) &amp; Chr(13) &amp; Chr(13)
+     Exit Sub
+   End If
+   oEstilos = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;)
+   If Not oEstilos.HasByName(Nombre) Then
+     Enum_Perdidos = Enum_Perdidos &amp; &quot;  &quot; &amp; Nombre &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;)&quot; &amp; Chr(13)
+     Exit Sub
+   End If
+   oEstilo = oEstilos.getByName(Nombre)
+ Dim Nombre2 : Nombre2 = oEstilo.DisplayName
+   If Not IsMissing (Linea) Then
+     Select Case Linea
+       Case 1, 2, 12 : Tipo = Linea
+       Case Else
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) _
+           &amp; Chr(9) &amp; R_Txt(14) &amp; Chr(13) &amp; Chr(13)
+       Exit Sub
+     End Select
+   End If
+   Select Case Resalte
+     Case &quot;S&quot; &apos;Subrayado
+       If IsMissing(Linea) Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2  &amp; &quot; (&quot; &amp; R_Txt(10) &amp;  &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) _
+           &amp; Chr(9) &amp; R_Txt(15) &amp; Chr(13) &amp; Chr(13)
+         Exit Sub
+       End If
+       If Not IsMissing(Color2) Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2  &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) &amp;_
+           Chr(9) &amp; R_Txt(16) &amp; Chr(13) &amp; Chr(13)
+         Exit Sub
+       End If
+       If  Not isNumeric(Color) AND Color &lt;&gt; &quot;Auto&quot; Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) _
+           &amp; Chr(9) &amp; R_Txt(17)
+         Exit Sub
+       End If
+       If Colorea = True Then
+         If oEstilo.CharColor &lt;&gt; 0 Then &apos;Si tiene color utilizo el mismo de la letra
+           If Color = &quot;Auto&quot; Then
+             oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo) &apos;sin color
+           Else
+             oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,True)
+             oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,Color)
+             oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo)
+           End If
+         End If
+       ElseIf  Colorea = False Then &apos; Lo comentado &apos;&apos; no es necesario
+         oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,-1)
+         oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,False)
+         oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,0)
+       End If
+     Case &quot;F&quot; &apos;Fondo o área
+       Resalta =&quot;ParaBackColor&quot;
+       If  IsMissing (Linea) AND Colorea = True Then &apos; si no se subraya.
+         oEstilo.SetPropertyValue(Resalta,Color)
+       ElseIf IsMissing (Linea) AND Colorea = False Then
+         oEstilo.SetPropertyValue(Resalta,-1) &apos;ParaBackColor
+       End If
+       If Not IsMissing (Linea) AND IsMissing (Color2) Then &apos; No puede faltar el color de S
+         Enum_Errores = Enum_Errores &amp; Nombre2  &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) _
+           &amp; Chr(13) &amp; R_Txt(18) &amp; Chr(13) &amp; Chr(13)
+         i_errores = i_errores + 1
+         Exit Sub
+       End If
+       If Not isNumeric (Color) Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) _
+           &amp; Chr(13) &amp; Chr(9) &amp; R_Txt(17) &amp; Chr(13) &amp; Chr(13)
+         Exit Sub
+       End If
+       If Not IsMissing (Linea) AND Not IsMissing (Color2) Then
+         If Colorea = True Then
+           oEstilo.SetPropertyValue(Resalta,Color)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,True)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,Color2)
+         ElseIf  Colorea = False Then
+           oEstilo.SetPropertyValue(Resalta,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,False)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,0)
+         End If
+       End If
+     Case &quot;L&quot; &apos;Letra o carácter
+       Resalta =&quot;CharColor&quot;
+       If  IsMissing (Linea) AND Colorea = True Then &apos; si no se subraya.
+         oEstilo.SetPropertyValue(Resalta,Color)
+       ElseIf IsMissing (Linea) AND Colorea = False Then
+         oEstilo.SetPropertyValue(Resalta,-1)
+       End If
+       If Not IsNumeric (Color) Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) _
+           &amp; Chr(13) &amp; Chr(9) &amp; R_Txt(17) &amp; Chr(13) &amp; Chr(13)
+         Exit Sub
+       End If
+       If Not IsMissing (Linea) AND IsMissing (Color2) Then &apos; Subrayado Auto
+         If Colorea = True Then
+           oEstilo.SetPropertyValue(Resalta,Color)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo)
+         ElseIf  Colorea = False Then
+           oEstilo.SetPropertyValue(Resalta,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,0)
+         End If
+       End If
+       If Not IsMissing (Linea) AND Not IsMissing (Color2) Then &apos; Subrayado Color2
+         If Colorea = True Then
+           oEstilo.SetPropertyValue(Resalta,Color)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,True)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,Color2)
+         ElseIf  Colorea = False Then
+           oEstilo.SetPropertyValue(Resalta,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,False)
+          oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,0)
+         End If
+       End If
+     Case Else
+       Enum_Errores = Enum_Errores &amp;  Nombre2 &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) _
+         &amp; R_Txt(19) &amp; Chr(13) &amp; Chr(13)
+       i_errores = i_errores + 1
+       Exit Sub
+     End Select
+   If oEstilos.HasByName(Nombre) Then&apos; AND  oEstilos.GetByName(Nombre).IsUserDefined() = True Then
+     i_encontrados = i_encontrados + 1
+     Enum_P_Encontrados = Enum_P_Encontrados &amp; &quot;  &quot; &amp; Nombre2 &amp; Chr(13)
+   End If
+CONTROL_ERRORES:
+   If Err &lt;&gt; 0 AND Colorea = True Then
+     Select Case Err
+       Case 449 &apos;Print &quot;Error detectado por el programa, cambio descripción&quot;
+         i_errores = i_errores + 1
+         Enum_Errores =  Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) _
+           &amp; Chr(13) &amp; Chr(9) &amp; R_Txt(13) &amp; Chr(13) &amp; Chr(13)
+       Case Else
+         MsgBox (&quot;Error Nº &quot;  &amp; Err &amp; Chr(13) &amp; Error &amp; Chr(13) &amp; &quot;En línea: &quot; &amp; Erl ,0+48+0,  &quot; - &quot; &amp; Extension)
+       End Select
+&apos; On error Goto 0 &apos; No necesaria en &quot;On Local Error&quot;
+   End If
+End Sub
+
+ Rem ############
+Sub CambiaCaracter (Nombre  As String, Resalte As String, Color, Optional Linea As String, Optional Color2 )
+ Dim oEstilos As Object,  oEstilo As Object, Resalta As String, Tipo As Integer
+   On Local Error GoTo CONTROL_ERRORES
+  &apos; por si no se olvida definir el color y se define Linea
+   If Not IsMissing (Color) AND (Color = 1 XOR Color = 2 XOR Color = 12) Then
+     i_errores = i_errores + 1
+     Enum_Errores =  Enum_Errores &amp; Nombre &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13)_
+       &amp; Chr(9) &amp; R_Txt(13) &amp; Chr(13) &amp; Chr(13)
+     Exit Sub
+   End If
+   oEstilos = ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;)
+   If Not oEstilos.HasByName(Nombre) Then
+     Enum_Perdidos = Enum_Perdidos &amp; &quot;  &quot; &amp; Nombre &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;)&quot; &amp; Chr(13)
+     Exit Sub
+   End If
+   oEstilo = oEstilos.getByName(Nombre)
+ Dim Nombre2 : Nombre2 = oEstilo.DisplayName
+   If Not IsMissing (Linea) Then
+     Select Case Linea
+       Case 1, 2, 12 : Tipo = Linea
+       Case Else
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) _
+         &amp; Chr(9) &amp; R_Txt(14) &amp; Chr(13) &amp; Chr(13)
+       Exit Sub
+     End Select
+  End If
+   Select Case Resalte
+     Case &quot;S&quot; &apos;Subrayado
+       If IsMissing(Linea) Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2  &amp; &quot; (&quot; &amp; R_Txt(11) &amp;  &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) _
+           &amp; Chr(9) &amp; R_Txt(15) &amp; Chr(13) &amp; Chr(13)
+       Exit Sub
+       End If
+       If Not IsMissing(Color2) Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2  &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) &amp;_
+            Chr(9) &amp; R_Txt(16) &amp; Chr(13) &amp; Chr(13)
+         Exit Sub
+       End If
+       If Not isNumeric(Color) AND Color &lt;&gt; &quot;Auto&quot; Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) _
+           &amp; Chr(9) &amp; R_Txt(17) &amp; Chr(13) &amp; Chr(13)
+         Exit Sub
+       End If
+           &apos;Print Colorea &amp; &quot;_________&quot; &amp; oEstilo.CharColor &amp; &quot;_________&quot; &amp; Color
+       If Colorea = True Then
+         If oEstilo.CharColor &lt;&gt; 0 Then &apos;Si tiene color utilizo el mismo de la letra
+           If Color = &quot;Auto&quot; Then &apos;sin color lo toma del mismo estilo
+             oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo) &apos;sin color lo toma del mismo estilo bueno
+             oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,-1)
+             oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,False)
+           Else
+             oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,True)
+             oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,Color)
+             oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo)
+           End If
+         End If
+       ElseIf  Colorea = False Then &apos; Lo comentado &apos;&apos; no es necesario
+         oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,-1)
+         oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,False)
+         oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,0)
+       End If
+     Case &quot;F&quot; &apos;Fondo o área
+       Resalta = &quot;CharBackColor&quot;
+       If IsMissing (Linea) AND Colorea = True Then &apos; si no se subraya.
+         oEstilo.SetPropertyValue(Resalta,Color)
+       ElseIf IsMissing (Linea) AND Colorea = False Then
+         oEstilo.SetPropertyValue(Resalta,-1)
+       End If
+       If Not IsMissing (Linea) AND IsMissing (Color2) Then &apos; No puede faltar el color de S
+         Enum_Errores = Enum_Errores &amp; Nombre2  &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot;  &amp; R_Txt(12) _
+           &amp; Chr(13) &amp; R_Txt(18) &amp; Chr(13) &amp; Chr(13)
+         i_errores = i_errores + 1
+         Exit Sub
+       End If
+       If Not isNumeric (Color) Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot;  &amp; R_Txt(12) _
+           &amp; Chr(13) &amp; Chr(9) &amp; R_Txt(17) &amp; Chr(13) &amp; Chr(13)
+         Exit Sub
+       End If
+       If Not IsMissing (Linea) AND Not IsMissing (Color2) Then &apos; Subrayado Color2
+         If Colorea = True Then
+           oEstilo.SetPropertyValue(Resalta,Color)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,True)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,Color2)
+         ElseIf  Colorea = False Then
+           oEstilo.SetPropertyValue(Resalta,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,False)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,0)
+         End If
+       End If
+     Case &quot;L&quot; &apos;Letra o carácter
+      Resalta =&quot;CharColor&quot;
+       If  IsMissing (Linea) AND Colorea = True Then &apos; si no se subraya.
+         oEstilo.SetPropertyValue(Resalta,Color)
+       ElseIf IsMissing (Linea) AND Colorea = False Then
+         oEstilo.SetPropertyValue(Resalta,-1)
+       End If
+       If Not IsNumeric (Color) Then
+         i_errores = i_errores + 1
+         Enum_Errores = Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot;  &amp; R_Txt(12) _
+           &amp; Chr(13) &amp; Chr(9) &amp; R_Txt(17) &amp; Chr(13) &amp; Chr(13)
+         Exit Sub
+       End If
+       If Not IsMissing (Linea) AND IsMissing (Color2) Then &apos; Subrayado Auto
+         If Colorea = True Then
+           oEstilo.SetPropertyValue(Resalta,Color)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo)
+         ElseIf  Colorea = False Then
+           oEstilo.SetPropertyValue(Resalta,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,0)
+         End If
+       End If
+       If Not IsMissing (Linea) AND Not IsMissing (Color2) Then &apos; Subrayado Color2
+         If Colorea = True Then
+           oEstilo.SetPropertyValue(Resalta,Color)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,Tipo)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,True)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,Color2)
+         ElseIf  Colorea = False Then
+           oEstilo.SetPropertyValue(Resalta,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineColor&quot;,-1)
+           oEstilo.SetPropertyValue(&quot;CharUnderlineHasColor&quot;,False)
+           oEstilo.SetPropertyValue(&quot;CharUnderline&quot;,0)
+         End If
+       End If
+     Case Else
+       Enum_Errores = Enum_Errores &amp;  Nombre2 &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) _
+         &amp; R_Txt(19) &amp; Chr(13) &amp; Chr(13)
+       i_errores = i_errores + 1
+       Exit Sub
+     End Select
+   If oEstilos.HasByName(Nombre) Then
+     i_encontrados = i_encontrados + 1
+     Enum_C_Encontrados = Enum_C_Encontrados &amp; &quot;  &quot; &amp; Nombre2 &amp; Chr(13)
+   End If
+CONTROL_ERRORES:
+   If Err &lt;&gt; 0 AND Colorea = True Then
+     Select Case Err
+       Case 449 &apos;Argumento no opcional
+         i_errores = i_errores + 1
+         Enum_Errores =  Enum_Errores &amp; Nombre2 &amp; &quot; (&quot; &amp; R_Txt(11) &amp; &quot;): - &quot; &amp; R_Txt(12) _
+           &amp; Chr(13) &amp; Chr(9) &amp; R_Txt(13) &amp; Chr(13) &amp; Chr(13)
+       Case Else
+       MsgBox (&quot;Error Nº &quot;  &amp; Err &amp; Chr(13) &amp; Error &amp; Chr(13) &amp; &quot;En línea: &quot; &amp; Erl ,0+48+0,  &quot; - &quot; &amp; Extension)
+     End Select
+&apos; On error Goto 0 &apos; No necesaria en &quot;On Local Error&quot;
+    End If
+End Sub
+
+ Rem ############
+Sub DialogoResaltes
+   Call _Aux.Carga_Tools
+   DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+   oDlgResaltes = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgResaltes&quot;))
+   oDlgResaltes.Model.Step = 1
+Call ParametrosResaltes
+   oDlgResaltes.execute()
+   If Colorea = True Then MsgBox (Chr(13) &amp; R_Txt(9), 0+48+0, R_Txt(0) &amp; Extension)
+End Sub
+
+ Rem ############
+Sub ParametrosResaltes
+   With oDlgResaltes.getModel
+      oDlgResaltes.TiTle = R_Txt(0) &amp; Extension
+     .getByName(&quot;Lbl_Errores&quot;).label = R_Txt(1)
+     .getByName(&quot;Btn_Detalles&quot;).label = R_Txt(2)
+     .getByName(&quot;Lbl_P_Cambiados&quot;).label = R_Txt(3)
+     .getByName(&quot;Lbl_C_Cambiados&quot;).label = R_Txt(4)
+     .getByName(&quot;Lbl_NoPresentes&quot;).label = R_Txt(5)
+     .getByName(&quot;Lbl_Sintaxis&quot;).label = R_Txt(6)
+     .getByName(&quot;Tx_P_Encontrados&quot;).Text = Enum_P_Encontrados
+     .getByName(&quot;Tx_C_Encontrados&quot;).Text = Enum_C_Encontrados
+     .getByName(&quot;Lbl_NCambios&quot;).label = i_encontrados
+     .getByName(&quot;Tx_Perdidos&quot;).Text = Enum_Perdidos
+     .getByName(&quot;Tx_Ayuda&quot;).Text = R_Txt(21)
+     If Colorea = False Then
+       .getByName(&quot;Lbl_Info&quot;).Label = R_Txt(7)
+     Else
+       .getByName(&quot;Lbl_Info&quot;).Label = R_Txt(8)
+     End If
+     If Enum_Errores = &quot;&quot; Then
+       .Height = 25
+       .getByName(&quot;Lbl_Errores&quot;).Enablevisible = False
+       .getByName(&quot;Btn_Errores&quot;).Enablevisible = False
+       .getByName(&quot;Lbl_Nota&quot;).label = &quot;&quot;
+     Else
+       .Height = 50
+       .getByName(&quot;Lbl_Errores&quot;).Enablevisible = True
+       .getByName(&quot;Btn_Errores&quot;).Enablevisible = True
+       .getByName(&quot;Tx_ListaErrores&quot;).Text = Enum_Errores
+       .getByName(&quot;Lbl_Nota&quot;).label = &quot;&quot;
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnBtErrores(oEv)
+   oDlgResaltes = oEv.Source.Context
+ Dim Altura As Integer
+   With oDlgResaltes.getModel
+     If oDlgResaltes.Model.Step = 1 Then
+       .Step = 2
+       .Height = 242
+       .Width = 242
+       .getByName(&quot;Btn_Errores&quot;).label = &quot;↫&quot;
+     ElseIf oDlgResaltes.Model.Step = 2 Then
+       oDlgResaltes.Model.Step = 1
+       .getByName(&quot;Btn_Errores&quot;).label = &quot;𓂀&quot;&apos; model().ImageURL = F_GetResourceUrl(&quot;InfoPNG&quot;)
+       .getByName(&quot;Btn_Detalles&quot;).label = &quot;^&quot;
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnBtDetalles(oEv)
+   oDlgResaltes = oEv.Source.Context
+ Dim Altura As Integer : Altura = oDlgResaltes.getModel.Height()
+   With oDlgResaltes.Model
+     If Altura &lt; 55 Then
+       .Height = 242
+       .getByName(&quot;Btn_Detalles&quot;).label = &quot;^&quot;
+       .getByName(&quot;Lbl_Nota&quot;).label = R_Txt(20)
+    ElseIf Altura &gt; 55 Then
+       .getByName(&quot;Btn_Detalles&quot;).label = R_Txt(2)
+       .getByName(&quot;Lbl_Nota&quot;).label = &quot;&quot;
+       If Enum_Errores = &quot;&quot; Then : .Height = 25 : ElseIf Enum_Errores &lt;&gt; &quot;&quot; Then :.Height = 50: End If
+     End If
+   End With
+End Sub
+
+ Rem ############
+Sub OnBtAyuda(oEv)
+   oDlgResaltes = oEv.Source.Context
+ Dim Altura As Integer : Altura = oDlgResaltes.getModel.Height()
+ Dim P_Anterior : P_Anterior = oDlgResaltes.Model.Step
+   With oDlgResaltes.getModel
+     If p_Anterior &lt;&gt; 3 Then
+       .Step = 3
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;↫&quot;
+       .getByName(&quot;Btn_Detalles&quot;).EnableVisible = False
+       .getByName(&quot;Btn_Errores&quot;).Enablevisible = False
+        If P_Anterior =1 Then : .Height = 242 : End If
+     ElseIf P_Anterior = 3 then
+       .Step = 1
+       .getByName(&quot;Btn_Detalles&quot;).EnableVisible = True
+       .getByName(&quot;Btn_Errores&quot;).label = &quot;𓂀&quot;
+       .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
+       .getByName(&quot;Btn_Detalles&quot;).label = R_Txt(2)
+       .getByName(&quot;Lbl_Nota&quot;).label = &quot;&quot;
+       If Enum_Errores = &quot;&quot; Then
+         .Height = 25
+         .getByName(&quot;Lbl_Errores&quot;).Enablevisible = False
+         .getByName(&quot;Btn_Errores&quot;).Enablevisible = False
+       Else
+         .Height = 50
+         .getByName(&quot;Lbl_Errores&quot;).Enablevisible = True
+         .getByName(&quot;Btn_Errores&quot;).Enablevisible = True
+         .getByName(&quot;Tx_ListaErrores&quot;).Text = Enum_Errores
+       End If
+     End If
+   End With
+End Sub
+ Rem ================= Fin Resaltes ===========================================================*
+</script:module>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:style-id="4" dlg:id="DlgEstilos" dlg:left="53" dlg:top="38" dlg:width="331" dlg:height="213" dlg:page="1" dlg:closeable="true" dlg:moveable="true" dlg:title="Gestión de estilos">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:text-color="0x127622" dlg:font-height="11" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="1" dlg:font-height="10" dlg:font-weight="150" dlg:font-underline="single"/>
+  <dlg:style dlg:style-id="2" dlg:font-height="10" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="3" dlg:text-color="0xff" dlg:font-height="24" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="4" dlg:font-weight="150"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:button dlg:id="Btn_Eliminar_P" dlg:tab-index="2" dlg:left="265" dlg:top="88" dlg:width="49" dlg:height="15" dlg:page="1" dlg:help-text="Selecciona un estilo de la lista para eliminar" dlg:tabstop="true" dlg:value="Btn_Eliminar_P">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnBtEliminar_P?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:menulist dlg:id="Lst_Eliminar_P" dlg:tab-index="1" dlg:left="137" dlg:top="33" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="true" dlg:linecount="10">
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnLstBox_P_Change?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:menulist>
+  <dlg:menulist dlg:id="Lst_Eliminar_C" dlg:tab-index="3" dlg:left="137" dlg:top="114" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="true" dlg:linecount="10">
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnLstBox_C_Change?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:menulist>
+  <dlg:textfield dlg:id="Tx_C_Uso" dlg:tab-index="12" dlg:left="10" dlg:top="114" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="false" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_C_Uso"/>
+  <dlg:textfield dlg:id="Tx_P_Uso" dlg:tab-index="13" dlg:left="10" dlg:top="33" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="false" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_P_Uso"/>
+  <dlg:fixedline dlg:id="FixedLine2" dlg:tab-index="14" dlg:left="12" dlg:top="106" dlg:width="302" dlg:height="2" dlg:page="1"/>
+  <dlg:fixedline dlg:id="FixedLine1" dlg:tab-index="15" dlg:left="132" dlg:top="33" dlg:width="2" dlg:height="153" dlg:page="1" dlg:align="vertical"/>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Estilos" dlg:tab-index="7" dlg:left="33" dlg:top="5" dlg:width="200" dlg:height="12" dlg:page="1" dlg:value="Lbl_Estilos" dlg:align="center"/>
+  <dlg:text dlg:style-id="1" dlg:id="Lbl_Aplicados" dlg:tab-index="9" dlg:left="10" dlg:top="20" dlg:width="120" dlg:height="10" dlg:page="1" dlg:value="Lbl_Aplicados" dlg:align="center"/>
+  <dlg:text dlg:style-id="1" dlg:id="Lbl_NoUsados" dlg:tab-index="11" dlg:left="141" dlg:top="20" dlg:width="120" dlg:height="10" dlg:page="1" dlg:value="Lbl_NoUsados" dlg:align="center"/>
+  <dlg:text dlg:style-id="2" dlg:id="Lbl_Parrafo" dlg:tab-index="8" dlg:left="259" dlg:top="34" dlg:width="63" dlg:height="8" dlg:page="1" dlg:value="Lbl_Parrafo" dlg:align="center"/>
+  <dlg:text dlg:style-id="2" dlg:id="Lbl_Caracter" dlg:tab-index="10" dlg:left="261" dlg:top="116" dlg:width="62" dlg:height="8" dlg:page="1" dlg:value="Lbl_Caracter" dlg:align="center"/>
+  <dlg:text dlg:id="Lbl_InfoP" dlg:tab-index="16" dlg:left="263" dlg:top="46" dlg:width="55" dlg:height="42" dlg:page="1" dlg:value="Lbl_InfoP" dlg:align="center" dlg:multiline="true"/>
+  <dlg:text dlg:id="Lbl_InfoC" dlg:tab-index="17" dlg:left="263" dlg:top="127" dlg:width="55" dlg:height="42" dlg:page="1" dlg:value="Lbl_InfoC" dlg:align="center" dlg:multiline="true"/>
+  <dlg:button dlg:style-id="3" dlg:id="Btn_Ayuda" dlg:tab-index="0" dlg:left="293" dlg:top="8" dlg:width="20" dlg:height="20" dlg:tabstop="true" dlg:value="?" dlg:valign="center">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnBtn_Ayuda?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:textfield dlg:id="Tx_Ayuda" dlg:tab-index="18" dlg:left="29" dlg:top="17" dlg:width="257" dlg:height="172" dlg:page="2" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_Ayuda"/>
+  <dlg:button dlg:id="Btn_Salir" dlg:tab-index="6" dlg:left="205" dlg:top="193" dlg:width="49" dlg:height="14" dlg:page="1" dlg:help-text="Selecciona un estilo de la lista para eliminar" dlg:tabstop="true" dlg:value="Btn_Salir" dlg:button-type="cancel"/>
+  <dlg:button dlg:id="Btn_Eliminar_C" dlg:tab-index="4" dlg:left="265" dlg:top="171" dlg:width="49" dlg:height="15" dlg:page="1" dlg:help-text="Selecciona un estilo de la lista para eliminar" dlg:tabstop="true" dlg:value="Btn_Eliminar_C">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnBtEliminar_C?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:button dlg:id="Btn_Sustituir" dlg:tab-index="5" dlg:left="34" dlg:top="193" dlg:width="55" dlg:height="14" dlg:page="1" dlg:value="Btn_Sustituir">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnBtn_Sustituir?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+ </dlg:bulletinboard>
+</dlg:window>

@@ -1,0 +1,10 @@
+
+Este archivo contiene la extensión SanityCheck
+    SanityCheck es gratuita: puede redistribuirla y/o modificarla
+    bajo los términos de la Licencia Pública General GNU publicada por
+    la Free Software Foundation, versión 3 o posteriores
+
+    SanityCheck se distribuye con el deseo de que sea útil, pero 
+    SIN NINGUNA GARANTÍA de COMERCIABILIDAD o IDONEIDAD PARA 
+    NINGúN PROPÓSITO PARTICULAR. Consulte <https://www.gnu.org/licenses/> 
+    para más detalles.

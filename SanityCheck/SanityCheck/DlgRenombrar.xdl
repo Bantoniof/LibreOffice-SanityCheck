@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="Renombrar" dlg:left="115" dlg:top="115" dlg:width="194" dlg:height="81" dlg:page="1" dlg:closeable="true" dlg:moveable="true">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:text-color="0xff" dlg:font-height="24" dlg:font-weight="150"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:button dlg:id="Btn_Renombrar" dlg:tab-index="6" dlg:left="51" dlg:top="62" dlg:width="38" dlg:height="12" dlg:page="1" dlg:value="Btn_Renombrar">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Renombrar.OnBtn_Renombrar?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:checkbox dlg:id="Ch_Tablas" dlg:tab-index="3" dlg:left="26" dlg:top="45" dlg:width="40" dlg:height="10" dlg:page="1" dlg:value="Ch_Tablas" dlg:valign="center" dlg:checked="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Renombrar.Casillas_Renombrar?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:checkbox>
+  <dlg:button dlg:id="Btn_Salir" dlg:tab-index="8" dlg:left="114" dlg:top="62" dlg:width="30" dlg:height="12" dlg:page="1" dlg:tabstop="true" dlg:value="Btn_Salir" dlg:button-type="cancel"/>
+  <dlg:text dlg:id="Lbl_Selec" dlg:tab-index="9" dlg:left="25" dlg:top="6" dlg:width="140" dlg:height="10" dlg:page="1" dlg:value="Lbl_Selec"/>
+  <dlg:checkbox dlg:id="Ch_Imgs" dlg:tab-index="4" dlg:left="81" dlg:top="25" dlg:width="40" dlg:height="10" dlg:page="1" dlg:tabstop="true" dlg:value="Ch_Imgs" dlg:valign="center" dlg:checked="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Renombrar.Casillas_Renombrar?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:checkbox>
+  <dlg:checkbox dlg:id="Ch_Marcos" dlg:tab-index="5" dlg:left="81" dlg:top="35" dlg:width="40" dlg:height="10" dlg:page="1" dlg:value="Ch_Marcos" dlg:valign="center" dlg:checked="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Renombrar.Casillas_Renombrar?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:checkbox>
+  <dlg:checkbox dlg:id="Ch_Indice" dlg:tab-index="2" dlg:left="26" dlg:top="35" dlg:width="40" dlg:height="10" dlg:page="1" dlg:value="Ch_Indice" dlg:valign="center" dlg:checked="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Renombrar.Casillas_Renombrar?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:checkbox>
+  <dlg:textfield dlg:id="Tx_Registro" dlg:tab-index="10" dlg:left="14" dlg:top="6" dlg:width="168" dlg:height="68" dlg:page="2" dlg:multiline="true" dlg:value="Tx_Registro"/>
+  <dlg:button dlg:id="Btn_Volver" dlg:tab-index="7" dlg:left="71" dlg:top="83" dlg:width="38" dlg:height="12" dlg:page="3" dlg:value="Btn_Volver">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Renombrar.OnBtn_Volver?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:checkbox dlg:id="Ch_Secciones" dlg:tab-index="1" dlg:left="26" dlg:top="25" dlg:width="46" dlg:height="10" dlg:page="1" dlg:value="Ch_Secciones" dlg:valign="center" dlg:checked="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Renombrar.Casillas_Renombrar?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:checkbox>
+  <dlg:button dlg:style-id="0" dlg:id="Btn_Ayuda" dlg:tab-index="0" dlg:left="143" dlg:top="29" dlg:width="20" dlg:height="20" dlg:page="1" dlg:value="?">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Renombrar.OnBtn_Ayuda?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:textfield dlg:id="Tx_Ayuda" dlg:tab-index="11" dlg:left="10" dlg:top="8" dlg:width="168" dlg:height="66" dlg:page="3" dlg:multiline="true" dlg:value="Tx_Ayuda"/>
+ </dlg:bulletinboard>
+</dlg:window>

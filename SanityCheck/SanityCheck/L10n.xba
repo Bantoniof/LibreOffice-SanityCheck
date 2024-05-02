@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="L10n" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo L10n *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+  
+ Option Explicit
+ Dim A_Txt(8) As String
+ Dim C_Txt(19) As String
+ Dim E_Txt(23) As String
+ Dim F_Txt(23) As String
+ Dim I_Txt(50) As String
+ Dim R_Txt(21) As String
+ Dim Ren_Txt(17) As String
+ Dim T_Txt(25) As String
+ Dim Lista() As String
+ Global Extension
+
+ Rem ############
+Function F_getLang As String
+   Call _Aux.Carga_Tools
+   Extension = _Aux.F_Extension
+   F_getLang = GetStarOfficeLocale.language
+&apos;F_getLang = &quot;pñt&quot; &apos;Cambia el idioma para pruebas.
+End Function
+
+ Rem ############
+Sub Trad_Aux
+   Select Case F_getLang   
+   Case &quot;es&quot;
+     A_Txt(0) = &quot;Recorrer objetos&quot;
+     A_Txt(1) =  &quot;Err: 1 - Es posible que esté seleccionado un objeto: imagen, marco, etc.&quot; &amp; Chr(13) &amp; _
+     &quot; Coloca el cursor en un fragmento de texto y prueba de nuevo&quot;
+     A_Txt(2) =  &quot;Err: 91 - Es posible que estés en un comentario&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot; Coloca el cursor en un fragmento de texto y prueba de nuevo&quot;  
+     A_Txt(3) = &quot; -  Para evitar este mensaje coloca siempre el cursor en un fragmento de texto&quot;  &amp; Chr(13) &amp; _
+     &quot;  al iniciar una macro o al volver a un diálogo&quot;  
+     A_Txt(4) = &quot;Error en estilos&quot;
+     A_Txt(5) = &quot;- El documento está conectado con la plantilla &quot; &amp; Chr(13) &amp; Chr(9) &amp; Chr(9) 
+     A_Txt(6) = &quot;- El documento no está conectado con ninguna plantilla&quot;
+     A_Txt(7) = &quot;Los siguientes estilos de párrafo no existen en el documento:&quot; &amp;  Chr(13)
+     A_Txt(8) = &quot;◘ Aplica la plantilla correcta o importa los estilos&quot; &amp; Chr(13) &amp; _
+     &quot;para usar estas macros&quot;
+
+   Case &quot;pt&quot;
+     A_Txt(0) = &quot;Percorrer objetos&quot;
+     A_Txt(1) = &quot;Erro: 1 - Um objeto pode ser selecionado: imagem, quadro, etc.&quot; &amp; Chr(13) &amp; _
+     &quot;Coloque o cursor em um trecho de texto e tente novamente&quot;
+     A_Txt(2) = &quot;Erro: 91 - Você pode estar em um comentário&quot; &amp; Chr(13) &amp; _
+     &quot;Coloque o cursor em um trecho de texto e tente novamente&quot;
+     A_Txt(3) = &quot; - Para evitar esta mensagem sempre coloque o cursor em um fragmento de texto&quot; &amp; Chr(13) &amp; _
+     &quot; ao iniciar uma macro ou retornar a um diálogo&quot;
+     A_Txt(4) = &quot;Erro nos estilos&quot;
+     A_Txt(5) = &quot;- O documento está conectado ao modelo &quot; &amp; Chr(13) &amp; Chr(9) &amp; Chr(9)
+     A_Txt(6) = &quot;- O documento não está conectado a nenhum modelo&quot;
+     A_Txt(7) = &quot;Os seguintes estilos de parágrafo não existem no documento:&quot; &amp;  Chr(13)
+     A_Txt(8) = &quot;◘ Aplique o modelo correto ou importe os estilos&quot; &amp; Chr(13) &amp; _
+     &quot;para usar essas macros&quot;
+
+   Case else
+     A_Txt(0) = &quot;Browse objects&quot;
+     A_Txt(1) = &quot;Err: 1 - An object may be selected: image, frame, etc.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;Place the cursor on a piece of text and try again&quot;
+     A_Txt(2) = &quot;Err: 91 - You may be in a comment&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;Place the cursor on a piece of text and try again&quot;
+     A_Txt(3) = &quot; - To avoid this message always place the cursor on a text fragment&quot; &amp; Chr(13) &amp; _
+     &quot; when starting a macro or returning to a dialog&quot;
+     A_Txt(4) = &quot;Error in styles&quot;
+     A_Txt(5) = &quot;- The document is connecter to the template &quot; &amp; Chr(13) &amp; Chr(9) &amp; Chr(9)
+     A_Txt(6) = &quot;- The document is not connected to any template&quot;
+     A_Txt(7) = &quot;The following paragraph styles do not exist in the document:&quot;  &amp;  Chr(13)
+     A_Txt(8) = &quot;◘ Apply the correct template or import the styles&quot; &amp; Chr(13) &amp; _
+     &quot;to use these macros&quot;
+     
+   End Select
+End Sub
+
+ Rem ############
+Sub Trad_Campos
+   Select Case F_getLang
+   Case &quot;es&quot;
+     C_Txt(0) = &quot;Campos del documento&quot;
+     C_Txt(1) = &quot;Título Doc.&quot;
+     C_Txt(2) = &quot;Conexión con plantilla&quot;
+     C_Txt(3) = &quot;Guía&quot;
+     C_Txt(4) = &quot;Versión de L.O.&quot;
+     C_Txt(5) = &quot;Comentarios&quot;
+     C_Txt(6) = &quot;          Capítulo X          &amp;     Título&quot;
+     C_Txt(7) = &quot;Publicación&quot;
+     C_Txt(8) = &quot;Ninguna&quot;
+     C_Txt(9) = &quot;Corregir&quot;
+     C_Txt(10) = &quot;Establecer&quot;
+     C_Txt(11) = &quot;Salir&quot;
+     C_Txt(12) = &quot;Cancelar&quot;
+     C_Txt(13) = &quot;Campos establecidos&quot;
+     C_Txt(14) = &quot;Con estilos de la plantilla:  &quot;
+     C_Txt(15) = &quot;  eliminado, Usa el adecuado&quot;
+     C_Txt(16) = &quot;Primero tienes que guardar el documento&quot;
+     C_Txt(17) = &quot;Selecciona un mes de la lista&quot;
+     C_Txt(18) = &quot;Asunto&quot;
+     C_Txt(19) = &quot;Permite establecer las propiedades necesarias del capítulo en un solo paso&quot; &amp; Chr(13) &amp;_
+     &quot;Nota: se pueden usar los campos &quot;&quot;Chapter Number&quot;&quot; y &quot;&quot;Chapter Title&quot;&quot; para el título del capítulo&quot; &amp; Chr(13) &amp; Chr(13) &amp;_ 
+     &quot;Las siguientes propiedades se rellenan automáticamente:&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Título del documento:&quot; &amp; Chr(13) &amp; Chr(9) &amp;  &quot;Nombre de la guía - Nombre del capítulo&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Asunto:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;LibreOffice - Nombre de la guía&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Comentarios:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Nombre de la guía&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Colaborador &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor&quot;
+      
+     Lista = Array (&quot;enero&quot;,&quot;febrero&quot;,&quot;marzo&quot;,&quot;abril&quot;,&quot;mayo&quot;,&quot;junio&quot;,&quot;julio&quot;,&quot;agosto&quot;,&quot;septiembre&quot;,&quot;octubre&quot;,&quot;noviembre&quot;,&quot;diciembre&quot;)
+   Case &quot;pt&quot;
+     C_Txt(0) = &quot;Campos do Documento&quot;
+     C_Txt(1) = &quot;Título Doc.&quot;
+     C_Txt(2) = &quot;Conexão con modelo&quot;
+     C_Txt(3) = &quot;Guia&quot;
+     C_Txt(4) = &quot;LO. Versão&quot;
+     C_Txt(5) =  &quot;Comentarios&quot;
+     C_Txt(6) =  &quot;          Capítulo X          &amp;     Título&quot;
+     C_Txt(7) = &quot;Publicação&quot;
+     C_Txt(8) = &quot;Nenhuma&quot;
+     C_Txt(9) = &quot;Corrigir&quot;
+     C_Txt(10) = &quot;Estabelecer&quot;
+     C_Txt(11) = &quot;Saír&quot;
+     C_Txt(12) = &quot;Cancelar&quot;
+     C_Txt(13) = &quot;Campos Estabelecidos&quot;
+     C_Txt(14) = &quot;Com estilos de modelo:&quot;
+     C_Txt(15) = &quot;  removido, use o apropriado&quot;
+     C_Txt(16) = &quot;Primeiro de tudo você deve salvar o documento&quot;
+     C_Txt(17) = &quot;Selecione um mês da lista&quot;
+     C_Txt(18) = &quot;Asunto&quot;
+     C_Txt(19) = &quot;Permite definir as propriedades necessárias do capítulo em uma única etapa&quot; &amp; Chr(13) &amp;_
+     &quot;Nota: Os campos &quot;&quot;Chapter Number&quot;&quot; e &quot;&quot;Chapter Title&quot;&quot; podem ser usados ​​para o título do capítulo&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;As seguintes propriedades são preenchidas automaticamente:&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Título do documento:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Nome do guia - Nome do capítulo&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Assunto:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;LibreOffice - Nome do guia&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Comentários:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Nome do guia&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Contribuidor &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor&quot;
+     Lista = Array (&quot;janeiro&quot;,&quot;fevereiro&quot;,&quot;março&quot;,&quot;abril&quot;,&quot;maio&quot;,&quot;junho&quot;,&quot;julho&quot;,&quot;agosto&quot;,&quot;setembro&quot;,&quot;outubro&quot;,&quot;novembro&quot;,&quot;dezembro&quot;)
+
+   Case Else
+     C_Txt(0) = &quot;Document Fields&quot;
+     C_Txt(1) = &quot;Doc. Title&quot;
+     C_Txt(2) = &quot;Template conex&quot;
+     C_Txt(3) = &quot;Guide&quot;
+     C_Txt(4) = &quot;LO. Version&quot;
+     C_Txt(5) = &quot;Comments&quot;
+     C_Txt(6) = &quot;           Chapter             &amp;      Title&quot;
+     C_Txt(7) = &quot;Published&quot;
+     C_Txt(8) = &quot;None&quot;
+     C_Txt(9) = &quot;Correct&quot;
+     C_Txt(10) = &quot;Etablish&quot;
+     C_Txt(11) = &quot;Exit&quot;
+     C_Txt(12) = &quot;Cancel&quot;
+     C_Txt(13) = &quot;Fields Establised&quot;
+     C_Txt(14) = &quot;With Styles from Template : &quot;
+     C_Txt(15) = &quot;  removed, Use the appropriate one&quot;
+     C_Txt(16) =  &quot;First of all You must to save the document&quot;
+     C_Txt(17) = &quot;Select a month from the list&quot;
+     C_Txt(18) = &quot;Subject&quot;
+     C_Txt(19) = &quot;Allows you to set the necessary properties of the chapter in a single step&quot; &amp; Chr(13) &amp;_
+     &quot;Note: The &quot;&quot;Chapter Number&quot;&quot; and &quot;&quot;Chapter Title&quot;&quot; fields can be used for the chapter title&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;The following properties are automatically populated:&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Document title:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Guide name - Chapter name&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Subject:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;LibreOffice - Name of the guide&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Comments:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Guide name&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Contributor &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor&quot;
+     Lista = Array (&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,&quot;July&quot;,&quot;August&quot;,&quot;September&quot;,&quot;October&quot;,&quot;November&quot;,&quot;December&quot;)
+   End Select
+End Sub
+
+ Rem ############
+Sub   Trad_Estilos
+   Select Case F_getLang
+   Case &quot;es&quot;
+     E_Txt(0) = &quot;Comprobación de estilos&quot;
+     E_Txt(1) = &quot;Estilos ajenos a las guías&quot;
+     E_Txt(2) = &quot;Aplicados&quot;
+     E_Txt(3) = &quot;No utilizados&quot;
+     E_Txt(4) = &quot;Estilos de párrafo&quot;
+     E_Txt(5) = &quot;Estilos de carácter&quot;
+     E_Txt(6) = &quot;Selecciona un estilo de la lista&quot; &amp; Chr(13) &amp; &quot; &quot;&quot;No utilizados&quot;&quot; para eliminarlo&quot;
+     E_Txt(7) = &quot;Eliminar&quot;
+     E_Txt(8) = &quot;No hay estilos ajenos&quot;
+     E_Txt(9) = &quot;Has seleccionado el estilo de párrafo &quot; &amp; Chr(13)
+     E_Txt(10) = &quot;Has seleccionado el estilo de carácter&quot; &amp; Chr(13)
+     E_Txt(11) =  Chr(13) &amp; &quot;¿Quieres Eliminarlo del documento?&quot;
+     E_Txt(13) = &quot;Eliminar Estilo de carácter sin uso&quot;
+     E_Txt(14) = &quot;Se han encontrado&quot;
+     E_Txt(15) = &quot;  Estilos ajenos de párrafo aplicados&quot;
+     E_Txt(16) = &quot;Revisa los comentarios para corregirlo&quot;
+     E_Txt(17) = &quot; - Estilo ajeno, no está en la plantilla&quot;
+     E_Txt(18) = &quot;Algunos estilos requieren una limpieza manual:&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+      &quot; – Estilos de Párrafo:&quot; &amp; Chr(13) &amp;  &quot;Busca los comentarios, elimina el comentario y cambia el estilo por el apropiado&quot; &amp; Chr(13) &amp;_
+      &quot;  • Writer actualiza automáticamente los estilos de párrafo cuando ya no están en uso y se pueden eliminar.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+      &quot; –  Estilos de carácter:&quot;  &amp; Chr(13) &amp;  &quot;Busca los fragmentos de texto con fondo negro y letra amarilla y cambia el estilo&quot;  &amp; Chr(13) &amp;_
+      &quot;  • Writer NO actualiza automáticamente los estilos de carácter cuando ya no están en uso&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+      &quot;    SOLUCIÓN: &quot; &amp; Chr(13) &amp; &quot;- 1.- Guarda el documento. &quot; &amp; Chr(13) &amp; &quot;- 2.- Recarga el documento&quot; &amp; Chr(13) &amp; _
+      &quot;- 3.- Elimina los estilos de carácter que no estén en uso&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+      &quot; –  Botón Sustituir Estilos: &quot; &amp; Chr(13) &amp;  &quot; Sustituye antiguos estilos de párrafo por los nuevos&quot; &amp; _
+      &quot; y el estilo de caracter &quot;&quot;MenuPath&quot;&quot; por &quot;&quot;Destaque mayor&quot;&quot; &quot;
+     E_Txt(19) = &quot;Salir&quot;
+     E_Txt(20) = &quot;Remplazo de estilos&quot;
+     E_Txt(21) = &quot;&quot;&quot;  sustituido por  &quot;&quot;&quot;
+     E_Txt(22) = &quot;Guarda y recarga el documento para actualizar los estilos de carácter&quot;
+     E_Txt(23) = &quot;Para actualizar los estilos de Carácter&quot; &amp; Chr(13) &amp; _
+     &quot;Es necesario guardar y recargar el documento&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;¿Guardar ahora?&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+      &quot;- No podrás deshacer los cambios efectuados hasta ahora&quot;
+
+   Case &quot;pt&quot;
+     E_Txt(0) = &quot;Verificação de estilos&quot;
+     E_Txt(1) = &quot;Estilos fora dos guias&quot;
+     E_Txt(2) = &quot;Aplicado&quot;
+     E_Txt(3) = &quot;Não utilizado&quot;
+     E_Txt(4) = &quot;Estilos de parágrafo&quot;
+     E_Txt(5) = &quot;Estilos de caractere&quot;
+     E_Txt(6) = &quot;Selecione um estilo da lista&quot; &amp; Chr(13) &amp; &quot; &quot;&quot;Não utilizado&quot;&quot; para excluí-lo&quot;
+     E_Txt(7) = &quot;Excluir&quot;
+     E_Txt(8) = &quot;Não existem estilos estrangeiros&quot;
+     E_Txt(9) = &quot;Você selecionou o estilo de parágrafo&quot; &amp; Chr(13)
+     E_Txt(10) = &quot;Você selecionou o estilo do caractere&quot; &amp; Chr(13)
+     E_Txt(11) = Chr(13) &amp; &quot;Deseja excluí-lo do documento?&quot;
+     E_Txt(12) = &quot;Remover estilo de parágrafo não utilizado&quot;
+     E_Txt(13) = &quot;Remover estilo de caractere não utilizado&quot;
+     E_Txt(14) = &quot;Estilos encontrados.&quot;
+     E_Txt(15) = &quot;   parágrafos con estilo estrangeiro de parágrafo&quot;
+     E_Txt(16) = &quot;Verifique os comentários para corrigi-lo&quot;
+     E_Txt(17) = &quot; - Estilo estrangeiro, não no modelo&quot;
+     E_Txt(18) = &quot;Alguns estilos requerem limpeza manual:&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+      &quot; – Estilos de parágrafo:&quot; &amp; Chr(13) &amp; &quot;Encontre os comentários, exclua o comentário e mude o estilo para o apropriado&quot; &amp; Chr(13) &amp;_
+      &quot;  • Writer atualiza os estilos de parágrafo automaticamente quando eles não estão mais em uso e podem ser excluídos.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+      &quot; – Estilos de caracteres:&quot; &amp; Chr(13) &amp; &quot;Encontre os fragmentos de texto com fundo preto e fonte amarela e altere o estilo&quot; &amp; Chr(13) &amp;_
+      &quot;  • O Writer NÃO atualiza automaticamente estilos de caracteres quando eles não estão mais em uso&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+      &quot; SOLUÇÃO: &quot; &amp; Chr(13) &amp; &quot;- 1.- Salve o documento. &quot; &amp; Chr(13) &amp; &quot;- 2.- Recarregue o documento&quot; &amp; Chr(13) &amp; _
+      &quot;-3.- Remova estilos de caracteres que não estão em uso&quot;&amp; Chr(13) &amp; Chr(13) &amp; _
+      &quot; – Botão Substituir estilos: &quot; &amp; Chr(13) &amp; &quot; Substitui estilos de parágrafo antigos por novos&quot; &amp; _
+      &quot; e o estilo de caractere &quot;&quot;MenuPath&quot;&quot; por &quot;&quot;Ênfase forte&quot;&quot; &quot;
+     E_Txt(19) = &quot;Sair&quot;
+     E_Txt(20) = &quot;Substituição de estilos&quot;
+     E_Txt(21) = &quot;&quot;&quot; substituído por &quot;&quot;&quot;
+     E_Txt(22) = &quot;Salve e recarregue o documento para atualizar os estilos de caracteres&quot;
+     E_Txt(23) =  &quot;Para atualizar estilos de caracteres&quot; &amp; Chr(13) &amp; _
+     &quot;Você precisa salvar e recarregar o documento&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Salvar agora?&quot;&amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;- Você não poderá desfazer as alterações feitas até agora&quot;
+
+   Case Else
+     E_Txt(0) = &quot;Style Check&quot;
+     E_Txt(1) = &quot;Styles not in template&quot;
+     E_Txt(2) = &quot;Applied&quot;
+     E_Txt(3) = &quot;Not used&quot;
+     E_Txt(4) = &quot;Paragraph styles&quot;
+     E_Txt(5) = &quot;Character styles&quot;
+     E_Txt(6) = &quot;Select a style from the list&quot; &amp; Chr(13) &amp; &quot; &quot;&quot;Unused&quot;&quot; to delete it&quot;
+     E_Txt(7) = &quot;Delete&quot;
+     E_Txt(8) = &quot;There are no alien styles&quot;
+     E_Txt(9) = &quot;You have selected the paragraph style &quot; &amp; Chr(13)
+     E_Txt(10) = &quot;You have selected the character style &quot; &amp; Chr(13)
+     E_Txt(11) =  Chr(13) &amp; &quot; Do you want to delete it from the document?&quot;
+     E_Txt(12) = &quot;Remove Unused Paragraph Style&quot;
+     E_Txt(13) = &quot;Remove Unused Character Style&quot;
+     E_Txt(14) = &quot;Styles were found.&quot;
+     E_Txt(15) = &quot;  paragraphs with alien (paragraph) style applied&quot;
+     E_Txt(16) = &quot;Check annotations to correct it&quot;
+     E_Txt(17) = &quot; - Alien style, not in the template&quot;
+     E_Txt(18) = &quot;Some styles require manual cleaning:&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+      &quot; – Paragraph Styles:&quot; &amp; Chr(13) &amp; &quot;Find the comments, delete the comment and change the style to the appropriate one&quot; &amp; Chr(13) &amp;_
+      &quot;  • Writer updates automatically paragraph styles when they are no longer in use and can be deleted.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+      &quot; – Character styles:&quot; &amp; Chr(13) &amp; &quot;Find the text fragments with a black background and yellow font and change the style&quot; &amp; Chr(13) &amp;_
+      &quot;  • Writer DOES NOT update automatically character styles when they are no longer in use&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+      &quot; SOLUTION: &quot; &amp; Chr(13) &amp; &quot;- 1.- Save the document. &quot; &amp; Chr(13) &amp; &quot;- 2.- Reload the document&quot; &amp; Chr(13) &amp;_
+      &quot;- 3.- Remove character styles that are not in use&quot;&amp; Chr(13) &amp; Chr(13) &amp; _
+      &quot; – Replace Styles button: &quot; &amp; Chr(13) &amp; &quot; Replaces old paragraph styles with new ones&quot; &amp;_
+      &quot; and the &quot;&quot;MenuPath&quot;&quot; character style with &quot;&quot;Strong Emphasis&quot;&quot; &quot;
+     E_Txt(19) = &quot;Exit&quot;
+     E_Txt(20) = &quot;Style replacement&quot;
+     E_Txt(21) = &quot;&quot;&quot; replaced by &quot;&quot;&quot;
+     E_Txt(22) = &quot;Save and reload the document to update the character styles&quot;
+     E_Txt(23) = &quot;To update Character styles&quot; &amp; Chr(13) &amp; _
+     &quot;You need to save and reload the document&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Save now?&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;- You will not be able to undo the changes made so far&quot;
+ 
+   End Select
+End Sub
+
+ Rem ############
+Sub   Trad_Formatos
+   Select Case F_getLang
+   Case &quot;es&quot;
+     F_Txt(0) = &quot;Limpieza de formatos&quot;
+     F_Txt(1) = &quot;◘ Texto:&quot; &amp; Chr(13) &amp; &quot;Limpia el formato directo aplicado a cadenas de texto&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Parrafos:&quot;&amp; Chr(13) &amp; &quot;Limpia el fomato directo aplicado a los párrafos (Incluidas las listas no numeradas).&quot; &amp; Chr(13) &amp; _
+     &quot;  -- Ten en cuenta que elimina el fomato directo de numeraciones&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Párrafos Numerados:&quot; &amp; Chr(13) &amp; &quot;Limpia el formato aplicado a los párrafos de listas numeradas.&quot; &amp; _ 
+     &quot; Aplica el estilo correcto a los párrafos anteriores a las listas y reinicia las numeraciones.&quot; &amp; Chr(13) &amp; _      
+     &quot;  -- Se marcan los párrafos en los que el reinicio de numeración no es claro.&quot;
+     F_Txt(2) = &quot;Texto (Caracteres)&quot;
+     F_Txt(3) = &quot;Párrafos&quot;
+     F_Txt(4) = &quot;Párrafos numerados&quot;
+     F_Txt(5) = &quot;Limpiar&quot;
+     F_Txt(6) = &quot;Salir&quot;
+     F_Txt(7) = &quot;Volver&quot;
+     F_Txt(8) = &quot;El formato directo de párrafos numerados no se ha limpiado&quot;
+     F_Txt(9) = &quot;- Limpieza de formato directo de texto concluída&quot;
+     F_Txt(10) = &quot;- Limpieza de formato directo de párrafos concluída&quot;
+     F_Txt(11) = &quot;- Limpieza y Reinicio de Numeraciones concluída &quot;  &amp; Chr(13)
+     F_Txt(12) = &quot;   párrafos numerados se han marcado&quot; &amp; Chr(13)  &amp; Chr(9) &amp; &quot;Revisa los comentarios y Todas las numeraciones&quot;
+     F_Txt(13) = &quot;Procesando ...&quot;
+     F_Txt(14) = &quot; Revisa los estilos y la numeración&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Estilo anterior = &quot;
+     F_Txt(15) = &quot;Selecciona elementos para limpiar&quot;
+     F_Txt(16) = &quot;Aunque parece que todo está bien, revisa las numeraciones&quot;
+     F_Txt(17) = &quot;Al limpiar párrafos numerados, las numeraciones no se reinician correctamente&quot; &amp; Chr(13) &amp; _
+     &quot;si no están bien aplicados los estilos anteriores a las listas..&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;Un error frecuente es emplear el estilo Cuerpo de texto antes de las listas.&quot; &amp; Chr(13) &amp;_
+     &quot;- Toda lista debe estar precedida por &quot;&quot;Body Text, List Intro&quot;&quot; o por un título&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;Se cambiará el estilo &quot;&quot;Cuerpo de texto&quot;&quot; por &quot;&quot;Body Text, List Intro&quot;&quot;&quot; &amp; Chr(13) &amp;_
+     &quot;antes de cualquier lista y se reiniciarán las numeraciones.&quot;
+     F_Txt(18) = &quot;Se limpiará el formato directo a:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;- Párrafos comunes&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
+     &quot;- Párrafos de listas no ordenadas&quot; &amp; Chr(13) &amp; Chr(13)  &amp;_
+     &quot;Ten en cuenta que elimina el formato directo de numeraciones o viñetas&quot;  
+     F_Txt(19) = &quot;El formato directo de párrafos no se ha limpiado&quot;
+     F_Txt(20) = &quot;Estilo anterior a Listas&quot;
+     F_Txt(21) = &quot; No se ha encontrado la sección &quot;&quot;SEC_DISPLAYAREA&quot;&quot; No se ha podido reiniciar la numeración en secciones&quot;
+     F_Txt(22) = &quot;   Errores corregidos párrafos anteriores a listas&quot;
+     F_Txt(23) = &quot;,  cambiado por  &quot;
+
+   Case &quot;pt&quot;
+     F_Txt(0) = &quot;Limpeza de formatos&quot;
+     F_Txt(1) = &quot;◘ Texto:&quot; &amp; Chr(13) &amp; &quot;Limpaa formatação direta aplicada a sequências de texto&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Parágrafos:&quot;&amp; Chr(13) &amp; &quot;Limpa a formatação direta aplicada aos parágrafos (incluindo listas não numeradas).&quot; &amp; Chr(13) &amp; _
+     &quot; -- Observe que elimina a formatação direta da numeração&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Parágrafos numerados:&quot; &amp; Chr(13) &amp; &quot;Limpa a formatação aplicada aos parágrafos de listas numeradas.&quot; &amp; _
+     &quot;Aplica o estilo correto aos parágrafos anteriores às listas e redefine a numeração.&quot; &amp; Chr(13) &amp; _
+     &quot;- São marcados os parágrafos em que a renumeração não é clara.&quot;
+     F_Txt(2) = &quot;Texto (Caracteres)&quot;
+     F_Txt(3) = &quot;Parágrafos&quot;
+     F_Txt(4) = &quot;Parágrafos numerados&quot;
+     F_Txt(5) = &quot;Limpar&quot;
+     F_Txt(6) = &quot;Sair&quot;
+     F_Txt(7) = &quot;Retornar&quot;
+     F_Txt(8) = &quot;A formatação direta dos parágrafos numerados não foi limpa&quot;
+     F_Txt(9) = &quot;- Limpeza de formatação direta de texto concluída&quot;
+     F_Txt(10) = &quot;- Limpeza de formatação direta de parágrafos concluída&quot;
+     F_Txt(11) = &quot;- Limpeza e redefinição de numeraçãos concluídas &quot; &amp; Chr(13)
+     F_Txt(12) = &quot;  parágrafos numerados foram marcados&quot; &amp; Chr(13) &amp; &quot;Verifique os comentarios e Todas as numeraçãos&quot;
+     F_Txt(13) = &quot;Em processamento ...&quot;
+     F_Txt(14) = &quot;Verifique estilos e numeração&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Estilo anterior = &quot;
+     F_Txt(15) = &quot;Selecione os itens para limpeza&quot;
+     F_Txt(16) = &quot;Embora tudo pareça bem, verifique os números&quot;
+     F_Txt(17) = &quot;Ao limpar parágrafos numerados, a numeração não é redefinida corretamente&quot; &amp; Chr(13) &amp; _
+     &quot;se os estilos anteriores  às listas não forem aplicados corretamente..&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;Um erro comum é usar o estilo &quot;&quot;Corpo de texo&quot;&quot; antes das listas.&quot; &amp; Chr(13) &amp;_
+     &quot;- Cada lista deve ser precedida por &quot;&quot;Body Text, List Intro&quot;&quot; ou por um título&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;O estilo &quot;&quot;Corpo de texo&quot;&quot; será alterado para &quot;&quot;Body Text, List Intro&quot;&quot;&quot; &amp; Chr(13) &amp;_ 
+     &quot;antes de qualquer lista e a numeração será redefinida.&quot;
+     F_Txt(18) = &quot;A formatação direta será limpa para:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;- Parágrafos comuns&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
+     &quot;- Parágrafos de listas não ordenadas&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;Observe que elimina o formato direto de numeraçãod ou bullets&quot;
+     F_Txt(19) = &quot;A formatação direta dos parágrafos não foi limpa&quot;
+     F_Txt(20) = &quot;Estilo anterior a Listas&quot;
+     F_Txt(21) = &quot; A seção &quot;&quot;SEC_DISPLAYAREA&quot;&quot; não foi encontrada. As numerações de &quot;&quot;Legend Numbered&quot;&quot; não foram reiniciadas.&quot;
+     F_Txt(22) = &quot;   Erros corrigidos no parágrafos anteriores à lista&quot;
+     F_Txt(23) = &quot;,  cambiado por  &quot;
+
+   Case Else
+     F_Txt(0) = &quot;Format Cleaning&quot;
+     F_Txt(1) = &quot;◘ Text:&quot; &amp; Chr(13) &amp; &quot;Clean up direct formatting applied to text strings&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Paragraphs:&quot;&amp; Chr(13) &amp; &quot;Clears direct formatting applied to paragraphs (Including unnumbered lists).&quot; &amp; Chr(13) &amp; _
+     &quot; -- Note that it eliminates direct numbering formatting&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Numbered Paragraphs:&quot; &amp; Chr(13) &amp; &quot;Cleans up the formatting applied to numbered list paragraphs.&quot; &amp; _
+     &quot;Applies the correct style to the paragraphs before the lists and resets the numbering.&quot; &amp; Chr(13) &amp; _
+     &quot; -- Paragraphs in which the renumbering is not clear are marked.&quot;
+     F_Txt(2) = &quot;Text (Characters)&quot;
+     F_Txt(3) = &quot;Paragraphs&quot;
+     F_Txt(4) = &quot;Numbered paragraphs&quot;
+     F_Txt(5) = &quot;Clear&quot;
+     F_Txt(6) = &quot;Exit&quot;
+     F_Txt(7) = &quot;Return&quot;
+     F_Txt(8) = &quot;Numbered paragraph direct formatting has not been cleaned up&quot;
+     F_Txt(9) = &quot;- Text direct format cleanup done&quot;
+     F_Txt(10) = &quot;- Paragraph direct format cleanup done&quot;
+     F_Txt(11) = &quot;- Numbering format Cleanup an Reset done &quot; &amp; Chr(13)
+     F_Txt(12) = &quot;  Numbered paragraphs have been marked&quot; &amp; Chr(13) &amp; &quot;Check annotations and All numbering&quot;
+     F_Txt(13) = &quot;Working ...&quot;
+     F_Txt(14) = &quot; Check styles and numbering&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Previous style = &quot;
+     F_Txt(15) = &quot;Selecct items to clean&quot;
+     F_Txt(16) = &quot;Although everything seems fine, check the numbers&quot;
+     F_Txt(17) = &quot;When clearing numbered paragraphs, the numbering is not reset correctly&quot; &amp; Chr(13) &amp; _
+     &quot;if the previous styles to the lists are not correctly applied..&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;A common mistake is to use the &quot;&quot;Body text&quot;&quot; style before lists.&quot; &amp; Chr(13) &amp;_
+     &quot;- Every list must be preceded by &quot;&quot;Body Text, List Intro&quot;&quot; or by a heading&quot; &amp; Chr(13) &amp; Chr(13) &amp;_ 
+     &quot;The style &quot;&quot;Body Text&quot;&quot; will be changed to &quot;&quot;Body Text, List Intro&quot;&quot;&quot; &amp; Chr(13) &amp;_
+     &quot;before any list and the numbering will be reset.&quot;
+     F_Txt(18) = &quot;Direct formatting will be cleaned to:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;- Common paragraphs&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
+     &quot;- Paragraphs of unordered lists&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;Note that it eliminates the direct format of numbering or bullets.&quot;
+     F_Txt(19) = &quot;Direct paragraph formatting has not been cleaned up&quot;
+     F_Txt(20) = &quot;Style before lists&quot;
+     F_Txt(21) = &quot; The section &quot;&quot;SEC_DISPLAYAREA&quot;&quot; was not found. The numberings of &quot;&quot;Legend Numbered&quot;&quot; have not been reset.&quot;     
+     F_Txt(22) = &quot;   Errors fixed in paragraphs before lists&quot;
+     F_Txt(23) = &quot;,  exchanged for  &quot;
+
+ End Select
+End Sub
+
+ Rem ############
+Sub Trad_Imagenes
+   Select Case F_getLang
+   Case &quot;es&quot;
+     I_Txt(0) = &quot;Revisión de Imágenes&quot;
+     I_Txt(1) = &quot;Cambiar&quot;
+     I_Txt(2) = &quot;Como Carácter&quot;
+     I_Txt(3) = &quot;Cambiar/Asignar&quot;
+     I_Txt(4) = &quot;Desde Marco&quot;
+     I_Txt(5) = &quot;Editar (externo)&quot;
+     I_Txt(6) = &quot;&lt; Anterior&quot;
+     I_Txt(7) = &quot;Siguiente &gt;&quot;
+     I_Txt(8) = &quot;Salir&quot;
+     I_Txt(9) = Chr(13) &amp; &quot;◘ ¿Has hecho Modificaciones  en la imagen? &quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;  1.-Cambia a la siguiente o anterior&quot; &amp; Chr(13) &amp; &quot;  2.- Vuelve para comprobar ver si se han aplicado los cambios.&quot; &amp; Chr(13) &amp;Chr(13) &amp; _
+     &quot;– Las figuras no aparecen en la secuencia de aparición en el documento &quot; &amp; Chr(13) &amp; _
+     &quot;◘ ¿Has cambiado el orden de las figuras?, ¿Has añadido o borrado imágenes?&quot;  &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;  1.- Guarda los cambios&quot; &amp; Chr(13) &amp; &quot;  2.- Recarga el documento&quot; &amp; Chr(13) &amp; &quot;  3.- Renombra las imágenes y marcos de nuevo&quot;
+     I_Txt(10) = &quot;Descripción del marco&quot;
+     I_Txt(11) = &quot;Descripción de la imagen&quot;
+     I_Txt(12) = &quot;Anclaje&quot;
+     I_Txt(13) = &quot;Al párrafo&quot;
+     I_Txt(14) = &quot;Como carácter&quot;
+     I_Txt(15) = &quot;A la página&quot;
+     I_Txt(16) = &quot;Al marco&quot;
+     I_Txt(17) = &quot;Al carácter&quot;
+     I_Txt(18) = &quot;Nombre Imagen: &quot;
+     I_Txt(19) = &quot;Primera Imagen&quot;
+     I_Txt(20) = &quot;Imagen  &quot;
+     I_Txt(21) = &quot;Última imagen&quot;
+     I_Txt(22) = &quot;Imagen recortada con Writer&quot; &amp; Chr(13) &amp; &quot; - Usa otro programa para los recortes&quot;
+     I_Txt(23) = &quot;Imagen sin recortes&quot;
+     I_Txt(24) = &quot;Revisa la escala&quot;
+     I_Txt(25) = &quot;Escala correcta de imagen &quot;
+     I_Txt(26) = &quot;Imagen sin marco&quot;
+     I_Txt(27) = &quot;Se han borrado o incorporado imágenes&quot; &amp; Chr(13) &amp; &quot;1) Guarde los cambios&quot; &amp; Chr(13) &amp; _
+     &quot;2) Recargue el archivo&quot; &amp; Chr(13) &amp;   &quot;3) Renombre las imágenes otra vez.&quot;
+     I_Txt(28) = &quot;Revisión de imágenes detenida&quot;
+     I_Txt(29) = &quot;&quot; &apos;NO usado
+     I_Txt(30) = &quot;El nombre de la imagen no puede quedar vacío&quot;
+     I_Txt(31) =  Chr(13) &amp; &quot;Err -1 ¿Nombre duplicado?&quot; &amp; Chr(13) &amp; &quot;Prueba con otro.&quot;
+     I_Txt(32) =  &quot;Procesando ...&quot;
+     I_Txt(33) =  &quot;&quot;
+     I_Txt(34) =  &quot;Primero tienes que guardar el documento&quot;
+     I_Txt(35) =  &quot;Se han borrado todas las imágenes&quot;
+     I_Txt(36) =  &quot;  Marcos con problemas, revisa los comentarios &quot;
+     I_Txt(37) =  &quot;  Imágenes con problemas, revisa los comentarios&quot;
+     I_Txt(38) =  &quot;&quot;
+     I_Txt(39) =  &quot;No hay imágenes en el documento&quot;
+     I_Txt(40) =  &quot;- Imágenes ajustadas&quot;
+     I_Txt(41) =  &quot;Ajuste de imágenes y marcos&quot;
+     I_Txt(42) =  &quot;- Marcos ajustados&quot;
+     I_Txt(43) =  &quot;- Descripciones aplicadas a los marcos&quot;
+     I_Txt(44) =  &quot;- Descripciones aplicadas a las imágenes&quot;
+     I_Txt(45) =  &quot;Posible marco sin imagen o leyenda sobre la imagen&quot; &amp; Chr(13) &amp; &quot;Revisa  este marco y su contenido&quot;
+     I_Txt(46) =  &quot;Texto de leyenda mal formado.&quot; &amp; Chr(13) &amp;  &quot;¿Figura X: y «espacio»?&quot; &amp; Chr(13) &amp; _
+     &quot;- Revisa la leyenda y descripciones de marco e imagen&quot;
+     I_Txt(47) =  &quot;Imagen recortada con Writer.&quot; &amp; Chr(13) &amp; &quot;- Usa otro programa para los recortes&quot;
+     I_Txt(48) =  &quot;Revisa la Escala:&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Diálogo «Imagen», pág. «Recortar»&quot; &amp; Chr(13) &amp; _
+      &quot;(% Anchura debe ser igual a % Altura)&quot;
+     I_Txt(49) = &quot;Recorrer Imágenes&quot;
+     I_Txt(50) = &quot;Recorrer Comentarios&quot;     
+
+   Case &quot;pt&quot;
+     I_Txt(0) = &quot;Revisão de imagems&quot;
+     I_Txt(1) = &quot;Mudar&quot;
+     I_Txt(2) = &quot;Como caractere&quot;
+     I_Txt(3) = &quot;Alterar/Atribuir&quot;
+     I_Txt(4) = &quot;De Marco&quot;
+     I_Txt(5) = &quot;Editar (externo)&quot;
+     I_Txt(6) = &quot;&lt; Anterior&quot;
+     I_Txt(7) = &quot;Próxima &gt;&quot;
+     I_Txt(8) = &quot;Sair&quot;
+     I_Txt(9) = Chr(13) &amp; &quot;◘ Você fez alguma modificação na imagem?&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;  1.-Mude para o próximo ou anterior&quot; &amp; Chr(13) &amp; &quot;  2.- Volte para verificar se as alterações foram aplicadas.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;–  As figuras não aparecem na sequência de aparição no documento&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Você alterou a ordem das figuras, adicionou ou excluiu imagens?&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;  1.- Salve as alterações&quot; &amp; Chr(13) &amp; &quot;  2.- Recarregue o documento&quot; &amp; Chr(13) &amp; &quot;  3.-Renome imagens e molduras novamente &quot;
+     I_Txt(10) = &quot;Descrição do quadro&quot;
+     I_Txt(11) = &quot;Descrição da imagem&quot;
+     I_Txt(12) = &quot;Ancoragem&quot;
+     I_Txt(13) = &quot;Para o parágrafo&quot;
+     I_Txt(14) = &quot;Como caractere&quot;
+     I_Txt(15) = &quot;Para a página&quot;
+     I_Txt(16) = &quot;Para o quadro&quot;
+     I_Txt(17) = &quot;Para o caractere&quot;
+     I_Txt(18) = &quot;Nome da Imagem: &quot;
+     I_Txt(19) = &quot;Primeira imagem&quot;
+     I_Txt(20) = &quot;Imagem  &quot;
+     I_Txt(21) = &quot;Última imagem&quot;
+     I_Txt(22) = &quot;Imagem recortada com Writer&quot; &amp; Chr(13) &amp; &quot; - Use outro programa para recortar&quot;
+     I_Txt(23) = &quot;Imagem sem recorte&quot;
+     I_Txt(24) = &quot;Verifique a escala da imagem&quot;
+     I_Txt(25) = &quot;Escala correta de imagen&quot;
+     I_Txt(26) = &quot;Imagem sem quadro&quot;
+     I_Txt(27) = &quot;As imagens foram excluídas ou adicionadas&quot; &amp; Chr(13) &amp; &quot;1) Salve alterações&quot; &amp; Chr(13) &amp; _
+     &quot;2) Recarrege o arquivo&quot; &amp; Chr(13) &amp; &quot;3) Renomeie as imagens novamente.&quot;
+     I_Txt(28) = &quot;Revisão de imagens interrompida&quot;
+     I_Txt(29) = &quot;&quot; &apos;NO usado
+     I_Txt(30) = &quot;O nome da imagem não pode ficar vazio&quot;
+     I_Txt(31) = Chr(13) &amp; &quot;Erro: -1 Nome duplicado?&quot; &amp; Chr(13) &amp; &quot;Tente outro&quot;
+     I_Txt(32) = &quot;Em processamento ...&quot;
+     I_Txt(33) = &quot;&quot;
+     I_Txt(34) = &quot;Salve primeiro o documento&quot;
+     I_Txt(35) = &quot;Todas as imagens foram excluídas&quot;
+     I_Txt(36) = &quot;  Quadros com problemas, verifique os comentários&quot;
+     I_Txt(37) = &quot;  Imagens com problemas, verifique os comentários&quot;
+     I_Txt(38) = &quot;&quot;
+     I_Txt(39) = &quot;Não há imagems no documento&quot;
+     I_Txt(40) = &quot;- Imagens ajustadas&quot;
+     I_Txt(41) = &quot;Ajustando imagens e quadros&quot;
+     I_Txt(42) = &quot;- Quadros ajustados&quot;
+     I_Txt(43) = &quot;- Descrições aplicadas a quadros&quot;
+     I_Txt(44) = &quot;- Descrições aplicadas a imagens&quot;
+     I_Txt(45) = &quot;Possível quadro sem imagem ou legenda acima da imagem&quot; &amp; Chr(13) &amp; &quot;- Revise este quadro e seu conteúdo&quot;
+     I_Txt(46) = &quot;Texto da legenda mal formado.&quot; &amp; Chr(13) &amp;  &quot;Figura X: e &quot;&quot;espaço&quot;&quot;?&quot; &amp; Chr(13) &amp; _
+     &quot;- Verifique a legenda e as descrições dos quadros e das imagens&quot;
+     I_Txt(47) = &quot;A imagem foi cortada com o Writer.&quot; &amp; Chr(13) &amp; &quot;- Use outro programa para as culturas&quot;
+     I_Txt(48) = &quot;Verifique a escala:&quot; &amp; Chr(13) &amp; &quot;Caixa de diálogo &quot;&quot;Imagem&quot;&quot;, guia &quot;&quot;Cortar&quot;&quot;&quot; &amp; Chr(13) &amp; _
+     &quot;(% Largura deve ser igual a % Altura)&quot;
+     I_Txt(49) = &quot;Percorrer Imagens&quot;
+     I_Txt(50) = &quot;Percorer comentários&quot;
+
+   Case Else
+     I_Txt(0) = &quot;Images Review&quot;
+     I_Txt(1) = &quot;Change&quot;
+     I_Txt(2) = &quot;As Character&quot;
+     I_Txt(3) = &quot;Change/Assign&quot;
+     I_Txt(4) = &quot;From Marco&quot;
+     I_Txt(5) = &quot;Edit (external)&quot;
+     I_Txt(6) = &quot;&lt; Previous&quot;
+     I_Txt(7) = &quot;Next &gt;&quot;
+     I_Txt(8) = &quot;Exit&quot;
+     I_Txt(9) = Chr(13) &amp; &quot;◘ Have you made any modifications to the image?&quot; &amp; Chr(13) &amp; _
+     &quot;  1.-Change to the next or previous&quot; &amp; Chr(13) &amp; &quot;  2.- Go back to check to see if the changes have been applied.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;   – Figures do not appear in the sequence of appearance in the document&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Have you changed the order of the figures? Have you added or deleted images?&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;  1.- Save the changes&quot; &amp; Chr(13) &amp; &quot;  2.- Reload the document&quot; &amp; Chr(13) &amp; &quot;  3.- Rename images and frames&quot;
+     I_Txt(10) = &quot;Frame Description&quot;
+     I_Txt(11) = &quot;Image description&quot;
+     I_Txt(12) = &quot;Anchorage&quot;
+     I_Txt(13) = &quot; To Paragraph&quot;
+     I_Txt(14) = &quot; As Character&quot;
+     I_Txt(15) = &quot; To Page&quot;
+     I_Txt(16) = &quot; To Frame&quot;
+     I_Txt(17) = &quot; To Character&quot;
+     I_Txt(18) = &quot;Image Name: &quot;
+     I_Txt(19) = &quot;First Image&quot;
+     I_Txt(20) = &quot;Image  &quot;
+     I_Txt(21) = &quot;Last Image&quot;
+     I_Txt(22) = &quot;Image cropped with Writer&quot; &amp; Chr(13) &amp; &quot; - Use another program for cropping&quot;
+     I_Txt(23) = &quot;No cropped Image&quot;
+     I_Txt(24) = &quot;Check the Image scale&quot;
+     I_Txt(25) = &quot;Correct Image scale&quot;
+     I_Txt(26) = &quot;Image without Frame&quot;
+     I_Txt(27) = &quot;Images have been deleted or incorporated&quot; &amp; Chr(13) &amp; &quot;1) Save changes&quot; &amp; Chr(13) &amp; _
+     &quot;2) Reload the  file.&quot; &amp; Chr(13) &amp; &quot;3) Rename the images again.&quot;
+     I_Txt(28) = &quot;Images review halted&quot;
+     I_Txt(29) = &quot;&quot; &apos;NO usado
+     I_Txt(30) = &quot;The image name cannot be empty&quot;
+     I_Txt(31) = Chr(13) &amp; &quot;Err: -1 Duplicate name?&quot; &amp; Chr(13) &amp; &quot;Try another one&quot;
+     I_Txt(32) = &quot;Working ...&quot;
+     I_Txt(33) = &quot;&quot;
+     I_Txt(34) = &quot;First of all You must to save the document&quot;
+     I_Txt(35) = &quot;All images have been deleted&quot;
+     I_Txt(36) = &quot;  Frames with problems, check annotations&quot;
+     I_Txt(37) = &quot;  Images with problems, check annotations&quot;
+     I_Txt(38) = &quot;&quot;
+     I_Txt(39) = &quot;There are not images in the document&quot;
+     I_Txt(40) = &quot;- Images adjusted &quot;
+     I_Txt(41) = &quot;Adjusting images and frames&quot;
+     I_Txt(42) = &quot;- Frames adjusted&quot;
+     I_Txt(43) = &quot;- Descriptions applied to frames&quot;
+     I_Txt(44) = &quot;- Descriptions applied to images&quot;
+     I_Txt(45) = &quot;Possible frame without image, or caption above the image&quot; &amp; Chr(13) &amp; Chr(13) &amp;  _
+     &quot;- Review this frame and its contents&quot;
+     I_Txt(46) = &quot;Badly formed legend text.&quot; &amp; Chr(13) &amp;  &quot;Figure X: and &apos;space&apos;?&quot; &amp; Chr(13) &amp; _
+     &quot;- Check the legend and frame and image descriptions&quot;
+     I_Txt(47) = &quot;Image was cropped with Writer.&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Use another program for cropping&quot;
+     I_Txt(48) = &quot;Check the Scale:&quot; &amp; Chr(13) &amp; Chr(13) &amp;  &quot;&quot;&quot;Image&quot;&quot; dialog, &quot;&quot;Crop&quot;&quot; Tab&quot; &amp; Chr(13) &amp; _
+     &quot;(% Width must be equal to % Height)&quot;
+     I_Txt(49) = &quot;Browse Images&quot;
+     I_Txt(50) = &quot;Browse Annotations&quot;
+
+ End Select
+End Sub
+
+ Rem ############
+Sub Trad_Resaltes
+   Select Case F_getLang
+   Case &quot;es&quot;
+     R_Txt(0) = &quot;Resaltado de estilos&quot;
+     R_Txt(1) = &quot;La definición de estilos contiene errores&quot;
+     R_Txt(2) = &quot;Detalles&quot;
+     R_Txt(3) = &quot;Estilos de párrafo&quot;
+     R_Txt(4) = &quot;Estilos de carácter&quot;
+     R_Txt(5) = &quot;Estilos de la plantilla no presentes en el documento&quot;
+     R_Txt(6) = &quot;Errores de sintáxis&quot;
+     R_Txt(7) = &quot;Estilos - Se ha quitado el resalte&quot;
+     R_Txt(8) = &quot;Estilos resaltados&quot;
+     R_Txt(9) = &quot;Recuerda  quitar resaltes al finalizar la revisión&quot;
+     R_Txt(10) = &quot;Párrafo&quot;
+     R_Txt(11) = &quot;Carácter&quot;
+     R_Txt(12) = &quot;No modificado&quot;
+     R_Txt(13) = &quot; - Error en definición del estilo, ¿falta &quot;&quot;Color&quot;&quot;?&quot;
+     R_Txt(14) = &quot; - &quot;&quot;Linea&quot;&quot;, solo puede ser 1 (Sencilla), 2 (Doble) o 12 (Gruesa)&quot;
+     R_Txt(15) = &quot; - no se ha indicado tipo de linea&quot;
+     R_Txt(16) = &quot; - para &quot;&quot;Subrayado&quot;&quot; no se admite un segundo color&quot;
+     R_Txt(17) = &quot; - El color sólo puede ser &quot;&quot; Auto &quot;&quot; (para Automático) o un valor numérico&quot;
+     R_Txt(18) = &quot; - falta el color para el subrayado (Color2)&quot;
+     R_Txt(19) = &quot; - para &quot;&quot;Resalte&quot;&quot;, solo se admite F (Fondo), L (Letra) o S (Subrayado)&quot;
+     R_Txt(20) = &quot;Se enumeran los estilos a los que se ha cambiado el resalte. Puede que algunos estilos no estén aplicados&quot;
+     R_Txt(21) = &quot;Al resaltar todos los estilos empleados en la documentación&quot; &amp; Chr(13) &amp; _
+     &quot;De un un vistazo se puede comprobar: &quot; &amp; Chr(13) &amp; &quot;Parrafos: &quot; &amp; Chr(13) &amp; &quot;Un párrafo no resaltado es sospechoso &quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;Caracteres:&quot;  &amp; Chr(13) &amp; &quot;Un formato cursiva, negrita etc. no resaltado es formato directo&quot; &amp; Chr(13) &amp;  Chr(13) &amp; _
+     &quot;Los colores identifican distintos estilos de párrafo o de carácter para identificar si el estilo aplicado es el correcto&quot; &amp; Chr(13) &amp; _
+     &quot;con el uso irás descubriendo a qué estilo pertenece cada color.&quot;
+
+   Case &quot;pt&quot;
+     R_Txt(0) = &quot;Destaque de estilos&quot;
+     R_Txt(1) = &quot;A definição do estilos contém erros&quot;
+     R_Txt(2) = &quot;Detalhes&quot;
+     R_Txt(3) = &quot;Estilos de parágrafo&quot;
+     R_Txt(4) = &quot;Estilos de caractere&quot;
+     R_Txt(5) = &quot;Estilos do modelo não presentes no documento&quot;
+     R_Txt(6) = &quot;Erros de sintaxe&quot;
+     R_Txt(7) = &quot;Estilos. O destaque foi removido&quot;
+     R_Txt(8) = &quot;Estilos destacados&quot;
+     R_Txt(9) = &quot;Lembre-se de remover os destaques quando terminar a revisão&quot;
+     R_Txt(10) = &quot;Parágrafo&quot;
+     R_Txt(11) = &quot;Caractere&quot;
+     R_Txt(12) = &quot;Não modificado&quot;
+     R_Txt(13) = &quot; - Erro na definição do estilo, falta &quot;&quot;Cor&quot;&quot;?&quot;
+     R_Txt(14) = &quot;- &quot;&quot;Linha&quot;&quot;, só pode ser 1 (Simple), 2 (Duplo) ou 12 (Espesso)&quot;
+     R_Txt(15) = &quot;- nenhum tipo de linha foi indicado&quot;
+     R_Txt(16) = &quot; - para &quot;&quot;Sublinhado&quot;&quot; uma segunda cor não é suportada&quot;
+     R_Txt(17) = &quot; - A cor só pode ser &quot;&quot;Auto&quot;&quot; (para Automático) ou um valor numérico&quot;
+     R_Txt(18) = &quot;- falta cor para sublinhado (Color2)&quot;
+     R_Txt(19) = &quot; - para &quot;&quot;Destaque&quot;&quot;, apenas F (fundo), L (letra) ou S (sublinhado) é suportado&quot;
+     R_Txt(20) = &quot;São enumerados os estilos que mudaram o ressalte. Alguns estilos podem não estar aplicados&quot;
+     R_Txt(21) = &quot;Destacando todos os estilos usados ​​na documentação&quot; &amp; Chr(13) &amp; _
+     &quot;De relance você pode ver: &quot; &amp; Chr(13) &amp; &quot;Parágrafos: &quot; &amp; Chr(13) &amp; &quot;Um texto não destacado parágrafo é suspeito &quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;Caracteres:&quot; &amp; Chr(13) &amp; &quot;Um formato em itálico, negrito etc.. não destacado é a formatação direta&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;As cores identificam diferentes estilos de parágrafo ou caractere para identificar se o estilo aplicado está correto&quot; &amp; Chr(13) &amp; _
+     &quot;com Conforme você o usa você descobrirá a qual estilo cada cor pertence.&quot;
+
+   Case Else
+     R_Txt(0) = &quot;Style highlighting&quot;
+     R_Txt(1) = &quot;The styles definition contains errors.&quot;
+     R_Txt(2) = &quot;Detail&quot;
+     R_Txt(3) = &quot;Paragraph styles&quot;
+     R_Txt(4) = &quot;Character Styles&quot;
+     R_Txt(5) = &quot;Styles not in document&quot;
+     R_Txt(6) = &quot;Sintax Errors&quot;
+     R_Txt(7) = &quot;Styles. Higlight has been removed&quot;
+     R_Txt(8) = &quot;Higlighted Styles&quot;
+     R_Txt(9) = &quot;Remember to remove highlights at the end of the revision.&quot;
+     R_Txt(10) = &quot;Paragraph&quot;
+     R_Txt(11) = &quot;Character&quot;
+     R_Txt(12) = &quot;Unmodified&quot;
+     R_Txt(13) = &quot; - Error in style definition, is &quot;&quot;Color&quot;&quot; missing?&quot;
+     R_Txt(14) = &quot; - &quot;&quot;Line&quot;&quot;, can only be 1 (Single), 2 (Double) or 12 (Thick)&quot;
+     R_Txt(15) = &quot; - no line type has been indicated&quot;
+     R_Txt(16) = &quot; - for &quot;&quot;Underline&quot;&quot; a second color is not supported&quot;
+     R_Txt(17) = &quot; - The color can only be &quot;&quot;Auto&quot;&quot; (for Automatic) or a numeric value&quot;
+     R_Txt(18) = &quot; - missing color for underline (Color2)&quot;
+     R_Txt(19) = &quot; - for &quot;&quot;Highlight&quot;&quot;, only F (Background), L (Letter), or S (Underline) is supported&quot;
+     R_Txt(20) = &quot;The styles whose highlight has been changed are listed. Some styles may not be applied&quot;    
+     R_Txt(21) = &quot;By highlighting all the styles used in the documentation&quot; &amp; Chr(13)&amp; &quot;At a glance you can see: &quot; &amp; Chr(13) &amp; _
+     &quot;Paragraphs: &quot; &amp; Chr(13) &amp; &quot;A paragraph not highlighted is suspicious &quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Characters:&quot; &amp; Chr(13) &amp; _
+     &quot;An italic, bold etc. format that is not highlighted is direct formatting&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;Diferens colors identify different paragraph or character styles to identify if the style applied is correct&quot; &amp; Chr(13) &amp; _
+     &quot;with use you will discover which style each color belongs to.&quot;
+   End Select
+End Sub
+
+ Rem ############
+Sub Trad_Renombrar
+   Select Case F_getLang
+   Case &quot;es&quot;
+     Ren_Txt(0) = &quot;Renombrar objetos&quot;
+     Ren_Txt(1) = &quot;Salir&quot;
+     Ren_Txt(2) = &quot;&lt; Volver&quot;
+     Ren_Txt(3) = &quot;Renombrar&quot;
+     Ren_Txt(4) = &quot;Renombra los elementos en la secuencia de aparición.&quot; &amp; Chr(13) &amp; _
+     &quot;- Se utiliza el prefijo adecuado (img_, frm_, tb_, sec_ o toc_)&quot; &amp; Chr(13) &amp;  _
+     &quot;+  los  seis primeros caracteres del nombre de archivo&quot; &amp; Chr(13) &amp;  &quot;+ separador + número de 3 dígitos.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;- Ejemplo: imagen 1 del cap 3 de la guía de Draw :&quot; &amp; Chr(13) &amp;  Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG7603-001&quot;&quot;&quot;
+     Ren_Txt(5) = &quot;Selecciona  elementos para renombrar&quot;
+     Ren_Txt(6) = &quot;Imágenes&quot;
+     Ren_Txt(7) = &quot;Tablas&quot;
+     Ren_Txt(8) = &quot;Marcos&quot;
+     Ren_Txt(9) = &quot;Índice&quot;
+     Ren_Txt(10) = &quot;Secciones&quot;
+     Ren_Txt(11) = &quot;No hay secciones aparte de las específicas de las guías&quot;
+     Ren_Txt(12) = &quot;En el documento no hay &quot;
+     Ren_Txt(13) = &quot; Renombrad@s&quot;
+     Ren_Txt(14) = &quot;No hay sumarios o hay más de uno&quot;
+     Ren_Txt(15) = &quot;Sumario renombrado&quot;
+     Ren_Txt(16) = &quot;El documento ha sido modificado.&quot; &amp; Chr(13) &amp; &quot;Para garantizar que los objetos se nombren&quot; &amp; _
+     &quot;según su aparición&quot; &amp; Chr(13) &amp; &quot;es necesario guardar los cambios y recargar el documento&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;¿Guardar y recargar?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- No podrás deshacer los cambios efectuados hasta ahora&quot;
+     Ren_Txt(17) = &quot;Comprueba las secciones y sus nombres&quot;
+
+   Case &quot;pt&quot;
+     Ren_Txt(0) = &quot;Renomear objetos&quot;
+     Ren_Txt(1) = &quot;Sair&quot;
+     Ren_Txt(2) = &quot;&lt; Voltar&quot;
+     Ren_Txt(3) = &quot;Renomear&quot;
+     Ren_Txt(4) = &quot;Renomeia os elementos na sequência de aparência.&quot; &amp; Chr(13) &amp; _
+     &quot;- O prefixo apropriado é usado (img_, frm_, tb_, sec_ ou toc_)&quot; &amp; Chr(13) &amp; _
+     &quot; + os primeiros seis caracteres do nome do arquivo&quot; &amp; Chr(13) &amp;  &quot;+ separador + número de 3 dígitos.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;- Exemplo de imagem 1 do capítulo 3 do guia do Draw:&quot; &amp; Chr(13) &amp;  Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG7603-001&quot;&quot;&quot;
+     Ren_Txt(5) = &quot;Selecione os elementos para renomear&quot;
+     Ren_Txt(6) = &quot;Imagens&quot;
+     Ren_Txt(7) = &quot;Tabelas&quot;
+     Ren_Txt(8) = &quot;Quadros&quot;
+     Ren_Txt(9) = &quot;Índice&quot;
+     Ren_Txt(10) = &quot;Seções&quot;
+     Ren_Txt(11) = &quot;Não há outras seções além daquelas específicas das guías&quot;
+     Ren_Txt(12) = &quot;No documento não há  &quot;
+     Ren_Txt(13) = &quot; Renomead@s&quot;
+     Ren_Txt(14) = &quot;Não há índices ou há mais de 1 índice&quot;
+     Ren_Txt(15) = &quot;Índice renomeado&quot;
+     Ren_Txt(16) = &quot;O documento foi modificado.&quot; &amp; Chr(13) &amp; &quot;Para garantir que os objetos sejam nomeados&quot; &amp; _
+     &quot;de acordo com sua aparência&quot; &amp; Chr(13) &amp; &quot;é necessário salvar as alterações e recarregar o documento&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;Salvar e recarregar?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- Você não poderá desfazer as alterações feitas até agora&quot;
+     Ren_Txt(17) = &quot;Verifique as seções e seus nomes&quot;
+
+   Case Else
+     Ren_Txt(0) = &quot;Rename objects&quot;
+     Ren_Txt(1) = &quot;Exit&quot;
+     Ren_Txt(2) = &quot;&lt; Back&quot;
+     Ren_Txt(3) = &quot;Rename&quot;
+     Ren_Txt(4) =&quot;Renames the selected elements in the appearance sequence.&quot; &amp; Chr(13) &amp; _
+     &quot;- The appropriate prefix is used (img_, frm_, tb_, sec_ or toc_)&quot; &amp; Chr(13) &amp; _
+     &quot;+ the first six characters of the file name&quot; &amp; Chr(13) &amp;  &quot;+ separator + 3-digit number.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+     &quot;- Example image 1 of chapter 3 of the Draw guide:&quot; &amp; Chr(13) &amp; Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG7603-001&quot;&quot;&quot;
+     Ren_Txt(5) = &quot;Select elements to rename&quot;
+     Ren_Txt(6) = &quot;Images&quot;
+     Ren_Txt(7) = &quot;Tables&quot;
+     Ren_Txt(8) = &quot;Frames&quot;
+     Ren_Txt(9) = &quot;Index&quot;
+     Ren_Txt(10) = &quot;Sections&quot;
+     Ren_Txt(11) = &quot;There are no sections other than those specific to the guides&quot;
+     Ren_Txt(12) = &quot;There are not &quot;
+     Ren_Txt(13) = &quot; Renamed&quot;
+     Ren_Txt(14) = &quot;There are not tables of contents or there are more than 1 indexes&quot;
+     Ren_Txt(15) = &quot;Table of contents Renamed&quot;
+     Ren_Txt(16) = &quot;The document has been modified.&quot; &amp; Chr(13) &amp; &quot;To ensure that objects are named&quot; &amp; _
+     &quot;according to its appearance&quot; &amp; Chr(13) &amp; &quot;it is necessary to save the changes and reload the document&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;Save and reload?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- You will not be able to undo the changes made so far&quot;
+     Ren_Txt(17) = &quot;Check the sections and their names&quot;
+   End Select
+End Sub
+
+ Rem ############
+Sub Trad_Tablas
+   Select Case F_getLang
+   Case &quot;es&quot;
+     T_Txt(0) = &quot;Revisión de Tablas&quot;
+     T_Txt(1) = &quot;Nombre:&quot;
+     T_Txt(2) = &quot;Estilo:&quot;
+     T_Txt(3) = &quot;Tipo de tabla&quot;
+     T_Txt(4) = &quot;Datos&quot;
+     T_Txt(5) = &quot;Distribución&quot;
+     T_Txt(6) = &quot;Selecciona un tipo de tabla para optimizar y pulsa &quot;&quot;Optimizar&quot;&quot;, o pulsa en &quot;&quot;Siguiente&quot;&quot; &quot; &amp;_ 
+     &quot;para omitir la modificación de  la tabla&quot;
+     T_Txt(7) = &quot;&lt; Anterior&quot;
+     T_Txt(8) = &quot;Optimizar&quot;
+     T_Txt(9) = &quot;Optimizada&quot;
+     T_Txt(10) = &quot;Siguiente &gt;&quot;
+     T_Txt(11) = &quot;Salir&quot;
+     T_Txt(12) = &quot;Última Tabla&quot;
+     T_Txt(13) = &quot;Primera tabla&quot;
+     T_Txt(14) = &quot;No hay tablas en el documento&quot;
+     T_Txt(15) = &quot;Selecciona un tipo de tabla o pulsa en Siguiente&quot;
+     T_Txt(16) = &quot;Tabla  &quot;
+     T_Txt(17) = &quot;&quot;
+     T_Txt(18) = &quot;Se han borrado o añadido tablas&quot; &amp; Chr(13) &amp; &quot; 1) Guarda los cambios&quot; &amp; Chr(13) &amp; _
+     &quot; 2) Recarga el documento&quot; &amp; Chr(13) &amp;  &quot; 3) Renombra las tablas otra vez.&quot;
+     T_Txt(19) = &quot;Revisión de tablas detenida&quot;&apos;
+     T_Txt(20) = &quot;Se aplica el estilo &quot;&quot;LO_Guides&quot;&quot; a la tabla&quot; &amp; Chr(13) &amp; &quot;anchura ajustada al 90%, centrada y optimizada &quot;
+     T_Txt(21) = &quot;La tabla conservará su aspecto, pero se optimizará: &quot;
+     T_Txt(22) = &quot; - Espaciado de la tabla con el cuerpo de texto, celdas con alineación vertical centrada y altúra mínima.&quot;
+     T_Txt(23) = &quot;Única tabla&quot;
+     T_Txt(24) = &quot;Primero tienes que guardar el documento&quot;
+     T_Txt(25) = &quot;Se han borrado todas las tablas, imposible continuar&quot;
+
+   Case &quot;pt&quot;
+     T_Txt(0) = &quot;Revisão de Tabelas&quot;
+     T_Txt(1) = &quot;Nome: &quot;
+     T_Txt(2) = &quot;Estilo&quot;
+     T_Txt(3) = &quot;Tipo de tabela&quot;
+     T_Txt(4) = &quot;Datos&quot;
+     T_Txt(5) = &quot;Distribuição&quot;
+     T_Txt(6) = &quot;Selecione um tipo de tabela para otimizar e clique em &quot;&quot;Otimizar&quot;&quot; ou clique em &quot;&quot;Próxima&quot;&quot; &quot; &amp;_
+     &quot;para pular a modificação da tabela&quot;
+     T_Txt(7) = &quot;&lt; Anterior&quot;
+     T_Txt(8) = &quot;Otimizar&quot;
+     T_Txt(9) = &quot;Otimizada&quot;
+     T_Txt(10) = &quot;Próxima &gt;&quot;
+     T_Txt(11) = &quot;Sair&quot;
+     T_Txt(12) = &quot;Última tabela&quot;
+     T_Txt(13) = &quot;Primeira tabela&quot;
+     T_Txt(14) = &quot;No ha tabelas no Documento&quot;
+     T_Txt(15) = &quot;Selecione um tipo de tabela ou pressione Próxima&quot;
+     T_Txt(16) = &quot;Tabela&quot;
+     T_Txt(17) = &quot;&quot;
+     T_Txt(18) = &quot;Foram excluídas ou adicionadas tabelas&quot; &amp; Chr(13) &amp; &quot; 1) Salve asalterações&quot; &amp; Chr(13) &amp; _
+     &quot; 2) Recarrege o documento&quot; &amp; Chr(13) &amp; &quot; 3) Renomeie as tabelas novamente.&quot;
+     T_Txt(19) = &quot;Revisão da tabelas interrompida&quot;
+     T_Txt(20) = &quot;Estilo &quot;&quot;LO_Guides&quot;&quot; é aplicado à tabela &quot;&amp;Chr(13) &amp; &quot;- Largura definida como 90%, centralizada e otimizada&quot;
+     T_Txt(21) = &quot;A tabela manterá sua aparência, mas será otimizada: &quot;
+     T_Txt(22) = &quot; - Espaçamento da tabela com o corpo do texto, células com alinhamento vertical centralizado e altura mínima.&quot;
+     T_Txt(23) = &quot;Única tabela&quot;
+     T_Txt(24) = &quot;Primeiro de tudo você deve salvar o documento&quot;
+     T_Txt(25) = &quot;Todas as tabelas foram excluídas, impossível continuar&quot;
+
+   Case Else
+     T_Txt(0) = &quot;Tables Review&quot;
+     T_Txt(1) = &quot;Name: &quot;
+     T_Txt(2) = &quot;Style&quot;
+     T_Txt(3) = &quot;Table type&quot;
+     T_Txt(4) = &quot;Data&quot;
+     T_Txt(5) = &quot;Distribution&quot;
+     T_Txt(6) = &quot;Select a type of table to optimize and click &quot;&quot;Optimize&quot;&quot; or click &quot;&quot;Next&quot;&quot; to skip modifying the table&quot;
+     T_Txt(7) = &quot;&lt; Previous&quot;
+     T_Txt(8) = &quot;Optimize&quot;
+     T_Txt(9) = &quot;Optimized&quot;
+     T_Txt(10) = &quot;Next &gt;&quot;
+     T_Txt(11) = &quot;Exit&quot;
+     T_Txt(12) = &quot;Last Table&quot;
+     T_Txt(13) = &quot;First Table&quot;
+     T_Txt(14) = &quot;There are not Tables in the document&quot;
+     T_Txt(15) = &quot;Select a table type or press Next&quot;
+     T_Txt(16) = &quot;Table &quot;
+     T_Txt(17) = &quot;&quot;
+     T_Txt(18) = &quot;Tables have been deleted or added&quot; &amp; Chr(13) &amp; &quot; 1) Save changes&quot; &amp; Chr(13) &amp; _
+     &quot; 2) Reload the document&quot; &amp; Chr(13) &amp; &quot; 3) Rename the tables again.&quot;
+     T_Txt(19) = &quot;Tables review halted&quot;
+     T_Txt(20) = &quot;Style &quot;&quot;LO_Guides&quot;&quot; is applied to table &quot;&amp; Chr(13) &amp; &quot;width set to 90%, centered and optimized&quot;
+     T_Txt(21) = &quot;The table will retain its appearance, but will be optimized: &quot;
+     T_Txt(22) = &quot; - Spacing of the table with the body of text, cells with centered vertical alignment and minimum height.&quot;
+     T_Txt(23) = &quot;Table unique&quot;
+     T_Txt(24) = &quot;First of all You must to save the document&quot;
+     T_Txt(25) = &quot;All tables have been deleted, impossible to continue&quot;
+
+    End Select
+End Sub
+ Rem ================= Fin L10n ===========================================
+</script:module>

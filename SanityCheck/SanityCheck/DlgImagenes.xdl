@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="Imagenes" dlg:tab-index="0" dlg:left="100" dlg:top="89" dlg:width="228" dlg:height="177" dlg:page="1" dlg:closeable="true" dlg:moveable="true" dlg:title="Revisión">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="1" dlg:font-weight="100"/>
+  <dlg:style dlg:style-id="2" dlg:text-color="0xc9211e" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="3" dlg:font-height="10" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="4" dlg:text-color="0xff" dlg:font-height="24" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="5" dlg:font-height="11"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Recorte" dlg:tab-index="13" dlg:left="14" dlg:top="135" dlg:width="135" dlg:height="18" dlg:page="1" dlg:value="Lbl_Recorte" dlg:multiline="true"/>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_De_Marco" dlg:tab-index="7" dlg:left="159" dlg:top="93" dlg:width="50" dlg:height="12" dlg:page="1" dlg:help-text="Copia la descripción del marco " dlg:value="Btn_De_Marco">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Desde_Marco?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Editar" dlg:tab-index="6" dlg:left="155" dlg:top="77" dlg:width="55" dlg:height="12" dlg:page="1" dlg:value="Btn_Editar">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Cambiar_Desc_Img?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Img_Name" dlg:tab-index="2" dlg:left="160" dlg:top="26" dlg:width="50" dlg:height="12" dlg:page="1" dlg:value="Btn_Img_Name">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Cambiar_Nombre_Img?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:textfield dlg:id="Tx_Desc_Marco" dlg:tab-index="3" dlg:left="14" dlg:top="53" dlg:width="135" dlg:height="10" dlg:page="1">
+   <script:event script:event-name="on-textchange" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnTx_Desc_Marco?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:textfield>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Desc_Marco" dlg:tab-index="4" dlg:left="160" dlg:top="53" dlg:width="50" dlg:height="12" dlg:page="1" dlg:value="Btn_Desc_Marco">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Cambiar_Desc_Marco?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Recorte" dlg:tab-index="9" dlg:left="154" dlg:top="137" dlg:width="57" dlg:height="13" dlg:page="1" dlg:help-text="Abre el programa asociado para editar la imagen (dependiente del S.O.)" dlg:value="Btn_Recorte">
+   <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Editar_pulsado?language=Basic&amp;location=application" script:language="Script"/>
+   <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Editar_soltado?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:textfield dlg:id="Tx_Desc_Img" dlg:tab-index="5" dlg:left="14" dlg:top="80" dlg:width="135" dlg:height="24" dlg:page="1" dlg:valign="top" dlg:multiline="true">
+   <script:event script:event-name="on-textchange" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnTx_Desc_Img?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:textfield>
+  <dlg:text dlg:style-id="2" dlg:id="Lbl_Escala" dlg:tab-index="15" dlg:left="14" dlg:top="125" dlg:width="135" dlg:height="10" dlg:page="1" dlg:value="Lbl_Escala" dlg:valign="center"/>
+  <dlg:text dlg:style-id="3" dlg:id="Lbl_Ultima" dlg:tab-index="16" dlg:left="16" dlg:top="159" dlg:width="49" dlg:height="12" dlg:page="1" dlg:value="Lbl_Ultima" dlg:align="center" dlg:valign="center"/>
+  <dlg:text dlg:id="Label3" dlg:tab-index="17" dlg:left="186" dlg:top="180" dlg:width="2" dlg:height="0" dlg:value="Label3"/>
+  <dlg:titledbox dlg:style-id="0" dlg:id="Fr_Img" dlg:tab-index="18" dlg:left="10" dlg:top="18" dlg:width="205" dlg:height="24" dlg:page="1" dlg:help-text="Alterna el orden de las leyendas dentro del marco">
+   <dlg:title dlg:value="Fr_Img"/>
+  </dlg:titledbox>
+  <dlg:textfield dlg:id="Tx_Nombre_Img" dlg:tab-index="1" dlg:left="14" dlg:top="28" dlg:width="135" dlg:height="10" dlg:page="1">
+   <script:event script:event-name="on-textchange" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnTx_Nombre_Img?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:textfield>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Anterior" dlg:tab-index="10" dlg:left="84" dlg:top="159" dlg:width="36" dlg:height="13" dlg:page="1" dlg:value="Btn_Anterior">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Anterior?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Salir" dlg:tab-index="12" dlg:left="181" dlg:top="159" dlg:width="32" dlg:height="13" dlg:page="1" dlg:value="Btn_Salir">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Salir?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Siguiente" dlg:tab-index="11" dlg:left="131" dlg:top="159" dlg:width="37" dlg:height="13" dlg:page="1" dlg:value="Btn_Siguiente">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Siguiente?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:titledbox dlg:style-id="0" dlg:id="Fr_Marco" dlg:tab-index="19" dlg:left="10" dlg:top="44" dlg:width="205" dlg:height="24" dlg:page="1">
+   <dlg:title dlg:value="Fr_Marco"/>
+  </dlg:titledbox>
+  <dlg:titledbox dlg:style-id="0" dlg:id="Fr_Desc" dlg:tab-index="14" dlg:left="10" dlg:top="71" dlg:width="205" dlg:height="38" dlg:page="1">
+   <dlg:title dlg:value="Fr_Desc"/>
+  </dlg:titledbox>
+  <dlg:button dlg:style-id="4" dlg:id="Btn_Ayuda" dlg:tab-index="0" dlg:left="201" dlg:top="2" dlg:width="18" dlg:height="18" dlg:tabstop="true" dlg:value="?">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Ayuda?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:textfield dlg:id="Tx_Ayuda" dlg:tab-index="20" dlg:left="9" dlg:top="25" dlg:width="208" dlg:height="141" dlg:page="-1" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_Ayuda"/>
+  <dlg:text dlg:style-id="5" dlg:id="Lbl_Img_N" dlg:tab-index="21" dlg:left="14" dlg:top="5" dlg:width="183" dlg:height="11" dlg:page="1" dlg:value="Lbl_Img_N" dlg:valign="center"/>
+  <dlg:button dlg:style-id="1" dlg:id="Btn_Ancla" dlg:tab-index="8" dlg:left="160" dlg:top="114" dlg:width="50" dlg:height="12" dlg:page="1" dlg:value="Btn_Ancla">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Imagenes.OnBtn_Ancla?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Ancla" dlg:tab-index="23" dlg:left="55" dlg:top="115" dlg:width="53" dlg:height="8" dlg:page="1" dlg:value="Lbl_Ancla" dlg:tabstop="true"/>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Anclaje" dlg:tab-index="22" dlg:left="14" dlg:top="115" dlg:width="34" dlg:height="8" dlg:page="1" dlg:value="Lbl_Anclaje"/>
+ </dlg:bulletinboard>
+</dlg:window>
