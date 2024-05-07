@@ -23,11 +23,11 @@
 
 
 ## Descarga / Download / Baixar
-+ Puede descargar la extensión del [repositorio de Github](https://github.com/Bantoniof/LibreOffice-SanityCheck) (archivo _SanityChek.oxt_).
++ Puede descargar la extensión del [repositorio de Github](https://github.com/Bantoniof/LibreOffice-SanityCheck/releases) (archivo _SanityChek.oxt_).
 
-+ You can download the extension from the [Github repository](https://github.com/Bantoniof/LibreOffice-SanityCheck) (_SanityChek.oxt_ file).
++ You can download the extension from the [Github repository](https://github.com/Bantoniof/LibreOffice-SanityCheck/releases) (_SanityChek.oxt_ file).
 
-+ Você pode baixar a extensão do [repositório Github](https://github.com/Bantoniof/LibreOffice-SanityCheck) (arquivo _SanityChek.oxt_).
++ Você pode baixar a extensão do [repositório Github](https://github.com/Bantoniof/LibreOffice-SanityCheck/releases) (arquivo _SanityChek.oxt_).
 
 ## Documentación / Documents / Documentaçao
 
