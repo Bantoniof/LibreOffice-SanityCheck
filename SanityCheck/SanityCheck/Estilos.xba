@@ -231,25 +231,31 @@ End Sub
 
  Rem ############
 Sub OnBtEliminar_P(oEv)
- Dim oCtrl As Object, selPos As Integer, Eliminar As Variant
    oDlgEstilos = oEv.Source.Context
-   oCtrl = oDlgEstilos.getControl(&quot;Lst_Eliminar_P&quot;)
-   selPos = oCtrl.getSelectedItemPos
+ Dim oCtrl As Object : oCtrl = oDlgEstilos.getControl(&quot;Lst_Eliminar_P&quot;) 
+ Dim aSelPos() As Variant : aSelPos = oCtrl.getSelectedItemsPos
+ Dim aSeleccionados() as Variant : aSeleccionados = oCtrl.SelectedItems
+   
    With oDlgEstilos.getModel
      If oCtrl.getSelectedItem = E_Txt(8) Then
        .getByName(&quot;Btn_Eliminar_P&quot;).enableVisible = False
        Exit Sub
      Else
        Beep
-       Eliminar = MsgBox (E_Txt(9) &amp; oCtrl.getSelectedItem &amp; E_Txt(11), 4+48+256, E_Txt(12) &amp; Extension)
-       If Eliminar = 6 Then
-        Call EliminarEstilo (&quot;P&quot;,oCtrl.getSelectedItem,selPos)
-       ElseIf Eliminar = 0 OR Eliminar = 7 Then
-         oCtrl.SelectItemPos(selPos,False)&apos;Limpio selección
+ Dim Eliminar As Variant, i as integer
+       Eliminar = Msgbox (E_txt(9) &amp; F_MatrizCuadroTexto(aSeleccionados) &amp;_
+         E_Txt(11),4+48+256, E_Txt(12) &amp; Extension)
+       If eliminar = 0 or Eliminar= 7 Then &apos;Limpio selección 
+         For i = 0 to ubound(aSeleccionados)
+           oCtrl.SelectItemPos(aselPos(i),False) &apos; OJO diferencia de índice
+&apos;           oCtrl.SelectedItems(i)(selPos(i),False)&apos; oCtrl.SelectItemPos
+         Next
+       ElseIf Eliminar = 6 Then 
+         Call EliminarEstilos(&quot;P&quot;,aSeleccionados,oCtrl.SelectedItemsPos)
        End If
      End If
      If oCtrl.ItemCount = 0 Then
-       oCtrl.addItem(E_Txt(8),1) &apos;Item,Posición
+       oCtrl.addItem(E_Txt(8),1) &apos;Item,Posición &apos;posible posición = 0 ??
        .getByName(&quot;Lbl_InfoP&quot;).label = &quot;&quot;
        .getByName(&quot;Btn_Eliminar_P&quot;).enableVisible = False
      End If
@@ -258,29 +264,78 @@ End Sub
 
  Rem ############
 Sub OnBtEliminar_C(oEv)
- Dim  oCtrl As Object, selPos As Integer, Eliminar As Variant
+
    oDlgEstilos = oEv.Source.Context
-   oCtrl = oDlgEstilos.getControl(&quot;Lst_Eliminar_C&quot;)
-   selPos = oCtrl.getSelectedItemPos()
+ Dim oCtrl As Object : oCtrl = oDlgEstilos.getControl(&quot;Lst_Eliminar_C&quot;) 
+ Dim aSelPos() As Variant : aSelPos = oCtrl.getSelectedItemsPos
+ Dim aSeleccionados() as Variant : aSeleccionados = oCtrl.SelectedItems
+
    With oDlgEstilos.getModel
      If oCtrl.getSelectedItem = E_Txt(8) Then
-       .getByName(&quot;Btn_Eliminar_C&quot;).enableVisible = False
+       .getByName(&quot;Btn_Eliminar_P&quot;).enableVisible = False
        Exit Sub
      Else
        Beep
-       Eliminar = MsgBox(E_Txt(10) &amp; oCtrl.getSelectedItem &amp; E_Txt(11),4+48+256, E_Txt(13) &amp; Extension)
-       If Eliminar = 6 Then
-         Call EliminarEstilo (&quot;C&quot;,oCtrl.getSelectedItem,selPos)
-       ElseIf Eliminar = 0 OR Eliminar = 7 Then
-         oCtrl.SelectItemPos(selPos,False) &apos;Limpio selección
+ Dim  Eliminar As Variant, i as integer
+       Eliminar = Msgbox (E_txt(10) &amp; F_MatrizCuadroTexto(aSeleccionados) &amp;_
+         E_Txt(11),4+48+256, E_Txt(13) &amp; Extension)
+       If eliminar = 0 or Eliminar= 7 Then &apos;Limpio selección 
+         For i = 0 to ubound(aSeleccionados)
+           oCtrl.SelectItemPos(aselPos(i),False) &apos; OJO diferencia de índice
+&apos;           oCtrl.SelectedItems(i)(selPos(i),False)&apos; oCtrl.SelectItemPos
+         Next
+       ElseIf Eliminar = 6 Then 
+         Call EliminarEstilos(&quot;C&quot;,aSeleccionados,oCtrl.SelectedItemsPos)
        End If
      End If
      If oCtrl.ItemCount = 0 Then
-       oCtrl.addItem(E_Txt(8),1)
+       oCtrl.addItem(E_Txt(8),1) &apos;Item,Posición &apos;posible posición = 0 ??
        .getByName(&quot;Lbl_InfoC&quot;).label = &quot;&quot;
        .getByName(&quot;Btn_Eliminar_C&quot;).enableVisible = False
      End If
    End With
+End Sub
+
+ Rem ############
+Sub EliminarEstilos(Familia As String, ArrayNom As Variant, ArrayPos As Variant)
+ Dim  Listbox As String, oEstilos as Variant, Estilo_G As Variant
+   If Familia = &quot;P&quot; Then 
+     Familia = &quot;ParagraphStyles&quot;
+     Listbox = &quot;Lst_Eliminar_P&quot;
+     Estilo_G() = EstiloPU()
+   ElseIf Familia = &quot;C&quot; Then
+     Familia = &quot;CharacterStyles&quot;
+     Listbox = &quot;Lst_Eliminar_C&quot;
+     Estilo_G() = EstiloCU()
+   End If
+ oEstilos = ThisComponent.StyleFamilies.getByName(Familia)  
+   
+ Dim i as integer
+   For i = 0 to ubound(ArrayNom)
+     If oEstilos.HasByName(ArrayNom(i)) Then
+       oEstilos.removeByName(ArrayNom(i))
+     End If
+   Next  
+&apos; Recargo estilos sin uso
+ Dim oEstilo as Object, s As Integer, sinUso() As Variant
+  s = -1
+   For i = 0 To oEstilos.getCount -1
+     oEstilo = oEstilos.getByIndex(i)
+     If oEstilo.isUserDefined And Not oEstilo.isInUse Then
+         ReDim Preserve sinUso(0 To s+1)
+         sinUso(s+1) = oEstilo.Name
+         s = UBound(sinUso) &apos;???
+     End If
+   Next
+   BubbleSortList(sinUso)
+   sinUso = _Aux.F_RestaMatrices(Estilo_G,sinUso)&apos;matriz sin estilos guías
+   If UBound(sinUso) = -1 Then
+     ReDim sinUso(0)
+     sinUso(0) = E_Txt(8)
+   End If
+   oDlgEstilos.getModel.GetByName(ListBox).StringItemList = sinUso
+   oDlgEstilos.getControl(&quot;Btn_Eliminar_P&quot;).Enable = False
+   oDlgEstilos.getControl(&quot;Btn_Eliminar_C&quot;).Enable = False
 End Sub
 
  Rem ############

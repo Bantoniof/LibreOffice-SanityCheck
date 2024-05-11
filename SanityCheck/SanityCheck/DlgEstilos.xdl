@@ -12,10 +12,10 @@
   <dlg:button dlg:id="Btn_Eliminar_P" dlg:tab-index="2" dlg:left="265" dlg:top="88" dlg:width="49" dlg:height="15" dlg:page="1" dlg:help-text="Selecciona un estilo de la lista para eliminar" dlg:tabstop="true" dlg:value="Btn_Eliminar_P">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnBtEliminar_P?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:menulist dlg:id="Lst_Eliminar_P" dlg:tab-index="1" dlg:left="137" dlg:top="33" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="true" dlg:linecount="10">
+  <dlg:menulist dlg:id="Lst_Eliminar_P" dlg:tab-index="1" dlg:left="137" dlg:top="33" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="true" dlg:multiselection="true" dlg:linecount="10">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnLstBox_P_Change?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:menulist>
-  <dlg:menulist dlg:id="Lst_Eliminar_C" dlg:tab-index="3" dlg:left="137" dlg:top="114" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="true" dlg:linecount="10">
+  <dlg:menulist dlg:id="Lst_Eliminar_C" dlg:tab-index="3" dlg:left="137" dlg:top="114" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="true" dlg:multiselection="true" dlg:linecount="10">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnLstBox_C_Change?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:menulist>
   <dlg:textfield dlg:id="Tx_C_Uso" dlg:tab-index="12" dlg:left="10" dlg:top="114" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="false" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_C_Uso"/>
