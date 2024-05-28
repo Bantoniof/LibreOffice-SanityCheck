@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="DlgFormatos" dlg:left="257" dlg:top="127" dlg:width="209" dlg:height="122" dlg:page="2" dlg:closeable="true" dlg:moveable="true">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="DlgFormatos" dlg:left="257" dlg:top="127" dlg:width="209" dlg:height="122" dlg:page="1" dlg:closeable="true" dlg:moveable="true">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:text-color="0xff" dlg:font-height="24" dlg:font-weight="150"/>
  </dlg:styles>

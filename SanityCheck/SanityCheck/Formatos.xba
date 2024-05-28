@@ -144,6 +144,7 @@ Sub OnCasillaFormatos(oEv)
      End If
    End With
 End Sub
+
  Rem ############
 Function LimpiaTexto
  Rem Limpia el formato Directo del texto (no párrafos)
@@ -195,19 +196,26 @@ Function LimpiaParrafos
    oParEnum = ThisComponent.Text.createEnumeration()
  Dim oCursor As Object : oCursor = ThisComponent.Text.createTextCursor
    oCursor.gotoStart(False)
-    Do While oParEnum.hasMoreElements()
-       oPar = oParEnum.nextElement()
-       Wait 2 : PBcounter = PBcounter + 1 : oProgressBar.setValue(PBcounter)
-       If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
-         oCursor.gotoRange(oPar.Anchor,False)
-         oCursor.gotoendOfparagraph(True)
-            If _Aux.F_BuscarEnMatriz(E_Num, oPar.Parastylename) = False Then
-             oPar.NumberingLevel = 0 &apos;no sé si es necesario
-             oPar.NumberingStyleName = &quot;&quot;
-             oCursor.setAllPropertiesToDefault Rem Resetea TODOS los Párrafos
-           End If
+ 
+   Do While oParEnum.hasMoreElements()
+     oPar = oParEnum.nextElement()
+     Wait 2 : PBcounter = PBcounter + 1 : oProgressBar.setValue(PBcounter)
+     If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
+       oCursor.gotoRange(oPar.Anchor,False)
+       oCursor.gotoendOfparagraph(True)
+
+       If oPar.ParaStyleName = &quot;Standard&quot; Then
+         oCursor.ParaStyleName = _Aux.F_NtoDN(&quot;Text body&quot;) &apos;Cambia Predeterminado por C. Texto
+         Call _Aux.InsertAnnotation (oPar, oCursor, F_NtoDN(&quot;Standard&quot;) &amp; _
+             F_Txt(23) &amp; CHr(13) &amp; _Aux.F_NtoDN(&quot;Text body&quot;), F_Txt(0))
        End If
-    Loop
+       If _Aux.F_BuscarEnMatriz(E_Num, oPar.Parastylename) = False Then
+         oPar.NumberingLevel = 0 &apos;no sé si es necesario
+         oPar.NumberingStyleName = &quot;&quot; &apos;Elimina numeraciones
+         oCursor.setAllPropertiesToDefault Rem Resetea TODOS los Párrafos
+       End If
+     End If
+   Loop
    Call _Aux.ActualizarTodo
    LimpiaParrafos =  F_Txt(10)
    oProgressBar.End
@@ -248,7 +256,8 @@ Function F_Listados &apos;F_Listados
          cursor_Ant.gotoPreviousParagraph(False)
          cursor_Ant.gotoEndOfParagraph(false) &apos; -para el comentario
          If cursor_Ant.ParaStyleName = &quot;Text body&quot; Then
-  Call _Aux.InsertAnnotation (oPar, cursor_Ant, E_CTxT &amp;  F_Txt(23) &amp; CHr(13) &amp; &quot;Body Text, List Intro&quot;, F_Txt(20))
+           Call _Aux.InsertAnnotation (oPar, cursor_Ant, E_CTxT &amp; _
+               F_Txt(23) &amp; CHr(13) &amp; &quot;Body Text, List Intro&quot;, F_Txt(20))
            cursor_Ant.ParaStyleName = &quot;Body Text, List Intro&quot;
            contarMarcados = contarMarcados +1
          End If

@@ -22,9 +22,9 @@ End Sub
 Sub Cargar_Parametros
  Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
  Dim oUDP : oUDP = oDocprops().UserDefinedProperties
- Dim archivo : archivo = FileNameoutofPath(ThisComponent.getURL())
-   With oDlgCampos.getModel
-     .Title = archivo &amp; Extension
+ Dim Archivo : Archivo = FileNameoutofPath(ThisComponent.getURL())
+    With oDlgCampos.getModel
+     .Title = Archivo &amp; Extension
      .Step = 1
      .getbyname(&quot;Lbl_DocT&quot;).label = C_Txt(1)
      .getbyname(&quot;Lbl_Conex&quot;).label = C_Txt(2)
@@ -43,13 +43,20 @@ Sub Cargar_Parametros
      .getbyname(&quot;Lbl_AsuntoT&quot;).label = oDocProps.Subject     
      .getbyname(&quot;Tx_Coment&quot;).Text = oDocProps.Description     
      .getbyname(&quot;Tx_Ayuda&quot;).Text = C_Txt(19)
-
      .getbyname(&quot;Tx_Guia&quot;).Text = _Aux.F_Consulta_UDP(&quot;Guide Name&quot;)
+
      .getbyname(&quot;Tx_Cap_N&quot;).Text = _Aux.F_Consulta_UDP(&quot;Chapter Number&quot;)
      .getbyname(&quot;Tx_Cap_T&quot;).Text = _Aux.F_Consulta_UDP(&quot;Chapter Title&quot;)
      .getbyname(&quot;Lbl_Mes&quot;).Label = _Aux.F_Consulta_UDP(&quot;Month&quot;)
 
-      If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
+     If _Aux.F_EsPlantilla(ThisComponent) Then
+     .getbyname(&quot;Tx_Cap_N&quot;).EnableVisible= False
+     .getbyname(&quot;Lbl_coma&quot;).EnableVisible= False
+     .getbyname(&quot;Tx_Cap_T&quot;).EnableVisible= False
+     .getbyname(&quot;Fr_Titulo&quot;).EnableVisible= False
+     End If
+     
+     If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
        .getbyname(&quot;Lbl_Plantilla&quot;).label = oDocprops.TemplateName
      Else
        .getbyname(&quot;Lbl_Plantilla&quot;).label = C_Txt(8)
@@ -120,6 +127,8 @@ End Sub
 Sub Onbtn_Establecer(oEv)
  Dim Dato As String
  Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
+ Dim Archivo :Archivo= (ThisComponent.getURL)
+ 
    oDlgCampos = oEv.Source.Context
    If oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() = &quot;&quot; Then
      MsgBox (C_Txt(17), 0+48+0, C_Txt(0) &amp; Extension)
@@ -133,19 +142,31 @@ Sub Onbtn_Establecer(oEv)
      Dato =  oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() : _Aux.Establece_UDP(&quot;Month&quot;, Dato)
      Dato = cStr(.getbyname(&quot;Num_Ano&quot;).Value) : _Aux.Establece_UDP(&quot;Year&quot;, Dato)
      Dim Titulo
-     If .getbyname(&quot;Tx_Cap_N&quot;).Text &lt;&gt; &quot;&quot; Then
-       Titulo =  .getbyName(&quot;Tx_Cap_N&quot;).Text &amp; &quot;, &quot; &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text
+
+     If _Aux.F_EsPlantilla(ThisComponent) Then
+       Titulo = split(FileNameOutofPath(ThisComponent.getUrl),&quot;.&quot;)
+       Dato = Titulo(0)
      Else
-       Titulo = .getbyname(&quot;Tx_Cap_T&quot;).Text
+       If .getbyname(&quot;Tx_Cap_N&quot;).Text &lt;&gt; &quot;&quot; Then
+         Titulo =  .getbyName(&quot;Tx_Cap_N&quot;).Text &amp; &quot;, &quot; &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text
+       Else
+         Titulo = .getbyname(&quot;Tx_Cap_T&quot;).Text
+       End If
+         Dato = .getbyName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;) &amp; &quot; - &quot; &amp; Titulo 
      End If
-     Dato = .getbyName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;) &amp; &quot; - &quot; &amp; Titulo 
      oDocprops.Title = Dato
      Dato = &quot;LibreOffice - &quot; &amp; .GetByName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot; &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
      oDocprops.Subject = Dato
-     Dato = _Aux.F_Consulta_UDP(&quot;Guide Name&quot;) &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;) &amp; Chr(13)
-     Dato = Dato &amp; &quot;Contibutor: The LibreOffice Documentation Team&quot; &amp; Chr(13)&apos;No accesible desde Basic (v24,2,1,2)
-     Dato = Dato &amp; &quot;Publisher: The Document Foundation&quot; &apos;No accesible desde Basic (v24,2,1,2)
-     oDocprops.Description = Dato 
+      If F_LOVersion &gt;= 24 Then
+       oDocprops.Publisher = Array(&quot;The Document Foundation&quot;)
+       oDocprops.Contributor = Array(&quot;The LibreOffice Documentation Team&quot;)
+       oDOcprops.Description = _Aux.F_Consulta_UDP(&quot;Guide Name&quot;) &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
+     Else
+       Dato = _Aux.F_Consulta_UDP(&quot;Guide Name&quot;) &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;) &amp; Chr(13)
+       Dato = Dato &amp; &quot;Contibutor: The LibreOffice Documentation Team&quot; &amp; Chr(13)
+       Dato = Dato &amp; &quot;Publisher: The Document Foundation&quot;
+       oDocprops.Description = Dato 
+     End If
    End With
    _Aux.F_Elimina_UDP (&quot;LibreOffive Version&quot;)
    Call Campos.Cargar_Parametros2
@@ -163,7 +184,7 @@ Sub OnBtn_Ayuda(oEv)
    With oDlgEstilos.getModel
      If .Step = 1 Then
        .Step = 2
-       .Height = 130
+       .Height = 170
        .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;↫&quot;
      Else
        .Step = 1

@@ -32,6 +32,20 @@ Function F_CompPlantilla
    End If  
    F_CompPlantilla = Contador
 End Function 
+
+Function F_EsPlantilla(Doc) As Boolean
+
+ Dim Archivo : Archivo = (Doc.getURL)
+ Dim Narchivo : Narchivo = (Filenameoutofpath(Archivo))
+ Dim Extension: Extension= GetFileNameExtension(Archivo)
+   Carga_Tools
+   If UCase(Extension) = &quot;OTT&quot; OR UCase(Extension) = &quot;OTM&quot; then
+     F_EsPlantilla = 1
+   Else
+     F_EsPlantilla = 0
+   End If
+end Function
+
  
  Rem ############
 Function F_Prueba_Sel()As Boolean &apos;pasar prueba selección
@@ -98,8 +112,7 @@ Function F_LOVersion() As Double
  Rem En español CDbl(&quot;7.5&quot;) = 75 / CDbl(&quot;7,5&quot;)= 7,5
  Dim s : s = split(oSet.getByName(&quot;ooSetupVersion&quot;),&quot;.&quot;) 
  Dim C : C = CDbl(s(0)) + CDbl(s(1))/10 
-  F_LOVersion = C
-&apos;  Print C
+   F_LOVersion = C
 End Function
 
  Rem ############
@@ -115,6 +128,13 @@ Function F_Extension&apos;(identificateur As String) As String
      end if
    next
    F_Extension = &quot; - SanityCheck 1x (no instalada)&quot; &apos;extension pas trouvée
+End Function
+
+ Rem ############
+Function F_PathExtension
+ Dim sv
+   sv = GetDefaultContext.getByName(&quot;/singletons/com.sun.star.deployment.PackageInformationProvider&quot;)
+   F_PathExtension = sv.getPackageLocation(&quot;vnd.bantoniof.sanitycheck&quot;) 
 End Function
 	
  Rem ############

@@ -31,7 +31,26 @@
 					</prop>
 				</node>
 
+
 				<node oor:name="m003" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Plantilla.Dlg_Plantillas?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Link Template</value>
+						<value xml:lang="pt-BR">Associar modelo</value>
+						<value xml:lang="es-ES">Asociar plantilla</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+
+				<node oor:name="m004" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -48,7 +67,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m004" oor:op="replace">
+				<node oor:name="m005" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -65,7 +84,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m005" oor:op="replace">
+				<node oor:name="m006" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -74,7 +93,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m006" oor:op="replace">
+				<node oor:name="m007" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -91,7 +110,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m007" oor:op="replace">
+				<node oor:name="m008" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -108,7 +127,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m008" oor:op="replace">
+				<node oor:name="m009" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -125,7 +144,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m009" oor:op="replace">
+				<node oor:name="m010" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -142,7 +161,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m010" oor:op="replace">
+				<node oor:name="m011" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -214,7 +233,26 @@
 
 					<node oor:name="Submenu"><!-- Submenu 2 -->
 
+
 					<node oor:name="m001" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Plantilla.Dlg_Plantillas?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Link template</value>
+							<value xml:lang="pt-BR">Associar modelo</value>
+							<value xml:lang="es-ES">Asociar plantilla</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+
+
+					<node oor:name="m002" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
 							<value>com.sun.star.text.TextDocument</value>
 						</prop>
@@ -231,7 +269,7 @@
 						</prop>
 					</node>
 
-					<node oor:name="m002" oor:op="replace">
+					<node oor:name="m003" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
 							<value>com.sun.star.text.TextDocument</value>
 						</prop>
@@ -393,7 +431,26 @@
 					</prop>
 				</node>
 
+
 				<node oor:name="omb03" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Plantilla.Dlg_Plantillas?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Link template</value>
+						<value xml:lang="pt-BR">Associar modelo</value>
+						<value xml:lang="es-ES">Asociar plantilla</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+
+				<node oor:name="omb04" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -410,7 +467,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb04" oor:op="replace">
+				<node oor:name="omb05" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -427,7 +484,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb05" oor:op="replace">
+				<node oor:name="omb06" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -444,7 +501,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb06" oor:op="replace">
+				<node oor:name="omb07" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -461,7 +518,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb07" oor:op="replace">
+				<node oor:name="omb08" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -478,7 +535,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb08" oor:op="replace">
+				<node oor:name="omb09" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -495,7 +552,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb09" oor:op="replace">
+				<node oor:name="omb10" oor:op="replace">
 					<prop oor:name="Title" oor:type="xs:string">
 							<value>Browse images</value>
 							<value xml:lang="pt-BR">Percorrer imagems</value>
@@ -513,7 +570,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb10" oor:op="replace">
+				<node oor:name="omb11" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -542,6 +599,22 @@
 					</prop>
 				</node>
 			</node>
+
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Plantilla" oor:op="replace">
+				<prop oor:name="URL" oor:type="xs:string">
+					<value>vnd.sun.star.script:SanityCheck.Plantilla.Dlg_Plantillas?language=Basic&amp;location=application</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Plantilla.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Plantilla.svg</value>
+					</prop>
+				</node>
+			</node>
+
 
 			<node oor:name="vnd.bantoniof.sanitycheck.Campos" oor:op="replace">
 				<prop oor:name="URL" oor:type="xs:string">

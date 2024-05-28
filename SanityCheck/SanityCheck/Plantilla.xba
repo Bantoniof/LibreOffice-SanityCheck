@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Plantilla" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo Plantilla *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Fragmentos de código de la extensión TemplateChanger
+ Rem original deAndré Schnabel
+ Rem Licencia GNU v3 o posterior
+  
+Option explicit
+
+ Dim DocSettings as object, Docprops as object&apos;ThisComponent as object,
+ Dim TemplateUrl as string, oTemplate as object, templateName as string
+ Dim oRulesD as object, oRulesT as object, i as integer
+ Dim oDlgPlantillas as Object
+
+ Rem ########
+Sub Dlg_Plantillas
+
+   Call L10n.Trad_Plantilla
+ Dim oDocprops as Object, nplant as String
+   oDocprops = ThisComponent.getDocumentProperties
+   Select case  F_getLang
+     Case &quot;es&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_ES&quot;
+     Case &quot;pt&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_PT&quot;
+     Case else : nplant = &quot;LO_UG_Chapters_2Xx_EN&quot;
+   End Select
+   
+  DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+  oDlgPlantillas = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgPlantillas&quot;))
+   With oDlgPlantillas.getModel
+     .Title = P_Txt(0) &amp; Extension
+     .getByName(&quot;Txt_Plantilla&quot;).Text = P_Txt(8)
+     .getByName(&quot;Lbl_Plant&quot;).Label = P_Txt(10)
+     .getByName(&quot;Lbl_Necesaria&quot;).label = P_Txt(11)
+     .getByName(&quot;Lbl_Correcta&quot;).label = nplant       
+     .getByName(&quot;Btn_Asociar&quot;).label = P_Txt(12)
+     .getByName(&quot;Btn_Cancelar&quot;).Label = P_Txt(16)
+     
+     If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
+       .getByName(&quot;Lbl_Plantilla&quot;).label = oDocprops.TemplateName
+       If oDocprops.TemplateName =  nplant Then
+         .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(30,130,80)
+         .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☑&quot;
+         .getByName(&quot;Btn_Asociar&quot;).Label = P_Txt(14)&apos;Aceptar&quot;
+         .getByName(&quot;Btn_Cancelar&quot;).EnableVisible = False
+       Else
+         .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(255,0,0)
+         .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☒&quot;
+         .getByName(&quot;Btn_Asociar&quot;).Label = P_Txt(13)
+         .getByName(&quot;Btn_Cancelar&quot;).EnableVisible = True         
+       End If  
+     Else
+       .getByName(&quot;Lbl_Plantilla&quot;).label = P_Txt(15)
+       .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(255,0,0)
+       .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☒&quot;
+     End If
+   End With
+  oDlgPlantillas.Execute
+End sub
+
+ Rem ########
+Sub onBtn_Asociar(oev)
+
+   oDlgPlantillas = oEv.Source.Context
+   
+   Call L10n.Trad_Plantilla
+   Select case GetStarOfficeLocale.language
+     Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Capitulos_2Xx_ES.ott&quot;
+     Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Capitulos_2Xx_PT.ott&quot;
+     Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Chapters_2Xx_EN.ott&quot;
+   End Select
+&apos;   TemplateURL = &quot;file:///H:/Documentacion/Plantillas html/LO_UG_Capitulos_2Xx_PT.ott&quot;
+   DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
+   Docprops = ThisComponent.DocumentProperties  &apos;(meta.xml)
+
+   S_loadTemplate (templateURL, oTemplate, templateName)
+   DocSettings.UpdateFromTemplate = TRUE &apos;(settings.xml)
+   
+   if oTemplate.supportsService(&quot;com.sun.star.text.TextDocument&quot;) _ 
+        OR oTemplate.supportsService(&quot;com.sun.star.text.GlobalDocument&quot;) then &apos;Plantilla ott u otm?
+     S_setTemplateAndDate (ThisComponent, templateName, templateURL, oTemplate.DocumentProperties.ModificationDate)
+     S_applyTemplate(ThisComponent, templateUrl)
+     S_activateWriterHeadings(ThisComponent)
+     oDlgPlantillas.EndExecute
+          
+     msgbox (P_Txt(1) &amp; templateName, 0+64+0, P_Txt(0) &amp; Extension)       
+   End If
+End Sub
+
+ Rem ########
+Sub CortarEnlace
+
+   Call L10n.Trad_Plantilla
+
+   DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
+   DocSettings.UpdateFromTemplate = FALSE
+   S_setTemplateAndDate (ThisComponent, &quot;&quot;, &quot;&quot;)
+   Msgbox (P_Txt(2),0+64+0, P_Txt(0) &amp; Extension)
+end sub
+
+ Rem ########
+Sub ActivarPlantilla
+
+   Call L10n.Trad_Plantilla
+   
+   Docprops = ThisComponent.DocumentProperties
+   If ThisComponent.getDocumentProperties.TemplateName = &quot;&quot;  Then
+     Msgbox (P_Txt(3),0+64+0, P_Txt(0) &amp; Extension)   
+   Else
+     DocSettings = ThisComponent.createInstance(&quot;com.sun.star.document.Settings&quot; ) 
+     If DocSettings.UpdateFromTemplate = FALSE Then 
+       DocSettings.UpdateFromTemplate = TRUE
+       Msgbox (P_Txt(4),0+64+0, P_Txt(0) &amp; Extension)
+     Else
+       Msgbox (P_Txt(5) &amp; Docprops.TemplateName &amp; P_Txt(6),0+64+0, P_Txt(0) &amp; Extension)
+     End If
+   End If
+End Sub
+
+ Rem ########
+Sub DesactivarPlantilla
+
+   Call L10n.Trad_Plantilla
+   
+   DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; ) 
+   DocSettings.UpdateFromTemplate = False
+   Msgbox (P_Txt(7),0+64+0, P_Txt(0) &amp; Extension)
+end sub
+
+
+ Rem ########
+ sub S_loadTemplate (templateURL as string, oTemplate as object, templateName as string)
+
+ Dim aFile() as string, sFileName as string
+ Dim aArgs(4)  As New com.sun.star.beans.PropertyValue
+   aArgs(0).Name = &quot;AsTemplate&quot;
+   aArgs(0).Value = False
+   aArgs(1).Name = &quot;Hidden&quot;
+   aArgs(1).Value = True
+   aArgs(2).Name = &quot;MacroExecutionMode&quot;
+   aArgs(2).Value = com.sun.star.document.MacroExecMode.NEVER_EXECUTE
+   aArgs(3).Name = &quot;ReadOnly&quot;
+   aArgs(3).Value = TRUE
+   aArgs(4).Name = &quot;UpdateDocMode&quot;
+   aArgs(4).Value = com.sun.star.document.UpdateDocMode.NO_UPDATE 
+   oTemplate = StarDesktop.loadComponentFromURL( templateURL, &quot;_blank&quot;, 0,aArgs() )
+   
+&apos;   If oTemplate.DocumentProperties.Title = &quot;&quot; Then
+     aFile = Split (templateURL, &quot;/&quot;)
+     sFileName = aFile(Ubound(aFile))
+     If Len(sFileName) &gt; 4 Then
+       If Mid (sFileName, Len(sFileName)-3, 1) = &quot;.&quot; Then
+         sFileName = left(sFilename, len(sFileName ) -4 )
+       End if
+     End if
+   templateName = ConvertFromURL(sFileName)
+&apos;   Else
+&apos;     templateName = oTemplate.DocumentProperties.Title
+&apos;   End if
+
+end sub
+
+ Rem ########
+Sub S_setTemplateAndDate (Doc as object, templateName as string, templateURL as string, _
+    optional templateDate as com.sun.star.util.DateTime)
+
+ Dim Docprops as object,dt AS NEW com.sun.star.util.DateTime
+   Docprops = Doc.DocumentProperties
+   Docprops.TemplateName = templateName
+   Docprops.TemplateURL = templateURL
+   if isMissing(templateDate) then
+     dt = Docprops.TemplateDate
+     dt.Nanoseconds = 0
+     dt.Seconds = 0
+     dt.Minutes = 0
+     dt.Hours = 0
+     dt.Day = 0
+     dt.Month = 0
+     dt.Year = 0
+     dt.IsUTC = FALSE
+     Docprops.TemplateDate = dt
+   else
+     Docprops.TemplateDate = templateDate
+   end if
+End Sub
+
+
+ Rem ########
+Sub S_applyTemplate(doc as object, templateUrl as string)
+ Dim aArgs(0)  As New com.sun.star.beans.PropertyValue
+   aArgs(0).Name = &quot;OverwriteStyles&quot;
+   aArgs(0).Value = TRUE
+   doc.styleFamilies.loadStylesFromURL(templateURL, aArgs() )
+
+ Rem  applyChapterNumberingRules(doc as object, oTemplate as object)
+ Rem Copy chapter numbering rules from template to doc. These are not covered by style overwriting.
+ Rem Chapter numbering only exists for text documents.
+
+ Dim oRulesD as object, oRulesT as object, i as integer
+   if oTemplate.supportsService(&quot;com.sun.star.text.TextDocument&quot;) OR _
+     oTemplate.supportsService(&quot;com.sun.star.text.GlobalDocument&quot;) then
+     oRulesT = oTemplate.getChapterNumberingRules()
+     oRulesD = doc.getChapterNumberingRules()
+     for i = 0 to oRulesT.getCount() -1
+       oRulesD.replaceByIndex(i, oRulesT.getByIndex(i))
+     next
+   end if
+end Sub
+
+ Rem ########
+sub S_activateWriterHeadings(doc as object)
+&apos;	The headings are not automatically refreshed when the new chapter numbering rules are applied.
+&apos;	This would happen when opening the document the next time, but this is inconvenient for an active document.
+&apos;	Refreshing also happens when Enter is pressed at the end of a heading: all headings of the same level and
+&apos;	those of a lower one (i.e. with a higher number) are refreshed, as long as there is no heading with
+&apos;	a higher level found, and only starting at the position where the change happens.
+&apos;	The following program uses this feature: when a heading is encounteed that has a higher level than the
+&apos;	levels processed before, then a paragraph break is added ad again deleted.
+&apos;	In most cases the first heading encountered will be one of the highest level (heading 1), so all headings
+&apos;	are refreshed, and the loop ends. If, say, level 2 is found first, then only levels 2 to 10 will be refreshed.
+&apos;	If there is no level 1 heading in the text then all is done, the only drawback is that the entire document is
+&apos;	searched for a level 1 heading, but that cannot be mended. If on the other hand a level 1 heading is found
+&apos;	afterwards, then all the work up to its position is done already.
+
+ Dim text as object, enum as object, elem as object
+ Dim styleName as string, level as integer, minLevel as integer
+ Dim ocursor as object
+ Dim nparBr as string
+
+   nparBr = com.sun.star.text.ControlCharacter.PARAGRAPH_BREAK
+   minLevel = 999
+   text = ThisComponent.Text
+   enum = text.createEnumeration
+   do while enum.hasMoreElements
+     elem = enum.nextElement
+     If F_hasProperty(elem, &quot;ParaStyleName&quot;) then
+       styleName = elem.ParaStyleName
+       if Left(styleName, 7) = &quot;Heading&quot; then
+         level = Join(Split(styleName, &quot;Heading &quot;), &quot;&quot;)
+         if level &lt; minLevel then
+           minLevel = level
+           ocursor = text.createTextCursorByRange(elem)
+           ocursor.gotoEndofParagraph(FALSE)
+           text.insertControlCharacter(ocursor, nparBr, FALSE)
+           ocursor.goLeft(1, TRUE)
+           text.insertString(ocursor,&quot;&quot;,TRUE)
+           if level = 1 then exit do
+         end if
+       end if
+     end if
+   loop
+
+end sub
+
+ Rem ########
+Function F_hasProperty(elem as object, propName as string) as boolean
+
+ Dim propertySetInfo as object, properties() as object, i as integer
+   F_hasProperty = FALSE
+   propertySetInfo = elem.getPropertySetInfo
+   properties = propertySetInfo.Properties
+   For i = 0 To Ubound(properties)
+     if properties(i).Name = propName then
+       F_hasProperty = TRUE
+       exit function
+     end if
+   next
+end Function
+ Rem ================= Fin Plantilla ===========================================================
+</script:module>

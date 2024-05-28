@@ -4,6 +4,12 @@
  Rem Este módulo forma parte de la extensión SanityCheck
  Rem Autor: bantoniof@libreoffice.org
  Rem Licencia GNU v3 o posterior
+
+ Rem ***** Important! *****
+ Rem If you add a new language and a template you must also
+ Rem Add the &quot;Case [lang]&quot; to the module &quot;Plantilla&quot;, 
+ Rem macros: &quot;Dlg_Plantillas&quot; and &quot;OnBtn_Asociar&quot; 
+ Rem to apply the correct template of the new language
   
  Option Explicit
  Dim A_Txt(8) As String
@@ -11,6 +17,7 @@
  Dim E_Txt(23) As String
  Dim F_Txt(23) As String
  Dim I_Txt(50) As String
+ Dim P_Txt(16) As String
  Dim R_Txt(21) As String
  Dim Ren_Txt(17) As String
  Dim T_Txt(25) As String
@@ -22,7 +29,7 @@ Function F_getLang As String
    Call _Aux.Carga_Tools
    Extension = _Aux.F_Extension
    F_getLang = GetStarOfficeLocale.language
-&apos;F_getLang = &quot;pñt&quot; &apos;Cambia el idioma para pruebas.
+&apos;F_getLang = &quot;ptl&quot; &apos;Cambia el idioma para pruebas.
 End Function
 
  Rem ############
@@ -99,14 +106,16 @@ Sub Trad_Campos
      C_Txt(16) = &quot;Primero tienes que guardar el documento&quot;
      C_Txt(17) = &quot;Selecciona un mes de la lista&quot;
      C_Txt(18) = &quot;Asunto&quot;
-     C_Txt(19) = &quot;Permite establecer las propiedades necesarias del capítulo en un solo paso&quot; &amp; Chr(13) &amp;_
-     &quot;Nota: se pueden usar los campos &quot;&quot;Chapter Number&quot;&quot; y &quot;&quot;Chapter Title&quot;&quot; para el título del capítulo&quot; &amp; Chr(13) &amp; Chr(13) &amp;_ 
+     C_Txt(19) = &quot;Permite establecer las propiedades necesarias del capítulo en un solo paso&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;Nota:&gt; se pueden usar los campos &quot;&quot;Chapter Number&quot;&quot; y &quot;&quot;Chapter Title&quot;&quot; para el título del capítulo&quot; &amp; Chr(13) &amp; Chr(13) &amp;_ 
      &quot;Las siguientes propiedades se rellenan automáticamente:&quot; &amp; Chr(13) &amp; _
-     &quot;◘ Título del documento:&quot; &amp; Chr(13) &amp; Chr(9) &amp;  &quot;Nombre de la guía - Nombre del capítulo&quot; &amp; Chr(13) &amp;_
-     &quot;◘ Asunto:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;LibreOffice - Nombre de la guía&quot; &amp; Chr(13) &amp; _
-     &quot;◘ Comentarios:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Nombre de la guía&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Colaborador &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor&quot;
-      
+     &quot;◘ Título del documento:   [Nombre de la guía] - [Nombre del capítulo]&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Asunto:   LibreOffice - [Nombre de la guía]&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Comentarios:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;[Nombre de la guía]&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
+     &quot;Contributor: The LibreOffice Documentation Team &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor: The Document Fountation&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;◘ Si el documento se edita con la versión 24.x se rellenan esos nuevos campos de propiedades del documento.&quot;
      Lista = Array (&quot;enero&quot;,&quot;febrero&quot;,&quot;marzo&quot;,&quot;abril&quot;,&quot;mayo&quot;,&quot;junio&quot;,&quot;julio&quot;,&quot;agosto&quot;,&quot;septiembre&quot;,&quot;octubre&quot;,&quot;noviembre&quot;,&quot;diciembre&quot;)
+
    Case &quot;pt&quot;
      C_Txt(0) = &quot;Campos do Documento&quot;
      C_Txt(1) = &quot;Título Doc.&quot;
@@ -127,12 +136,14 @@ Sub Trad_Campos
      C_Txt(16) = &quot;Primeiro de tudo você deve salvar o documento&quot;
      C_Txt(17) = &quot;Selecione um mês da lista&quot;
      C_Txt(18) = &quot;Asunto&quot;
-     C_Txt(19) = &quot;Permite definir as propriedades necessárias do capítulo em uma única etapa&quot; &amp; Chr(13) &amp;_
-     &quot;Nota: Os campos &quot;&quot;Chapter Number&quot;&quot; e &quot;&quot;Chapter Title&quot;&quot; podem ser usados ​​para o título do capítulo&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     C_Txt(19) = &quot;Permite definir as propriedades necessárias do capítulo em uma única etapa&quot;&amp; Chr(13) &amp; Chr(13) &amp;_ 
+     &quot;Nota: &gt; Os campos &quot;&quot;Número do capítulo&quot;&quot; e &quot;&quot;Título do capítulo&quot;&quot; podem ser usados ​​para o título do capítulo&quot; &amp; Chr(13) &amp; Chr(13) &amp;_ 
      &quot;As seguintes propriedades são preenchidas automaticamente:&quot; &amp; Chr(13) &amp; _
-     &quot;◘ Título do documento:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Nome do guia - Nome do capítulo&quot; &amp; Chr(13) &amp;_
-     &quot;◘ Assunto:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;LibreOffice - Nome do guia&quot; &amp; Chr(13) &amp; _
-     &quot;◘ Comentários:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Nome do guia&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Contribuidor &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor&quot;
+     &quot;◘ Título do documento: [Nome do guia] - [Nome do capítulo]&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Assunto: LibreOffice - [Nome do guia]&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Comentários:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;[Nome do guia]&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
+     &quot;Contributor: The LibreOffice Documentation Team &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor: The Document Fountation&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;◘ Se o documento for editado com a versão 24.x, esses novos campos de propriedades do documento serão preenchidos.&quot;
      Lista = Array (&quot;janeiro&quot;,&quot;fevereiro&quot;,&quot;março&quot;,&quot;abril&quot;,&quot;maio&quot;,&quot;junho&quot;,&quot;julho&quot;,&quot;agosto&quot;,&quot;setembro&quot;,&quot;outubro&quot;,&quot;novembro&quot;,&quot;dezembro&quot;)
 
    Case Else
@@ -155,12 +166,14 @@ Sub Trad_Campos
      C_Txt(16) =  &quot;First of all You must to save the document&quot;
      C_Txt(17) = &quot;Select a month from the list&quot;
      C_Txt(18) = &quot;Subject&quot;
-     C_Txt(19) = &quot;Allows you to set the necessary properties of the chapter in a single step&quot; &amp; Chr(13) &amp;_
-     &quot;Note: The &quot;&quot;Chapter Number&quot;&quot; and &quot;&quot;Chapter Title&quot;&quot; fields can be used for the chapter title&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     C_Txt(19) = &quot;Allows you to set the necessary properties of the chapter in a single step&quot;&amp; Chr(13)  &amp; Chr(13) &amp;_ 
+     &quot;Note: &gt;  &quot;&quot;Chapter Number&quot;&quot; and &quot;&quot;Chapter Title&quot;&quot; fields can be used for the chapter title&quot; &amp; Chr(13) &amp; Chr(13) &amp;_ 
      &quot;The following properties are automatically populated:&quot; &amp; Chr(13) &amp; _
-     &quot;◘ Document title:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Guide name - Chapter name&quot; &amp; Chr(13) &amp;_
-     &quot;◘ Subject:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;LibreOffice - Name of the guide&quot; &amp; Chr(13) &amp; _
-     &quot;◘ Comments:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Guide name&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Contributor &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor&quot;
+     &quot;◘ Document title: [Guide name] - [Chapter name]&quot; &amp; Chr(13) &amp;_
+     &quot;◘ Subject: LibreOffice - [Guide Name]&quot; &amp; Chr(13) &amp; _
+     &quot;◘ Comments:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;[Guide name]&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
+     &quot;Contributor: The LibreOffice Documentation Team &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor: The Document Fountation&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+     &quot;◘ If the document is edited with version 24.x, these new document properties fields are filled in.&quot;
      Lista = Array (&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,&quot;July&quot;,&quot;August&quot;,&quot;September&quot;,&quot;October&quot;,&quot;November&quot;,&quot;December&quot;)
    End Select
 End Sub
@@ -242,7 +255,7 @@ Sub   Trad_Estilos
 
    Case Else
      E_Txt(0) = &quot;Style Check&quot;
-     E_Txt(1) = &quot;Styles not in template&quot;
+     E_Txt(1) = &quot;Alien Styles&quot;
      E_Txt(2) = &quot;Applied&quot;
      E_Txt(3) = &quot;Not used&quot;
      E_Txt(4) = &quot;Paragraph styles&quot;
@@ -585,6 +598,90 @@ Sub Trad_Imagenes
 
  End Select
 End Sub
+
+ Rem ############
+
+
+Sub Trad_Plantilla
+
+   Select Case F_getLang
+
+   Case &quot;es&quot;
+     P_Txt(0) = &quot;Asociar plantilla&quot;
+     P_Txt(1) = &quot;Documento conectado con la Plantilla:&quot; &amp; Chr(13) &amp; Chr(9)
+     P_Txt(2) = &quot;El documento se ha desconectado de la plantilla.&quot;
+     P_Txt(3) = &quot;El documento no está conectado con ninguna plantilla.&quot;
+     P_Txt(4) = &quot;Los cambios en la plantilla se reflejarán en el documento.&quot;
+     P_Txt(5) = &quot;El documento está conectado con la plantilla: &quot; &amp; Chr(13) &amp; Chr(9)
+     P_Txt(6) = Chr(13) &amp; &quot;los cambios en plantilla se reflejan en el documento.&quot;
+     P_Txt(7) = &quot;Plantilla desactivada, los cambios en la plantilla no se reflejarán en el documento.&quot;
+     P_Txt(8) = &quot;Para unificar el formato y los estilos de las guías de LibreOffice &quot; &amp;_
+       &quot;es necesario usar una misma plantilla en todos los capítulos.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+       &quot;Esta macro asocia el documento actual con la plantilla que contiene los estilos &quot; &amp;_
+       &quot;necesarios para crear y exportar los capítulos a los formatos requeridos.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+       &quot;Las macros de SanityCheck para la revisión de los capítulos no funcionarán correctamente&quot; &amp;_
+       &quot;si el documento no está asociado la plantilla adecuada.&quot;
+     P_Txt(9) = &quot;El documento tiene aplicada la plantilla correcta&quot;
+     P_Txt(10) = &quot;Documento asociado con la plantilla:&quot;
+     P_Txt(11) = &quot;Plantilla necesaria: &quot;
+     P_Txt(12) = &quot;Asociar&quot;
+     P_Txt(13) = &quot;Cambiar&quot;
+     P_Txt(14) = &quot;Aceptar&quot; &apos;o Cerrar
+     P_Txt(15) = &quot;Ninguna&quot;
+     P_Txt(16) = &quot;Cancelar&quot;
+     
+   Case &quot;pt&quot;
+ P_Txt(0) = &quot;Associar modelo&quot;
+     P_Txt(1) = &quot;Documento conectado ao modelo:&quot; &amp; Chr(13) &amp; Chr(9)
+     P_Txt(2) = &quot;O documento foi desconectado sem modelo.&quot;
+     P_Txt(3) = &quot;O documento não está conectado a nenhum modelo.&quot;
+     P_Txt(4) = &quot;As alterações no modelo serão refletidas no documento.&quot;
+     P_Txt(5) = &quot;O documento está conectado ao modelo &quot; &amp; Chr(13) &amp; Chr(9)
+     P_Txt(6) = Chr(13) &amp; &quot;as alterações no modelo são refletidas no documento.&quot;
+     P_Txt(7) = &quot;Modelo desativado, as alterações no modelo nao serão refletidas no documento.&quot;
+     P_Txt(8) = &quot;Para unificar a formatação e os estilos dos guias do LibreOffice&quot; &amp;_
+       &quot;é necessário usar o mesmo modelo em todos os capítulos.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+       &quot;Esta macro associa o documento atual ao modelo que contém os estilos &quot; &amp;_
+       &quot;necessário para criar e exportar os capítulos para os formatos necessários.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+       &quot;As macros de SanityCheck para revisão dos capítulos não funcionarão corretamente&quot; &amp;_
+       &quot;se o documento não estiver associado ao modelo apropriado.&quot;
+     P_Txt(10) = &quot;Documento associado ao modelo:&quot;
+     P_Txt(11) = &quot;Modelo necessário:&quot;
+     P_Txt(12) = &quot;Associado&quot;
+     P_Txt(13) = &quot;Alterar&quot;
+     P_Txt(14) = &quot;Aceitar&quot; &apos;ou Fechar
+     P_Txt(15) = &quot;Nenhum&quot;
+     P_Txt(16) = &quot;Cancelar&quot;
+
+   Case else
+     P_Txt(0) = &quot;Link Template&quot;
+     P_Txt(1) = &quot;Document linked to the template&quot; &amp; Chr(13) &amp; Chr(9)
+     P_Txt(2) = &quot;The document has been unlinked to any template.&quot;
+     P_Txt(3) = &quot;The document is not linked to any template &quot;
+     P_Txt(4) = &quot;Changes of the template will in the future be propagated again to this document.&quot;
+     P_Txt(5) = &quot;The document is linked to the template: &quot; &amp; Chr(13) &amp; Chr(9)
+     P_Txt(6) = Chr(13) &amp; &quot;Changes of the template are propagated to this document.&quot;
+     P_Txt(7) = &quot;Changes in the template will no longer be propagated to this document.&quot;    
+     P_Txt(8) = &quot;To unify the formatting and styles of LibreOffice guides&quot; &amp;_
+       &quot;it is necessary to use the same template in all chapters.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+       &quot;This macro associates the current document with the template that contains the styles &quot; &amp;_
+       &quot;necessary to create and export the chapters to the required formats.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+       &quot;SanityCheck macros for chapter review will not work correctly&quot; &amp;_
+       &quot;if the document is not associated with the appropriate template.&quot;
+     P_Txt(10) = &quot;Document associated with the template:&quot;
+     P_Txt(11) = &quot;Template required: &quot;
+     P_Txt(12) = &quot;Link&quot;
+     P_Txt(13) = &quot;Change&quot;
+     P_Txt(14) = &quot;Ok&quot; &apos;or Close
+     P_Txt(15) = &quot;None&quot;
+     P_Txt(16) = &quot;Cancel&quot;
+
+   End select
+
+
+End Sub
+
+
 
  Rem ############
 Sub Trad_Resaltes

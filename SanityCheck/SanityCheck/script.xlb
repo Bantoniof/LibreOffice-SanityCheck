@@ -10,4 +10,5 @@
  <library:element library:name="Resaltes"/>
  <library:element library:name="Renombrar"/>
  <library:element library:name="_Aux"/>
+ <library:element library:name="Plantilla"/>
 </library:library>

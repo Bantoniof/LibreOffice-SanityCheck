@@ -9,4 +9,5 @@
  <library:element library:name="DlgRenombrar"/>
  <library:element library:name="DlgFormatos"/>
  <library:element library:name="DlgFiguras"/>
+ <library:element library:name="DlgPlantillas"/>
 </library:library>

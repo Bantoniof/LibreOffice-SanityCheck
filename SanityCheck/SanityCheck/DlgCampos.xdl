@@ -50,7 +50,7 @@
   </dlg:button>
   <dlg:text dlg:id="Lbl_Asunto" dlg:tab-index="27" dlg:left="18" dlg:top="94" dlg:width="60" dlg:height="8" dlg:page="1" dlg:value="Lbl_Asunto" dlg:valign="center"/>
   <dlg:text dlg:id="Lbl_AsuntoT" dlg:tab-index="28" dlg:left="84" dlg:top="94" dlg:width="110" dlg:height="8" dlg:page="1" dlg:value="Lbl_AsuntoT" dlg:valign="center"/>
-  <dlg:textfield dlg:id="Tx_Ayuda" dlg:tab-index="29" dlg:left="9" dlg:top="9" dlg:width="201" dlg:height="105" dlg:page="2" dlg:valign="top" dlg:multiline="true" dlg:value="Tx_Ayuda"/>
+  <dlg:textfield dlg:id="Tx_Ayuda" dlg:tab-index="29" dlg:left="9" dlg:top="9" dlg:width="201" dlg:height="142" dlg:page="2" dlg:valign="top" dlg:multiline="true" dlg:value="Tx_Ayuda"/>
   <dlg:text dlg:style-id="5" dlg:id="Lbl_coma" dlg:tab-index="2" dlg:left="78" dlg:top="15" dlg:width="3" dlg:height="11" dlg:page="1" dlg:value="," dlg:align="center" dlg:tabstop="false"/>
   <dlg:text dlg:style-id="5" dlg:id="Lbl_Punto" dlg:tab-index="17" dlg:left="197" dlg:top="31" dlg:width="5" dlg:height="11" dlg:page="1" dlg:value="." dlg:align="center" dlg:valign="center"/>
  </dlg:bulletinboard>
