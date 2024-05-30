@@ -586,7 +586,7 @@
 
 		<node oor:name="Images"><!-- Imágenes --> 
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Resaltes" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Resaltes.AlternarResalte" oor:op="replace">
 				<prop oor:name="URL" oor:type="xs:string">
 					<value>vnd.sun.star.script:SanityCheck.Resaltes.AlternarResalte?language=Basic&amp;location=application</value>
 				</prop>
@@ -601,7 +601,7 @@
 			</node>
 
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Plantilla" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Plantilla.Dlg_Plantillas" oor:op="replace">
 				<prop oor:name="URL" oor:type="xs:string">
 					<value>vnd.sun.star.script:SanityCheck.Plantilla.Dlg_Plantillas?language=Basic&amp;location=application</value>
 				</prop>
@@ -616,7 +616,7 @@
 			</node>
 
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Campos" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Campos.Dlg_Campos" oor:op="replace">
 				<prop oor:name="URL" oor:type="xs:string">
 					<value>vnd.sun.star.script:SanityCheck.Campos.Dlg_Campos?language=Basic&amp;location=application</value>
 				</prop>
@@ -630,7 +630,7 @@
 				</node>
 			</node>
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Renombrar" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Renombrar.Dlg_Renombrar" oor:op="replace">
 				<prop oor:name="URL" oor:type="xs:string">
 					<value>vnd.sun.star.script:SanityCheck.Renombrar.Dlg_Renombrar?language=Basic&amp;location=application</value>
 				</prop>
@@ -644,7 +644,7 @@
 				</node>
 			</node>
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Estilos" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Estilos.CompEstilos" oor:op="replace">
 				<prop oor:name="URL" oor:type="xs:string">
 					<value>vnd.sun.star.script:SanityCheck.Estilos.CompEstilos?language=Basic&amp;location=application</value>
 				</prop>
@@ -658,7 +658,7 @@
 				</node>
 			</node>
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Formatos" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Formatos.Dlg_Formatos" oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Formatos.Dlg_Formatos?language=Basic&amp;location=application</value>
 						</prop>
@@ -672,7 +672,7 @@
 				</node>
 			</node>
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Tablas" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Tablas.Dlg_Tablas" oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Tablas.Dlg_Tablas?language=Basic&amp;location=application</value>
 						</prop>
@@ -686,7 +686,7 @@
 				</node>
 			</node>
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Figuras" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Figuras.AjusteFiguras" oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Imagenes.AjusteFiguras?language=Basic&amp;location=application</value>
 						</prop>
@@ -700,7 +700,7 @@
 				</node>
 			</node>
 
-			<node oor:name="vnd.bantoniof.sanitycheck.Imagenes" oor:op="replace">
+			<node oor:name="vnd.bantoniof.sanitycheck.Imagenes.Dlg_Imagenes" oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Imagenes.Dlg_Imagenes?language=Basic&amp;location=application</value>
 						</prop>
