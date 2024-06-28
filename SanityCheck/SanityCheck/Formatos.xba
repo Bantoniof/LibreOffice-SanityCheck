@@ -106,18 +106,22 @@ Sub OnBtn_Limpiar(oEv)
          .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
          s = s &amp; Formatos.LimpiaParrafos &amp; Chr(13)
        Else
-        s = &quot;El formato de párrafos no se ha limpiado&quot;  
+        s = F_Txt(19)  
        End If 
      End If
      If Num = 1 Then
-       Pregunta = Msgbox (F_Txt(17), 1+64+128 ,F_Txt(0) &amp; Extension)
-       If Pregunta = 1 Then
-         .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
-         s = s &amp; F_Listados &amp; Chr(13)
-         s = s &amp; Formatos.LimpiaNumerados &amp; Chr(13)
-       Else
-         s = F_Txt(8)
-       End If
+       If ThisComponent.TextSections.HasByName(&quot;SEC_DISPLAYAREA&quot;) Then
+         Pregunta = Msgbox (F_Txt(17), 1+64+128 ,F_Txt(0) &amp; Extension)
+         If Pregunta = 1 Then
+           .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
+           s = s &amp; F_Listados &amp; Chr(13)
+           s = s &amp; Formatos.LimpiaNumerados &amp; Chr(13)
+         Else
+           s = F_Txt(8)
+         End If
+       Else 
+         s = s &amp;  F_Txt(21) &amp; Chr(13) &amp; Chr(9) &amp; F_Txt(8) &apos;, 0+64+0, F_Txt(0) &amp; Extension)
+       End If      
      End If
      .getbyname(&quot;Tx_Registro&quot;).Text = s
      .getbyname(&quot;Ch_Text&quot;).State = 0
@@ -371,10 +375,6 @@ End sub
  Rem ############
 Sub ReiniciarLeyendasNum
  Dim  oSec, oSubSecs, oSubSec, oCursor, i
-   If Not ThisComponent.TextSections.HasByName(&quot;SEC_DISPLAYAREA&quot;) Then
-     MsgBox (F_Txt(21) , 0+64+0, F_Txt(0) &amp; Extension)
-     Exit Sub
-   End If
    On Error goto ERRORES
    oSec = ThisComponent.TextSections().getByName(&quot;SEC_DISPLAYAREA&quot;)&apos;.getChildSections
    oSubSecs = oSec.getChildSections

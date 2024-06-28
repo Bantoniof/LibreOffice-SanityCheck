@@ -95,6 +95,25 @@ Sub Cargar_Parametros
      .getbyname(&quot;Btn_Salir&quot;).Label = C_Txt(12)
      .getbyname(&quot;Btn_Cambia&quot;).EnableVisible = True
      .getbyname(&quot;Tx_Coment&quot;).Enabled = True &apos;.ReadOnly = False
+     If F_LOVersion &gt;= 24 Then
+       .getbyName(&quot;Lbl_Col&quot;).Label = C_Txt(20)
+       .getbyName(&quot;Lbl_Edit&quot;).Label = C_Txt(21)
+       If uBound(oDocprops.Contributor) &lt;&gt; -1 then
+         .getbyname(&quot;Lbl_Colaborador&quot;).label = oDocprops.Contributor(0)
+       Else
+         .getbyname(&quot;Lbl_Colaborador&quot;).label =&quot;&quot;
+       End If
+       If uBound(oDocprops.Publisher) &lt;&gt; -1 then
+         .getbyname(&quot;Lbl_Editor&quot;).label = oDocprops.Publisher(0)
+       else
+         .getbyname(&quot;Lbl_Editor&quot;).label =&quot;&quot;
+       End If
+     Else
+       .getbyName(&quot;Lbl_Col&quot;).Label = &quot;&quot;
+       .getbyName(&quot;Lbl_Colaborador&quot;).Label = &quot;&quot;
+       .getbyName(&quot;Lbl_Edit&quot;).Label = &quot;&quot;
+       .getbyName(&quot;Lbl_Editor&quot;).Label = &quot;&quot;       
+     End If
    End With
 End Sub
 
@@ -120,12 +139,31 @@ Sub Cargar_Parametros2
      .getByName(&quot;Lbl_AsuntoT&quot;).label = oDocprops.Subject
      .getbyname(&quot;Tx_Coment&quot;).Enabled = False&apos;.ReadOnly = True
      .getbyname(&quot;Tx_Coment&quot;).Text =  oDocprops.Description
+     If F_LOVersion &gt;= 24 Then
+       .getbyName(&quot;Lbl_Col&quot;).Label = C_Txt(20)
+       .getbyName(&quot;Lbl_Edit&quot;).Label = C_Txt(21)
+       If uBound(oDocprops.Contributor) &lt;&gt; -1 then
+         .getbyname(&quot;Lbl_Colaborador&quot;).label = oDocprops.Contributor(0)
+       Else
+         .getbyname(&quot;Lbl_Colaborador&quot;).label =&quot;&quot;
+       End If
+       If uBound(oDocprops.Publisher) &lt;&gt; -1 then
+         .getbyname(&quot;Lbl_Editor&quot;).label = oDocprops.Publisher(0)
+       else
+         .getbyname(&quot;Lbl_Editor&quot;).label =&quot;&quot;
+       End If
+     Else
+       .getbyName(&quot;Lbl_Col&quot;).Label = &quot;&quot;
+       .getbyName(&quot;Lbl_Colaborador&quot;).Label = &quot;&quot;
+       .getbyName(&quot;Lbl_Edit&quot;).Label = &quot;&quot;
+       .getbyName(&quot;Lbl_Editor&quot;).Label = &quot;&quot;       
+     End If
    End With
 End Sub
 
  Rem ############
 Sub Onbtn_Establecer(oEv)
- Dim Dato As String
+ Dim Dato As Variant
  Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
  Dim Archivo :Archivo= (ThisComponent.getURL)
  
@@ -141,21 +179,19 @@ Sub Onbtn_Establecer(oEv)
      Dato = .getbyname(&quot;Tx_Cap_T&quot;).Text : _Aux.Establece_UDP(&quot;Chapter Title&quot;, Dato)
      Dato =  oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() : _Aux.Establece_UDP(&quot;Month&quot;, Dato)
      Dato = cStr(.getbyname(&quot;Num_Ano&quot;).Value) : _Aux.Establece_UDP(&quot;Year&quot;, Dato)
-     Dim Titulo
-
+ 
      If _Aux.F_EsPlantilla(ThisComponent) Then
-       Titulo = split(FileNameOutofPath(ThisComponent.getUrl),&quot;.&quot;)
-       Dato = Titulo(0)
+       Dato = split(FileNameOutofPath(ThisComponent.getUrl),&quot;.&quot;)(0)
      Else
-       If .getbyname(&quot;Tx_Cap_N&quot;).Text &lt;&gt; &quot;&quot; Then
-         Titulo =  .getbyName(&quot;Tx_Cap_N&quot;).Text &amp; &quot;, &quot; &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text
-       Else
-         Titulo = .getbyname(&quot;Tx_Cap_T&quot;).Text
+       Dato =  .getbyName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
+       If  .getbyname(&quot;Tx_Cap_N&quot;).Text &lt;&gt; &quot;&quot;  AND  .getbyname(&quot;Tx_Cap_T&quot;).Text &lt;&gt; &quot;&quot; Then
+         Dato = Dato &amp; &quot; - &quot; &amp;   .getbyName(&quot;Tx_Cap_N&quot;).Text &amp; &quot;, &quot; &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text      
+       ElseIf  .getbyname(&quot;Tx_Cap_N&quot;).Text = &quot;&quot;  AND  .getbyname(&quot;Tx_Cap_T&quot;).Text &lt;&gt; &quot;&quot; Then
+         Dato = Dato &amp; &quot; - &quot;  &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text               
        End If
-         Dato = .getbyName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;) &amp; &quot; - &quot; &amp; Titulo 
-     End If
      oDocprops.Title = Dato
-     Dato = &quot;LibreOffice - &quot; &amp; .GetByName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot; &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
+     End IF
+     Dato = &quot;LibreOffice  - &quot; &amp; .GetByName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot; &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
      oDocprops.Subject = Dato
       If F_LOVersion &gt;= 24 Then
        oDocprops.Publisher = Array(&quot;The Document Foundation&quot;)
@@ -168,7 +204,7 @@ Sub Onbtn_Establecer(oEv)
        oDocprops.Description = Dato 
      End If
    End With
-   _Aux.F_Elimina_UDP (&quot;LibreOffive Version&quot;)
+   _Aux.F_Elimina_UDP (&quot;LibreOffive Version&quot;)&apos; recurrente en vers. esp
    Call Campos.Cargar_Parametros2
 End Sub
 
@@ -184,11 +220,11 @@ Sub OnBtn_Ayuda(oEv)
    With oDlgEstilos.getModel
      If .Step = 1 Then
        .Step = 2
-       .Height = 170
+ &apos;      .Height = 170
        .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;↫&quot;
      Else
        .Step = 1
-       .Height = 190
+&apos;       .Height = 190
        .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
      End If
    End With

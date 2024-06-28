@@ -185,7 +185,7 @@
 		<node oor:name="OfficeMenuBar"><!--Inicio Menu -->
 			<node oor:name="SanityCheck.OfficeMenuBar" oor:op="replace">
 				<prop oor:name="Context" oor:type="xs:string">
-					<value>com.sun.star.text.TextDocument</value>
+					<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 				</prop>
 				<prop oor:name="Title" oor:type="xs:string">
 					<value>LO SanityCheck</value>
@@ -223,7 +223,7 @@
 
 				<node oor:name="m003" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
-						<value>com.sun.star.text.TextDocument</value>
+						<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 					</prop>
 					<prop oor:name="Title" oor:type="xs:string">
 						<value>Prepare document</value>
@@ -236,7 +236,7 @@
 
 					<node oor:name="m001" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
-							<value>com.sun.star.text.TextDocument</value>
+							<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 						</prop>
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Plantilla.Dlg_Plantillas?language=Basic&amp;location=application</value>
@@ -254,7 +254,7 @@
 
 					<node oor:name="m002" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
-							<value>com.sun.star.text.TextDocument</value>
+							<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 						</prop>
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Campos.Dlg_Campos?language=Basic&amp;location=application</value>
@@ -290,7 +290,7 @@
 
 				<node oor:name="m004" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
-						<value>com.sun.star.text.TextDocument</value>
+						<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 					</prop>
 					<prop oor:name="Title" oor:type="xs:string">
 						<value>Clean and adjust</value>
@@ -302,7 +302,7 @@
 
 					<node oor:name="m001" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
-							<value>com.sun.star.text.TextDocument</value>
+							<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 						</prop>
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Estilos.CompEstilos?language=Basic&amp;location=application</value>

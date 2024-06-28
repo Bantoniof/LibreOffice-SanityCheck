@@ -13,13 +13,13 @@
   
  Option Explicit
  Dim A_Txt(8) As String
- Dim C_Txt(19) As String
+ Dim C_Txt(21) As String
  Dim E_Txt(23) As String
  Dim F_Txt(23) As String
  Dim I_Txt(50) As String
- Dim P_Txt(16) As String
+ Dim P_Txt(18) As String
  Dim R_Txt(21) As String
- Dim Ren_Txt(17) As String
+ Dim Ren_Txt(18) As String
  Dim T_Txt(25) As String
  Dim Lista() As String
  Global Extension
@@ -91,11 +91,11 @@ Sub Trad_Campos
    Case &quot;es&quot;
    C_Txt(0) = &quot;Campos del documento&quot;
    C_Txt(1) = &quot;Título Doc.&quot;
-   C_Txt(2) = &quot;Conexión con plantilla&quot;
+   C_Txt(2) = &quot;Plantilla asociada&quot;
    C_Txt(3) = &quot;Guía&quot;
    C_Txt(4) = &quot;Versión de L.O.&quot;
    C_Txt(5) = &quot;Comentarios&quot;
-   C_Txt(6) = &quot;          Capítulo X          &amp;     Título&quot;
+   C_Txt(6) = &quot;        Capítulo X          &amp;     Título&quot;
    C_Txt(7) = &quot;Publicación&quot;
    C_Txt(8) = &quot;Ninguna&quot;
    C_Txt(9) = &quot;Corregir&quot;
@@ -115,17 +115,19 @@ Sub Trad_Campos
    &quot;◘ Asunto:   LibreOffice - [Nombre de la guía]&quot; &amp; Chr(13) &amp; _
    &quot;◘ Comentarios:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;[Nombre de la guía]&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
    &quot;Contributor: The LibreOffice Documentation Team &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor: The Document Fountation&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
-   &quot;◘ Si el documento se edita con la versión 24.x se rellenan esos nuevos campos de propiedades del documento.&quot;
+   &quot;◘ Si el documento se edita con la versión 24.x se rellenan esos nuevos campos de propiedades del documento.&quot;   
+   C_Txt(20) = &quot;Colaborador&quot;
+   C_Txt(21) = &quot;Editor&quot;
    Lista = Array (&quot;enero&quot;,&quot;febrero&quot;,&quot;marzo&quot;,&quot;abril&quot;,&quot;mayo&quot;,&quot;junio&quot;,&quot;julio&quot;,&quot;agosto&quot;,&quot;septiembre&quot;,&quot;octubre&quot;,&quot;noviembre&quot;,&quot;diciembre&quot;)
 
    Case &quot;pt&quot;
    C_Txt(0) = &quot;Campos do documento&quot;
-   C_Txt(1) = &quot;Título do documento&quot;
+   C_Txt(1) = &quot;Título Doc.&quot;
    C_Txt(2) = &quot;Modelo vinculado&quot;
    C_Txt(3) = &quot;Guia&quot;
    C_Txt(4) = &quot;Versão do LibreOffice&quot;
    C_Txt(5) =  &quot;Anotações&quot;
-   C_Txt(6) =  &quot;          Capítulo X          &amp;     Título&quot;
+   C_Txt(6) =  &quot;        Capítulo X          &amp;     Título&quot;
    C_Txt(7) = &quot;Publicação&quot;
    C_Txt(8) = &quot;Nenhuma&quot;
    C_Txt(9) = &quot;Corrigir&quot;
@@ -146,6 +148,8 @@ Sub Trad_Campos
    &quot;◘ Comentários:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;[Nome do guia]&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
    &quot;Contributor: The LibreOffice Documentation Team &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor: The Document Fountation&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;◘ Essas novas propriedades do documento serão preenchidas quando o documento for editado com a versão 24.x.&quot;
+   C_Txt(20) = &quot;Contributor&quot;
+   C_Txt(21) = &quot;Editor&quot; 
    Lista = Array (&quot;janeiro&quot;,&quot;fevereiro&quot;,&quot;março&quot;,&quot;abril&quot;,&quot;maio&quot;,&quot;junho&quot;,&quot;julho&quot;,&quot;agosto&quot;,&quot;setembro&quot;,&quot;outubro&quot;,&quot;novembro&quot;,&quot;dezembro&quot;)
  
    Case Else
@@ -155,7 +159,7 @@ Sub Trad_Campos
    C_Txt(3) = &quot;Guide&quot;
    C_Txt(4) = &quot;LO. Version&quot;
    C_Txt(5) = &quot;Comments&quot;
-   C_Txt(6) = &quot;           Chapter             &amp;      Title&quot;
+   C_Txt(6) = &quot;         Chapter             &amp;      Title&quot;
    C_Txt(7) = &quot;Published&quot;
    C_Txt(8) = &quot;None&quot;
    C_Txt(9) = &quot;Correct&quot;
@@ -176,8 +180,9 @@ Sub Trad_Campos
    &quot;◘ Comments:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;[Guide name]&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
    &quot;Contributor: The LibreOffice Documentation Team &quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;Editor: The Document Foundation&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;◘ These new document properties fields are filled in when edited with version 24.x.&quot;
+   C_Txt(20) = &quot;Contributor&quot;
+   C_Txt(21) = &quot;Publisher&quot; 
    Lista = Array (&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,&quot;July&quot;,&quot;August&quot;,&quot;September&quot;,&quot;October&quot;,&quot;November&quot;,&quot;December&quot;)
-
    End Select
 End Sub
 
@@ -334,7 +339,7 @@ Sub   Trad_Formatos
    &quot;Ten en cuenta que elimina el formato directo de numeraciones o viñetas&quot;  
    F_Txt(19) = &quot;El formato directo de párrafos no se ha limpiado&quot;
    F_Txt(20) = &quot;Estilo anterior a Listas&quot;
-   F_Txt(21) = &quot; No se ha encontrado la sección &quot;&quot;SEC_DISPLAYAREA&quot;&quot; No se ha podido reiniciar la numeración en secciones&quot;
+   F_Txt(21) = &quot;-  No se ha encontrado la sección &quot;&quot;SEC_DISPLAYAREA&quot;&quot; . &quot;
    F_Txt(22) = &quot;   Errores corregidos párrafos anteriores a listas&quot;
    F_Txt(23) = &quot;,  cambiado por  &quot;
 
@@ -372,7 +377,7 @@ Sub   Trad_Formatos
    &quot;Note que exclui a formatação direta de numeração ou marcadores&quot;
    F_Txt(19) = &quot;A formatação direta dos parágrafos não foi limpa&quot;
    F_Txt(20) = &quot;Estilo precedente a listas&quot;
-   F_Txt(21) = &quot; A seção &quot;&quot;SEC_DISPLAYAREA&quot;&quot; não foi encontrada. As numerações de &quot;&quot;Legend Numbered&quot;&quot; não foram reiniciadas.&quot;
+   F_Txt(21) = &quot;-  A seção &quot;&quot;SEC_DISPLAYAREA&quot;&quot; não foi encontrada.  &quot;
    F_Txt(22) = &quot;   Erros corrigidos no parágrafos precedentes à lista&quot;
    F_Txt(23) = &quot;,  cambiado por  &quot;
 
@@ -410,7 +415,7 @@ Sub   Trad_Formatos
    &quot;Note that it eliminates the direct format of numbering or bullets.&quot;
    F_Txt(19) = &quot;Direct paragraph formatting has not been cleaned up&quot;
    F_Txt(20) = &quot;Style before lists&quot;
-   F_Txt(21) = &quot; The section &quot;&quot;SEC_DISPLAYAREA&quot;&quot; was not found. The numbering of &quot;&quot;Legend Numbered&quot;&quot; have not been reset.&quot;     
+   F_Txt(21) = &quot;-  The section &quot;&quot;SEC_DISPLAYAREA&quot;&quot; was not found. &quot;     
    F_Txt(22) = &quot;   Errors fixed in paragraphs before lists&quot;
    F_Txt(23) = &quot;,  exchanged for  &quot;
 
@@ -634,6 +639,8 @@ Sub Trad_Plantilla
    P_Txt(14) = &quot;Aceptar&quot; &apos;o Cerrar
    P_Txt(15) = &quot;Ninguna&quot;
    P_Txt(16) = &quot;Cancelar&quot;
+   P_Txt(17) = &quot;Primero tienes que guardar el documento&quot;
+   P_Txt(18) = &quot;Este documento es una plantilla&quot; 
      
    Case &quot;pt&quot;
    P_Txt(0) = &quot;Vincular modelo&quot;
@@ -657,6 +664,8 @@ Sub Trad_Plantilla
    P_Txt(14) = &quot;OK&quot; &apos;ou Fechar
    P_Txt(15) = &quot;Nenhum&quot;
    P_Txt(16) = &quot;Cancelar&quot;
+   P_Txt(17) = &quot;Salve primeiro o seu documento&quot;
+   P_Txt(18) = &quot;Este documento é um modelo&quot;
    
    Case else
    P_Txt(0) = &quot;Link Template&quot;
@@ -680,7 +689,8 @@ Sub Trad_Plantilla
    P_Txt(14) = &quot;OK&quot; &apos;or Close
    P_Txt(15) = &quot;None&quot;
    P_Txt(16) = &quot;Cancel&quot;
-
+   P_Txt(17) = &quot;You must save the document first.&quot;
+   P_Txt(18) = &quot;This document is a template&quot;
    End select
 End Sub
 
@@ -803,6 +813,7 @@ Sub Trad_Renombrar
    &quot;según su aparición&quot; &amp; Chr(13) &amp; &quot;es necesario guardar los cambios y recargar el documento&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;¿Guardar y recargar?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- No podrás deshacer los cambios efectuados hasta ahora&quot;
    Ren_Txt(17) = &quot;Comprueba las secciones y sus nombres&quot;
+   Ren_Txt(18) = &quot; &quot;&quot;SEC_COPYRIGHT&quot;&quot; movida al inicio de &quot;&quot;SEC_DISPLAYAREA&quot;&quot; &quot;
 
    Case &quot;pt&quot;
    Ren_Txt(0) = &quot;Renomear objetos&quot;
@@ -828,6 +839,7 @@ Sub Trad_Renombrar
    &quot;de acordo com sua aparência&quot; &amp; Chr(13) &amp; &quot;é necessário salvar as alterações e recarregar o documento &quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;Salvar e recarregar?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- Você não poderá desfazer as alterações feitas até agora.&quot;
    Ren_Txt(17) = &quot;Verifique as seções e seus nomes&quot;
+   Ren_Txt(18) = &quot; &quot;&quot;SEC_COPYRIGHT&quot;&quot; movida para o início de &quot;&quot;SEC_DISPLAYAREA&quot;&quot; &quot;
      
    Case Else
    Ren_Txt(0) = &quot;Rename objects&quot;
@@ -853,6 +865,7 @@ Sub Trad_Renombrar
    &quot;according to its appearance order&quot; &amp; Chr(13) &amp; &quot;you must to save the changes and reload the document&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;Save and reload?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- You will not be able to undo the changes made so far.&quot;
    Ren_Txt(17) = &quot;Check the sections and their names.&quot;
+   Ren_Txt(18) = &quot; &quot;&quot;SEC_COPYRIGHT&quot;&quot; moved to the beginning of &quot;&quot;SEC_DISPLAYAREA&quot;&quot; &quot;
   
   End Select
 End Sub

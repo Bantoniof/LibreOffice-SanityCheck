@@ -223,6 +223,8 @@ Sub Optimizar(oTabla As Object ,Tipo As String)
  End With
    oDlgTablas.getModel.getbyname(&quot;Btn_Optimizar&quot;).enableVisible = False
    oDlgTablas.getModel.getbyName(&quot;Lbl_Optimizada&quot;).EnableVisible= True
+   oDlgTablas.getModel.getbyName(&quot;Opt_Datos&quot;).State= 0
+   oDlgTablas.getModel.getbyName(&quot;Opt_Distribucion&quot;).State= 0
 End Sub
 
  Rem ############

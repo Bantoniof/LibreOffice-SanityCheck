@@ -120,6 +120,20 @@ Function F_Ajuste_Marcos
        .RelativeHeightRelation = 0
        .RelativeWidth = 0
        .RelativeWidthRelation = 0
+       .bottomMargin = 0
+       .leftMargin = 0
+       .RightMargin = 0
+       .TopMargin = 0
+       .BorderDistance = 0
+       .TopBorderDistance = 0
+       .BottomBorderDistance = 0
+       .LeftBorderDistance = 0
+       .RightBorderDistance = 0
+ Dim props(): props = Array(0,0,0,0,32767,0)
+       .SetPropertyValue(&quot;BottomBorder&quot;,props())
+       .SetPropertyValue(&quot;LeftBorder&quot;,props())
+       .SetPropertyValue(&quot;RightBorder&quot;,props())
+       .SetPropertyValue(&quot;TopBorder&quot;,props())       
      End With
    Next
  Dim s as String 

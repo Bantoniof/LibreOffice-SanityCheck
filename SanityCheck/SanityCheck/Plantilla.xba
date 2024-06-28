@@ -4,12 +4,12 @@
  Rem Este módulo forma parte de la extensión SanityCheck
  Rem Autor: bantoniof@libreoffice.org
  Rem Fragmentos de código de la extensión TemplateChanger
- Rem original deAndré Schnabel
+ Rem original de André Schnabel
  Rem Licencia GNU v3 o posterior
   
 Option explicit
 
- Dim DocSettings as object, Docprops as object&apos;ThisComponent as object,
+ Dim DocSettings as object, Docprops as object, Documento as String 
  Dim TemplateUrl as string, oTemplate as object, templateName as string
  Dim oRulesD as object, oRulesT as object, i as integer
  Dim oDlgPlantillas as Object
@@ -17,17 +17,27 @@ Option explicit
  Rem ########
 Sub Dlg_Plantillas
 
-   Call L10n.Trad_Plantilla
  Dim oDocprops as Object, nplant as String
+   Call L10n.Trad_Plantilla
+   If  ThisComponent.HasLocation = False Then : MsgBox (P_Txt(17), 0+48+0, P_Txt(0) &amp; Extension) : Exit Sub : End If
+   If _Aux.F_EsPlantilla(ThisComponent) = True Then: MsgBox (P_Txt(18), 0+48+0, P_Txt(0) &amp; Extension) : Exit Sub : End If  
+   Documento = Ucase(GetFileNameExtension(ThisComponent.getURL))   
    oDocprops = ThisComponent.getDocumentProperties
-   Select case  F_getLang
-     Case &quot;es&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_ES&quot;
-     Case &quot;pt&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_PT&quot;
-     Case else : nplant = &quot;LO_UG_Chapters_2Xx_EN&quot;
-   End Select
-   
-  DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
-  oDlgPlantillas = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgPlantillas&quot;))
+   If Documento = &quot;ODT&quot; Then
+     Select case  F_getLang
+       Case &quot;es&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_ES&quot;
+       Case &quot;pt&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_PT&quot;
+       Case else : nplant = &quot;LO_UG_Chapters_2Xx_EN&quot;
+     End Select
+   ElseIf Documento = &quot;ODM&quot; Then
+     Select case  F_getLang
+       Case &quot;es&quot;: nplant = &quot;LO_UG_Patron_2Xx_ES&quot;
+       Case &quot;pt&quot;: nplant = &quot;LO_UG_Mestre_2Xx_PT&quot;
+       Case else : nplant = &quot;LO_UG_Master_2Xx_EN&quot;
+     End Select
+   End If
+   DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+   oDlgPlantillas = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgPlantillas&quot;))
    With oDlgPlantillas.getModel
      .Title = P_Txt(0) &amp; Extension
      .getByName(&quot;Txt_Plantilla&quot;).Text = P_Txt(8)
@@ -36,7 +46,6 @@ Sub Dlg_Plantillas
      .getByName(&quot;Lbl_Correcta&quot;).label = nplant       
      .getByName(&quot;Btn_Asociar&quot;).label = P_Txt(12)
      .getByName(&quot;Btn_Cancelar&quot;).Label = P_Txt(16)
-     
      If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
        .getByName(&quot;Lbl_Plantilla&quot;).label = oDocprops.TemplateName
        If oDocprops.TemplateName =  nplant Then
@@ -63,17 +72,22 @@ End sub
 Sub onBtn_Asociar(oev)
 
    oDlgPlantillas = oEv.Source.Context
-   
-   Call L10n.Trad_Plantilla
-   Select case GetStarOfficeLocale.language
-     Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Capitulos_2Xx_ES.ott&quot;
-     Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Capitulos_2Xx_PT.ott&quot;
-     Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Chapters_2Xx_EN.ott&quot;
-   End Select
+   If Documento = &quot;ODT&quot; Then 
+     Select case GetStarOfficeLocale.language
+       Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Capitulos_2Xx_ES.ott&quot;
+       Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Capitulos_2Xx_PT.ott&quot;
+       Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Chapters_2Xx_EN.ott&quot;
+     End Select
+   ElseIf Documento = &quot;ODM&quot; Then
+     Select case  F_getLang
+       Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Patron_2Xx_ES.otm&quot;
+       Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Mestre_2Xx_PT.otm&quot;
+       Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Master_2Xx_EN.otm&quot;
+     End Select
+   End If   
 &apos;   TemplateURL = &quot;file:///H:/Documentacion/Plantillas html/LO_UG_Capitulos_2Xx_PT.ott&quot;
    DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
    Docprops = ThisComponent.DocumentProperties  &apos;(meta.xml)
-
    S_loadTemplate (templateURL, oTemplate, templateName)
    DocSettings.UpdateFromTemplate = TRUE &apos;(settings.xml)
    
@@ -83,7 +97,6 @@ Sub onBtn_Asociar(oev)
      S_applyTemplate(ThisComponent, templateUrl)
      S_activateWriterHeadings(ThisComponent)
      oDlgPlantillas.EndExecute
-          
      msgbox (P_Txt(1) &amp; templateName, 0+64+0, P_Txt(0) &amp; Extension)       
    End If
 End Sub
@@ -92,7 +105,6 @@ End Sub
 Sub CortarEnlace
 
    Call L10n.Trad_Plantilla
-
    DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
    DocSettings.UpdateFromTemplate = FALSE
    S_setTemplateAndDate (ThisComponent, &quot;&quot;, &quot;&quot;)
@@ -103,7 +115,6 @@ end sub
 Sub ActivarPlantilla
 
    Call L10n.Trad_Plantilla
-   
    Docprops = ThisComponent.DocumentProperties
    If ThisComponent.getDocumentProperties.TemplateName = &quot;&quot;  Then
      Msgbox (P_Txt(3),0+64+0, P_Txt(0) &amp; Extension)   
@@ -250,7 +261,6 @@ sub S_activateWriterHeadings(doc as object)
        end if
      end if
    loop
-
 end sub
 
  Rem ########

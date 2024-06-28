@@ -10,7 +10,7 @@
  Rem ############
 Function F_CompPlantilla
  Dim  oEstilos As Object, oEstilo As Variant, i As Integer, contador as integer
- Dim sLink As String, s As String
+ Dim sEnlaza As String, s As String
  Dim oDocprops As Object : oDocprops = ThisComponent.getDocumentProperties
    Call L10n.Trad_Aux
    Call CargaEstilos_PU_Guias
@@ -24,28 +24,27 @@ Function F_CompPlantilla
    next
    If Contador &lt;&gt; 0 then
      If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
-       slink = A_Txt(5) &amp; oDocprops.TemplateName
+       sEnlaza = A_Txt(5) &amp; oDocprops.TemplateName
      Else 
-       sLink = A_Txt(6)  
+       sEnlaza = A_Txt(6)  
      End If
-     Msgbox (A_Txt(7) &amp; s &amp; Chr(13) &amp; sLink &amp; Chr(13) &amp; A_Txt(8),0+16+0, A_Txt(4) &amp; Extension)
+     Msgbox (A_Txt(7) &amp; s &amp; Chr(13) &amp; sEnlaza &amp; Chr(13) &amp; A_Txt(8),0+16+0, A_Txt(4) &amp; Extension)
    End If  
    F_CompPlantilla = Contador
 End Function 
 
+ Rem ############
 Function F_EsPlantilla(Doc) As Boolean
 
+   Call Carga_Tools
  Dim Archivo : Archivo = (Doc.getURL)
- Dim Narchivo : Narchivo = (Filenameoutofpath(Archivo))
- Dim Extension: Extension= GetFileNameExtension(Archivo)
-   Carga_Tools
-   If UCase(Extension) = &quot;OTT&quot; OR UCase(Extension) = &quot;OTM&quot; then
+ Dim Ext: Ext = GetFileNameExtension(Archivo)
+   If UCase(Ext) = &quot;OTT&quot; OR UCase(Ext) = &quot;OTM&quot; then
      F_EsPlantilla = 1
    Else
      F_EsPlantilla = 0
    End If
-end Function
-
+End Function
  
  Rem ############
 Function F_Prueba_Sel()As Boolean &apos;pasar prueba selección

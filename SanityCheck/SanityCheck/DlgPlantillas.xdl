@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="DlgPlantillas" dlg:left="257" dlg:top="125" dlg:width="223" dlg:height="155" dlg:closeable="true" dlg:moveable="true">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="DlgPlantillas" dlg:left="257" dlg:top="125" dlg:width="240" dlg:height="156" dlg:closeable="true" dlg:moveable="true">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:font-weight="150"/>
   <dlg:style dlg:style-id="1" dlg:font-name="OpenSymbol" dlg:font-height="20" dlg:font-stylename="Regular"/>
@@ -9,12 +9,12 @@
   <dlg:button dlg:id="Btn_Asociar" dlg:tab-index="3" dlg:left="135" dlg:top="134" dlg:width="51" dlg:height="13" dlg:value="Btn_Asociar">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Plantilla.onBtn_Asociar?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:text dlg:style-id="0" dlg:id="Lbl_Plantilla" dlg:tab-index="0" dlg:left="123" dlg:top="108" dlg:width="72" dlg:height="10" dlg:value="Lbl_Plantilla" dlg:tabstop="false"/>
-  <dlg:textfield dlg:id="Txt_Plantilla" dlg:tab-index="2" dlg:left="16" dlg:top="13" dlg:width="191" dlg:height="89" dlg:multiline="true" dlg:value="Txt_Plant"/>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Plantilla" dlg:tab-index="0" dlg:left="123" dlg:top="108" dlg:width="90" dlg:height="10" dlg:value="Lbl_Plantilla" dlg:tabstop="false"/>
+  <dlg:textfield dlg:id="Txt_Plantilla" dlg:tab-index="2" dlg:left="19" dlg:top="13" dlg:width="203" dlg:height="89" dlg:multiline="true" dlg:value="Txt_Plant"/>
   <dlg:text dlg:id="Lbl_Plant" dlg:tab-index="4" dlg:left="14" dlg:top="108" dlg:width="104" dlg:height="10" dlg:value="Lbl_Plant"/>
-  <dlg:text dlg:style-id="0" dlg:id="Lbl_Correcta" dlg:tab-index="1" dlg:left="123" dlg:top="121" dlg:width="79" dlg:height="10" dlg:value="Lbl_Correcta" dlg:tabstop="false"/>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Correcta" dlg:tab-index="1" dlg:left="123" dlg:top="121" dlg:width="90" dlg:height="10" dlg:value="Lbl_Correcta" dlg:tabstop="false"/>
   <dlg:text dlg:id="Lbl_Necesaria" dlg:tab-index="5" dlg:left="14" dlg:top="121" dlg:width="82" dlg:height="10" dlg:value="Lbl_Necesaria"/>
   <dlg:button dlg:id="Btn_Cancelar" dlg:tab-index="6" dlg:left="48" dlg:top="135" dlg:width="51" dlg:height="13" dlg:value="Btn_Cancelar" dlg:button-type="cancel"/>
-  <dlg:text dlg:style-id="1" dlg:id="Lbl_Marca" dlg:tab-index="7" dlg:left="203" dlg:top="108" dlg:width="12" dlg:height="12" dlg:value="☑"/>
+  <dlg:text dlg:style-id="1" dlg:id="Lbl_Marca" dlg:tab-index="7" dlg:left="219" dlg:top="108" dlg:width="12" dlg:height="12" dlg:value="☑"/>
  </dlg:bulletinboard>
 </dlg:window>

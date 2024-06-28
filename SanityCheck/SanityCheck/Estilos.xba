@@ -510,7 +510,8 @@ Function F_Cambia_E_Car(E_Buscado as String, E_Remplazo as String)
          oFRange.CharStyleName =  E_Remplazo
        End If
      Next i
-     F_Cambia_E_Car =  &quot;- &quot;&quot;&quot; &amp; E_Buscado &amp; E_Txt(21) &amp; E_Remplazo &amp; &quot;&quot;&quot;  &quot;
+    E_Remplazo = ThisComponent.StyleFamilies.CharacterStyles.getByName(E_remplazo).DisplayName
+    F_Cambia_E_Car =  &quot;- &quot;&quot;&quot; &amp; E_Buscado &amp; E_Txt(21) &amp; E_Remplazo &amp; &quot;&quot;&quot;  &quot;
    Else 
      F_Cambia_E_Car = E_Txt(22)
    EndIf

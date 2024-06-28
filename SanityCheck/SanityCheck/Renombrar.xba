@@ -8,16 +8,6 @@
  Option Explicit
  Dim  oDlgRenombrar
  
-Sub msg
-Call trad_Renombrar
-
- If  Msgbox (Ren_Txt(16), 4+32+256, E_Txt(0) &amp; Extension) = 6 then
-  Print &quot;has pulsado si&quot;&apos;    Call _Aux.GuardaRecarga
- else 
- Exit sub
- End If
-end sub
-
  Rem ############
 Sub Dlg_Renombrar
    Call L10n.Trad_Renombrar
@@ -105,7 +95,10 @@ Sub OnBtn_Renombrar(oEv)
    End With
  Dim suma As Integer : suma = Imgs + Marcos + Tablas + Secciones + Indice
    If suma = 0 Then : MsgBox (Ren_Txt(5), 0+64+0, I_Txt(0) &amp; Extension ) : Exit Sub : End If
-   If Secciones = 1 Then : : s = s &amp; F_Renombra_Sec &amp; Chr(13) : End If
+   If Secciones = 1 Then
+     s = s &amp; F_Renombra_Sec &amp; Chr(13)
+     s = s &amp; F_SecCopyR &amp; Chr(13)     
+   End If
    If Indice = 1 Then : s = s &amp; F_Renombra_Indice &amp; Chr(13) : End If
    If Tablas = 1 Then : s = s &amp; F_Renombra(&quot;Tablas&quot;) &amp; Chr(13) : End If
    If Imgs = 1 Then : s = s &amp; F_Renombra(&quot;Imagenes&quot;) &amp; Chr(13) : End If
@@ -120,11 +113,11 @@ End Sub
 
   Rem ############
  Function F_Renombra_Sec(Optional separador AS String)
-   Call L10n.Trad_Renombrar &apos; Call _Aux.Carga_Tools &apos;Cargados desde diálogo
+   Call L10n.Trad_Renombrar
  Dim oSecciones As Object : oSecciones = ThisComponent.TextSections
  Dim i As Integer, j as Integer, s As String
    j = 0
-   Dim secciones() : Secciones = Array(&quot;SEC_LOGO&quot;,&quot;SEC_GUIDE&quot;,&quot;SEC_TITLE&quot;,&quot;SEC_COPYRIGHT&quot;,&quot;SEC_DISPLAYAREA&quot;)
+   Dim secciones() : secciones = Array(&quot;SEC_LOGO&quot;,&quot;SEC_GUIDE&quot;,&quot;SEC_TITLE&quot;,&quot;SEC_COPYRIGHT&quot;,&quot;SEC_DISPLAYAREA&quot;)
    For i = 0 to Ubound(Secciones)
      If oSecciones.HasbyName(secciones(i)) then j= j+1
    Next
@@ -137,31 +130,67 @@ End Sub
  Dim prefijo AS String, Contador AS String
    prefijo = ConvertFromURL(GetFileNameWithoutExtension(ThisComponent.getURL, &quot;/&quot;))
    prefijo = &quot;sec_&quot; &amp; Left(Replace(prefijo,&quot; &quot;,&quot;&quot;),6)
-&apos; Dim i AS Integer, j as Integer
  Dim oSeccion as Object, nombre AS String
    If IsMissing(separador) Then : separador = &quot;-&quot; : End If
    j = 0  
-&apos;   For i = 7 To oSecciones.Count -1 &apos;el Í­ndice añade 2 secciones ocultas?
-   For i = 5 To oSecciones.Count -1 &apos;el Í­ndice añade 2 secciones ocultas? 
+   For i = 0 To oSecciones.Count -1
      oSeccion = oSecciones.getbyIndex(i)  
      If j &lt; 10 Then : contador = &quot;00&quot; &amp; cStr(j)
      ElseIf j &lt; 100 Then : contador = &quot;0&quot; &amp; cStr(j)
      Else : contador = &quot;&quot; &amp; cStr(j)
      End If
      nombre = prefijo &amp; separador &amp; contador 
-     If Not oSecciones.hasByName(nombre) Then
-       oSeccion.Name = nombre
-     Else
-       separador = &quot;_&quot;
-       nombre = prefijo &amp; separador &amp; contador Rem solución temporal para nombres duplicados
-       oSeccion.Name = nombre
-     End If
+     If F_BuscarEnMatriz(secciones, oSeccion.Name) = False Then 
+       If Not oSecciones.hasByName(nombre) Then
+         oSeccion.Name = nombre
+       Else
+         separador = &quot;_&quot;
+         nombre = prefijo &amp; separador &amp; contador Rem solución temporal para nombres duplicados
+         oSeccion.Name = nombre
+       End If
        j = j + 1
+     End If
    Next
-   If j = 0 then &apos;el Í­ndice añade 2 secciones
+   If j = 2 then &apos;el Í­ndice añade 2 secciones ocultas y no visibles
      F_Renombra_Sec = Ren_Txt(11)
-   Else
+   ElseIf J &gt;2 then
      F_Renombra_Sec = Ren_Txt(10) &amp; Ren_Txt(13)
+   End IF 
+End Function
+
+ Rem ############
+Function F_SecCopyR
+
+ Dim oIndex As Object,  oSecciones As Object
+ DIM  sCRight As Object , sDisplay As Object , oCursor As Object
+   oSecciones = ThisComponent.TextSections
+   If Not oSecciones.HasbyName(&quot;SEC_COPYRIGHT&quot;) _
+     OR Not oSecciones.HasbyName(&quot;SEC_DISPLAYAREA&quot;) Then
+     Exit Function
+   End If
+   If ThisComponent.getDocumentIndexes.getCount = 1 Then
+     oIndex = ThisComponent.getDocumentIndexes.GetbyIndex(0)
+     oIndex.IsProtected = false
+   End If
+   sCRight = oSecciones.getbyName(&quot;SEC_COPYRIGHT&quot;)
+   sDisplay = oSecciones.getbyName(&quot;SEC_DISPLAYAREA&quot;)
+   If  IsNull(sCRight.ParentSection) Then&apos; Aislada
+     sDisplay.Dispose
+     oCursor = ThisComponent.Text.CreateTextCursor
+     oCursor.gotoEnd(false)
+     ThisComponent.Text.InsertSTRING (oCursor,&quot; &quot;,false)
+     oCursor.gotoRange(sCRight.Anchor.Start, false)
+     oCursor.gotoEnd(true)
+     oCursor.goLeft(1,true)
+     Dim sec
+     Sec = ThisComponent.CreateInstance(&quot;com.sun.star.text.TextSection&quot;)
+     ThisComponent.Text.insertTextContent(oCursor, sec, true)
+     Sec.Name = &quot;SEC_DISPLAYAREA&quot;
+     F_SecCopyR = Ren_Txt(18)     
+   End If
+   If ThisComponent.getDocumentIndexes.getCount = 1 Then
+     oIndex = ThisComponent.getDocumentIndexes.GetbyIndex(0)
+     oIndex.IsProtected = true
    End If
 End Function
 
