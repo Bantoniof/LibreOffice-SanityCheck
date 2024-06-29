@@ -507,7 +507,7 @@ End Sub
  Rem ############
 Sub OnBtn_Cambiar_Desc_Img(oEv)
    oDlgImgs = oEv.Source.Context
-   oImg.Description = oDlg.getModel.getByName(&quot;Tx_Desc_Img&quot;).Text
+   oImg.Description = oDlgImgs.getModel.getByName(&quot;Tx_Desc_Img&quot;).Text
    oDlgImgs.getModel.getByName(&quot;Tx_Desc_Img&quot;).TextColor = RGB(0,120,0)
 End Sub
 
