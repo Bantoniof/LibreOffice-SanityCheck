@@ -7,7 +7,9 @@
 		<node oor:name="States">
 			<node oor:name="private:resource/toolbar/addon_SanityCheck.OfficeToolBar" oor:op="replace">
 				<prop oor:name="UIName" oor:type="xs:string">
-					<value>SanityCheck toolbar</value>
+					<value>LO_SanityCheck</value>
+					<value xml:lang="pt-BR">LO_SanityCheck</value>
+					<value xml:lang="es-ES">LO_SanityCheck</value>
 				</prop>
 			</node>
 		</node>
