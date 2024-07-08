@@ -72,7 +72,7 @@ Sub Parametros_Tablas
      .getByName(&quot;Lbl_EstiloT&quot;).Label = T_Txt(2)
      .getByName(&quot;Fr_Tipo&quot;).Label = T_Txt(3)
      .getByName(&quot;Opt_Datos&quot;).Label = T_Txt(4)
-     .getByName(&quot;Opt_Distribucion&quot;).Label = T_Txt(5)
+     .getByName(&quot;Opt_Posicion&quot;).Label = T_Txt(5)
      .getByName(&quot;Lbl_Info&quot;).Label = T_Txt(6)
      .getByName(&quot;Btn_Anterior&quot;).Label = T_Txt(7)
      .getByName(&quot;Btn_Optimizar&quot;).Label = T_Txt(8)
@@ -83,7 +83,7 @@ Sub Parametros_Tablas
      .getbyName(&quot;Btn_Optimizar&quot;).EnableVisible = True
      .getbyName(&quot;Lbl_Optimizada&quot;).EnableVisible= False
      .getbyName(&quot;Opt_Datos&quot;).State= 0
-     .getbyName(&quot;Opt_Distribucion&quot;).State= 0
+     .getbyName(&quot;Opt_Posicion&quot;).State= 0
      If Indice_Tbl = 0 Then
        .getByName(&quot;Btn_Anterior&quot;).EnableVisible = False
        .getByName(&quot;Btn_Siguiente&quot;).EnableVisible = True
@@ -153,7 +153,7 @@ Sub OnBtn_Optimizar(oEv)
   oDlgTablas = oEv.Source.Context
    If oDlgTablas.getModel.getByName(&quot;Opt_Datos&quot;).state = 1 Then
      Call optimizar(oTabla,&quot;Datos&quot;)
-   ElseIf oDlgTablas.getModel.getByName(&quot;Opt_Distribucion&quot;).state = 1 Then
+   ElseIf oDlgTablas.getModel.getByName(&quot;Opt_Posicion&quot;).state = 1 Then
      Call optimizar(oTabla,&quot;Contenido&quot;)
    Else
     MsgBox (T_Txt(15), 0+64+0, T_Txt(0) &amp; Extension)
@@ -224,7 +224,7 @@ Sub Optimizar(oTabla As Object ,Tipo As String)
    oDlgTablas.getModel.getbyname(&quot;Btn_Optimizar&quot;).enableVisible = False
    oDlgTablas.getModel.getbyName(&quot;Lbl_Optimizada&quot;).EnableVisible= True
    oDlgTablas.getModel.getbyName(&quot;Opt_Datos&quot;).State= 0
-   oDlgTablas.getModel.getbyName(&quot;Opt_Distribucion&quot;).State= 0
+   oDlgTablas.getModel.getbyName(&quot;Opt_Posicion&quot;).State= 0
 End Sub
 
  Rem ############

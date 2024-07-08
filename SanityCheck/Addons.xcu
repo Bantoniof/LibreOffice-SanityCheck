@@ -178,6 +178,24 @@
 					</prop>
 				</node>
 
+				<node oor:name="m012" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Info.Dlg_Info?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Info</value>
+						<value xml:lang="pt-BR">Info</value>
+						<value xml:lang="es-ES">Info</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+
+
 			</node><!-- Sanity Toolbar -->
 		</node> <!-- Office Toolbar -->
 
@@ -397,6 +415,23 @@
 					</prop>
 				</node>
 
+					<node oor:name="m006" oor:op="replace">
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
+						</prop>
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Info.Dlg_Info?language=Basic&amp;location=application</value>
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value>Info</value>
+							<value xml:lang="pt-BR">Info</value>
+							<value xml:lang="es-ES">Info</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+					</node>
+
 				</node><!-- Submenu 1 -->
 			</node><!-- Sanity Menu Bar -->
 		</node><!-- Office MenuBar 2 -->
@@ -571,6 +606,26 @@
 				</node>
 
 				<node oor:name="omb11" oor:op="replace">
+					<prop oor:name="Title" oor:type="xs:string">
+							<value>Info</value>
+							<value xml:lang="pt-BR">Info</value>
+							<value xml:lang="es-ES">Info</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Info.Dlg_Info?language=Basic&amp;location=application</value>
+						
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+				</node>
+
+
+
+				<node oor:name="omb12" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -713,6 +768,24 @@
 					</prop>
 				</node>
 			</node>
+
+
+			<node oor:name="vnd.bantoniof.sanitycheck.Info.Dlg_Info" oor:op="replace">
+						<prop oor:name="URL" oor:type="xs:string">
+							<value>vnd.sun.star.script:SanityCheck.Info.Dlg_Info?language=Basic&amp;location=application</value>
+						</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Info.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Info.svg</value>
+					</prop>
+				</node>
+			</node>
+
+
+
 
 		</node><!-- Fin Imágenes -->
 

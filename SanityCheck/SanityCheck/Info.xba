@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Info" script:language="StarBasic" script:moduleType="normal">REM  *****  BASIC  *****
+
+ Option Explicit
+ Dim oDlgInfo
+
+ Rem ############
+Sub Dlg_Info
+
+ Dim sv As Variant, icono as Variant, Inf_Txt(2) As String
+   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   oDlgInfo = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgInfo&quot;))
+   sv = GetDefaultContext.getByName(&quot;/singletons/com.sun.star.deployment.PackageInformationProvider&quot;)
+   icono = sv.getPackageLocation(&quot;vnd.bantoniof.sanitycheck&quot;) &amp; &quot;/icons/_IconoSanity.svg&quot;
+
+   Select Case L10n.F_getLang
+
+   Case &quot;es&quot;
+   Inf_Txt(0) = &quot;Ayuda&quot;
+   Inf_Txt(1) = &quot;Cerrar&quot;
+   Inf_Txt(2) = &quot;Ayuda en las revisiones de las guías de LibreOffice.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+    &quot;- Autor: B. Antonio Fernández&quot; &amp; Chr(13) &amp;_
+    &quot;- Colaboradores: Olivier Hallot&quot; &amp; Chr(13) &amp;_
+    &quot;- Fragmentos de código de: Andrew Pitonyak y André Schnabel&quot;
+   Case &quot;pt&quot;
+   Inf_Txt(0) = &quot;Ajuda&quot;
+   Inf_Txt(1) = &quot;Fechar&quot;
+   Inf_Txt(2) =  &quot;Ajuda com revisões dos guias do LibreOffice.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+    &quot;- Autor: B. Antonio Fernández&quot; &amp; Chr(13) &amp;_
+    &quot;- Contribuintes: Olivier Hallot&quot; &amp; Chr(13) &amp;_
+    &quot;- Trechos de código de: Andrew Pitonyak e André Schnabel&quot;
+   Case else
+   Inf_Txt(0) = &quot;Help&quot;
+   Inf_Txt(1) = &quot;Close&quot;
+   Inf_Txt(2) =  &quot;Help with revisions to LibreOffice guides.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+    &quot;- Author: B. Antonio Fernández&quot; &amp; Chr(13) &amp;_
+    &quot;- Contributors: Olivier Hallot&quot; &amp; Chr(13) &amp;_
+    &quot;- Code snippets by: Andrew Pitonyak and André Schnabel&quot;   
+   End Select
+
+   With oDlgInfo.getModel
+   .Title = &quot;LibreOffice &quot; &amp; F_LOVersion
+   .getbyName(&quot;Img_Info&quot;).ImageURL = Icono
+   .getbyName(&quot;Lbl_Extension&quot;).Label = F_Extension &amp; &quot; - &quot;
+   .getByName(&quot;Btn_Ayuda&quot;).label = Inf_Txt(0)
+   .getByName(&quot;Btn_Cerrar&quot;).label = Inf_Txt(1)
+   .GetByName(&quot;Tx_Info&quot;).Text = Inf_Txt(2)
+   End With
+   oDlgInfo.execute
+End Sub
+
+ Rem ############
+Sub OnBtn_Ayuda(oEv)
+   oDlgInfo = oEv.Source.Context
+   AbreURL(&quot;https://bantoniof.github.io/LO-SanityCheck-Pages/docs/SanityCheck_&quot; &amp;_
+   Ucase(_Aux.F_getLang) &amp; &quot;.html&quot;)
+End Sub
+
+ Rem ############
+sub  AbreURL(Enlace)
+dim op As Variant, sv As Object
+     op = com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE
+     sv = CreateUNOService(&quot;com.sun.star.system.SystemShellExecute&quot;)
+     sv.execute(Enlace,&quot;1&quot;,op)
+end sub
+
+</script:module>

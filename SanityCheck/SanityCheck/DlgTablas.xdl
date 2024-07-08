@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="Tablas" dlg:left="100" dlg:top="121" dlg:width="213" dlg:height="117" dlg:closeable="true" dlg:moveable="true" dlg:title="Información de tabla">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="Tablas" dlg:left="100" dlg:top="121" dlg:width="216" dlg:height="126" dlg:closeable="true" dlg:moveable="true" dlg:title="Información de tabla">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:font-height="10" dlg:font-weight="150"/>
   <dlg:style dlg:style-id="1" dlg:text-color="0x18a303" dlg:font-height="10" dlg:font-weight="150"/>
   <dlg:style dlg:style-id="2" dlg:font-height="11"/>
  </dlg:styles>
  <dlg:bulletinboard>
-  <dlg:button dlg:id="Btn_Siguiente" dlg:tab-index="3" dlg:left="60" dlg:top="93" dlg:width="40" dlg:height="14" dlg:value="Btn_Siguiente">
+  <dlg:button dlg:id="Btn_Siguiente" dlg:tab-index="3" dlg:left="60" dlg:top="101" dlg:width="40" dlg:height="14" dlg:value="Btn_Siguiente">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Tablas.OnBtn_Siguiente?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:radiogroup>
    <dlg:radio dlg:id="Opt_Datos" dlg:tab-index="0" dlg:left="44" dlg:top="48" dlg:width="48" dlg:height="9" dlg:value="Opt_Datos">
     <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:SanityCheck.Tablas.OnRadioButtons?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:id="Opt_Distribucion" dlg:tab-index="1" dlg:left="104" dlg:top="48" dlg:width="50" dlg:height="9" dlg:value="Opt_Distribucion">
-    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:SanityCheck.Tablas.OnRadioButtons?language=Basic&amp;location=application" script:language="Script"/>
-   </dlg:radio>
   </dlg:radiogroup>
-  <dlg:text dlg:id="Lbl_Info" dlg:tab-index="7" dlg:left="14" dlg:top="62" dlg:width="184" dlg:height="27" dlg:value="Lbl_Info" dlg:multiline="true"/>
+  <dlg:text dlg:id="Lbl_Info" dlg:tab-index="7" dlg:left="14" dlg:top="62" dlg:width="184" dlg:height="35" dlg:value="Lbl_Info" dlg:multiline="true"/>
   <dlg:text dlg:id="Lbl_Nombre" dlg:tab-index="9" dlg:left="58" dlg:top="16" dlg:width="48" dlg:height="9" dlg:value="Lbl_Nombre" dlg:valign="center"/>
   <dlg:text dlg:id="Lbl_Estilo" dlg:tab-index="11" dlg:left="58" dlg:top="27" dlg:width="66" dlg:height="9" dlg:value="Lbl_Estilo" dlg:valign="center"/>
-  <dlg:button dlg:id="Btn_Salir" dlg:tab-index="5" dlg:left="161" dlg:top="93" dlg:width="40" dlg:height="14" dlg:value="Btn_Salir">
+  <dlg:button dlg:id="Btn_Salir" dlg:tab-index="5" dlg:left="161" dlg:top="101" dlg:width="40" dlg:height="14" dlg:value="Btn_Salir">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Tablas.OnBtn_Salir?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="Btn_Anterior" dlg:tab-index="2" dlg:left="11" dlg:top="93" dlg:width="40" dlg:height="14" dlg:value="Btn_Anterior">
+  <dlg:button dlg:id="Btn_Anterior" dlg:tab-index="2" dlg:left="11" dlg:top="101" dlg:width="40" dlg:height="14" dlg:value="Btn_Anterior">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Tablas.OnBtn_Anterior?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:text dlg:style-id="0" dlg:id="Lbl_Ultima" dlg:tab-index="12" dlg:left="88" dlg:top="83" dlg:width="50" dlg:height="14" dlg:value="Lbl_Ultima" dlg:valign="center"/>
-  <dlg:button dlg:id="Btn_Optimizar" dlg:tab-index="4" dlg:left="113" dlg:top="93" dlg:width="40" dlg:height="14" dlg:value="Optimizar">
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Ultima" dlg:tab-index="12" dlg:left="88" dlg:top="91" dlg:width="50" dlg:height="14" dlg:value="Lbl_Ultima" dlg:valign="center"/>
+  <dlg:button dlg:id="Btn_Optimizar" dlg:tab-index="4" dlg:left="113" dlg:top="101" dlg:width="40" dlg:height="14" dlg:value="Optimizar">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Tablas.OnBtn_Optimizar?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:text dlg:style-id="1" dlg:id="Lbl_Optimizada" dlg:tab-index="13" dlg:left="113" dlg:top="95" dlg:width="40" dlg:height="14" dlg:value="Lbl_Optimizada" dlg:valign="center"/>
+  <dlg:text dlg:style-id="1" dlg:id="Lbl_Optimizada" dlg:tab-index="13" dlg:left="113" dlg:top="103" dlg:width="40" dlg:height="14" dlg:value="Lbl_Optimizada" dlg:valign="center"/>
   <dlg:text dlg:id="Lbl_EstiloT" dlg:tab-index="10" dlg:left="18" dlg:top="27" dlg:width="38" dlg:height="9" dlg:value="Lbl_EstiloT" dlg:valign="center"/>
-  <dlg:titledbox dlg:id="Fr_Tipo" dlg:tab-index="6" dlg:left="17" dlg:top="38" dlg:width="154" dlg:height="21">
+  <dlg:titledbox dlg:id="Fr_Tipo" dlg:tab-index="6" dlg:left="17" dlg:top="38" dlg:width="165" dlg:height="21">
    <dlg:title dlg:value="Fr_Tipo"/>
   </dlg:titledbox>
   <dlg:text dlg:id="Lbl_NombreT" dlg:tab-index="8" dlg:left="18" dlg:top="16" dlg:width="38" dlg:height="9" dlg:value="Lbl_NombreT" dlg:valign="center"/>
   <dlg:text dlg:style-id="2" dlg:id="Lbl_TablaNum" dlg:tab-index="14" dlg:left="18" dlg:top="2" dlg:width="172" dlg:height="12" dlg:value="Lbl_TablaNum" dlg:align="center" dlg:valign="center"/>
+  <dlg:radiogroup>
+   <dlg:radio dlg:id="Opt_Posicion" dlg:tab-index="1" dlg:left="104" dlg:top="48" dlg:width="73" dlg:height="9" dlg:value="Opt_Posicion">
+    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:SanityCheck.Tablas.OnRadioButtons?language=Basic&amp;location=application" script:language="Script"/>
+   </dlg:radio>
+  </dlg:radiogroup>
  </dlg:bulletinboard>
 </dlg:window>

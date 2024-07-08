@@ -11,4 +11,5 @@
  <library:element library:name="Renombrar"/>
  <library:element library:name="_Aux"/>
  <library:element library:name="Plantilla"/>
+ <library:element library:name="Info"/>
 </library:library>

@@ -128,8 +128,7 @@ End Sub
    End If
 
  Dim prefijo AS String, Contador AS String
-   prefijo = ConvertFromURL(GetFileNameWithoutExtension(ThisComponent.getURL, &quot;/&quot;))
-   prefijo = &quot;sec_&quot; &amp; Left(Replace(prefijo,&quot; &quot;,&quot;&quot;),6)
+   Prefijo =  left(Trim(FileNameoutofpath(ThisComponent.getURL)),7)
  Dim oSeccion as Object, nombre AS String
    If IsMissing(separador) Then : separador = &quot;-&quot; : End If
    j = 0  
@@ -202,7 +201,7 @@ Sub F_Renombra_Indice() As String
 &apos;   Call L10n.Trad_Renombrar &apos; Call _Aux.Carga_Tools &apos;Cargados desde diálogo
  Dim oIndexes As Object, nombre As String
    oIndexes = ThisComponent.getDocumentIndexes()
-   nombre = Left(ConvertFromURL(GetFileNameWithoutExtension(ThisComponent.getURL(), &quot;/&quot;)),6)
+   nombre = Left(Trim(FileNameoutofpath(ThisComponent.getURL)),7)
    If oIndexes.getCount() &lt;&gt; 1 Then
      F_Renombra_Indice = Ren_Txt(14)
    Else
@@ -227,9 +226,7 @@ Function F_Renombra(Objetos As String, Optional separador ) As String
    If Items.getCount() = 0 Then : F_Renombra = Ren_Txt(12) &amp; Objetos : Exit Function : End If
  Dim n_archivo As String, nombre As String, contador As String
  Dim oItem As Object, i As Integer
-   n_archivo = Replace(ConvertFromURL(GetFileNameWithoutExtension(oDoc.getURL, &quot;/&quot;)),&quot; &quot;,&quot;&quot;)
-   &apos;n_archivo =n_archivo,&quot; &quot;,&quot;&quot;)
-   n_archivo = Left(n_archivo,6)
+   n_archivo =  left(Trim(FileNameoutofpath(ThisComponent.getURL)),7)
    For i = 0 To Items.Count-1
      oItem  = Items.getByIndex(i)
      If i &lt; 10 Then : contador = &quot;00&quot; &amp; cStr(i)

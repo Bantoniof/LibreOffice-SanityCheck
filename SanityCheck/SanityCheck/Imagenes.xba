@@ -108,6 +108,7 @@ Function F_Ajuste_Marcos
      oProgressBar.setValue( PBcounter )
      oFrame = oFrames.getByIndex(i)
      With oFrame Rem Formato Marco
+       .FrameStyleName = &quot;Frame&quot;
        .getAnchor().ParaStyleName = &quot;Figure&quot;
        .AnchorType = 1
        .SizeType = 0 &apos;Variable

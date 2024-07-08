@@ -29,7 +29,7 @@ Function F_getLang As String
    Call _Aux.Carga_Tools
    Extension = _Aux.F_Extension
    F_getLang = GetStarOfficeLocale.language
-&apos;F_getLang = &quot;ptl&quot; &apos;Cambia el idioma para pruebas.
+&apos;F_getLang = &quot;es&quot; &apos;Cambia el idioma para pruebas.
 End Function
 
  Rem ############
@@ -880,7 +880,7 @@ Sub Trad_Tablas
    T_Txt(2) = &quot;Estilo:&quot;
    T_Txt(3) = &quot;Tipo de tabla&quot;
    T_Txt(4) = &quot;Datos&quot;
-   T_Txt(5) = &quot;Distribución&quot;
+   T_Txt(5) = &quot;Posición&quot;
    T_Txt(6) = &quot;Selecciona un tipo de tabla para optimizar y pulsa &quot;&quot;Optimizar&quot;&quot;, o pulsa en &quot;&quot;Siguiente&quot;&quot; &quot; &amp;_ 
    &quot;para omitir la modificación de  la tabla&quot;
    T_Txt(7) = &quot;&lt; Anterior&quot;
@@ -899,7 +899,8 @@ Sub Trad_Tablas
    T_Txt(19) = &quot;Revisión de tablas detenida&quot;&apos;
    T_Txt(20) = &quot;Se aplica el estilo &quot;&quot;LO_Guides&quot;&quot; a la tabla&quot; &amp; Chr(13) &amp; &quot;anchura ajustada al 90%, centrada y optimizada &quot;
    T_Txt(21) = &quot;La tabla conservará su aspecto, pero se optimizará: &quot;
-   T_Txt(22) = &quot; - Espaciado de la tabla con el cuerpo de texto, celdas con alineación vertical centrada y altúra mínima.&quot;
+   T_Txt(22) = &quot; - Espaciado de la tabla con el cuerpo de texto, celdas con alineación vertical centrada y altúra mínima.&quot; &amp; Chr(13) &amp;_
+   &quot;Estilo de párrafo: Contenido de la tabla&quot;
    T_Txt(23) = &quot;Única tabla&quot;
    T_Txt(24) = &quot;Primero tienes que guardar el documento&quot;
    T_Txt(25) = &quot;Se han borrado todas las tablas, imposible continuar&quot;
@@ -910,7 +911,7 @@ Sub Trad_Tablas
    T_Txt(2) = &quot;Estilo&quot;
    T_Txt(3) = &quot;Tipo de tabela&quot;
    T_Txt(4) = &quot;Dados&quot;
-   T_Txt(5) = &quot;Posicionamento de conteúdo&quot;
+   T_Txt(5) = &quot;Posicionamento&quot;
    T_Txt(6) = &quot;Selecione um tipo de tabela a otimizar e clique em &quot;&quot;Otimizar&quot;&quot; ou clique em &quot;&quot;Próxima&quot;&quot; &quot; &amp;_
    &quot;para saltar a modificação da tabela.&quot;
    T_Txt(7) = &quot;&lt; Anterior&quot;
@@ -929,7 +930,8 @@ Sub Trad_Tablas
    T_Txt(19) = &quot;Revisão da tabelas interrompida&quot;
    T_Txt(20) = &quot;Estilo &quot;&quot;LO_Guides&quot;&quot; é aplicado à tabela &quot;&amp;Chr(13) &amp; &quot;- Largura definida como 90%, centralizada e otimizada&quot;
    T_Txt(21) = &quot;A tabela manterá sua aparência, mas será otimizada: &quot;
-   T_Txt(22) = &quot; - Espaçamento da tabela com o corpo do texto, células com alinhamento vertical centralizado e altura mínima.&quot;
+   T_Txt(22) = &quot; - Espaçamento da tabela com o corpo do texto, células com alinhamento vertical centralizado e altura mínima.&quot; &amp; Chr(13) &amp;_
+   &quot;- Estilo de parágrafo: Conteúdo da tabela&quot;
    T_Txt(23) = &quot;Única tabela&quot;
    T_Txt(24) = &quot;Salve primeiro seu documento&quot;
    T_Txt(25) = &quot;Todas as tabelas foram excluídas, impossível continuar&quot;
@@ -940,7 +942,7 @@ Sub Trad_Tablas
    T_Txt(2) = &quot;Style&quot;
    T_Txt(3) = &quot;Table type&quot;
    T_Txt(4) = &quot;Data&quot;
-   T_Txt(5) = &quot;Content distribution&quot;
+   T_Txt(5) = &quot;Content position&quot;
    T_Txt(6) = &quot;Select a type of table to optimize and click &quot;&quot;Optimize&quot;&quot; or click &quot;&quot;Next&quot;&quot; to skip modifying the table&quot;
    T_Txt(7) = &quot;&lt; Previous&quot;
    T_Txt(8) = &quot;Optimize&quot;
@@ -958,7 +960,8 @@ Sub Trad_Tablas
    T_Txt(19) = &quot;Tables review halted&quot;
    T_Txt(20) = &quot;Style &quot;&quot;LO_Guides&quot;&quot; is applied to table &quot;&amp; Chr(13) &amp; &quot;width set to 90%, centered and optimized&quot;
    T_Txt(21) = &quot;The table will retain its appearance, but will be optimized: &quot;
-   T_Txt(22) = &quot; - Spacing of the table with the body of text, cells with centered vertical alignment and minimum height.&quot;
+   T_Txt(22) = &quot; - Spacing of the table with the body of text, cells with centered vertical alignment and minimum height.&quot; &amp; Chr(13) &amp;_
+   &quot;- Paragraph style: Table Contents&quot;
    T_Txt(23) = &quot;Table unique&quot;
    T_Txt(24) = &quot;You must to save the document first.&quot;
    T_Txt(25) = &quot;All tables have been deleted, impossible to continue&quot;
