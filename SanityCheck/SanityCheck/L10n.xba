@@ -796,8 +796,8 @@ Sub Trad_Renombrar
    Ren_Txt(3) = &quot;Renombrar&quot;
    Ren_Txt(4) = &quot;Renombra los elementos en la secuencia de aparición.&quot; &amp; Chr(13) &amp; _
    &quot;- Se utiliza el prefijo adecuado (img_, frm_, tb_, sec_ o toc_)&quot; &amp; Chr(13) &amp;  _
-   &quot;+  los  seis primeros caracteres del nombre de archivo&quot; &amp; Chr(13) &amp;  &quot;+ separador + número de 3 dígitos.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
-   &quot;- Ejemplo: imagen 1 del cap 3 de la guía de Draw :&quot; &amp; Chr(13) &amp;  Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG7603-001&quot;&quot;&quot;
+   &quot;+  los  siete primeros caracteres del nombre de archivo&quot; &amp; Chr(13) &amp;  &quot;+ separador + número de 3 dígitos.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+   &quot;- Ejemplo: imagen 1 del cap 3 de la guía de Draw :&quot; &amp; Chr(13) &amp;  Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG24803-001&quot;&quot;&quot;
    Ren_Txt(5) = &quot;Selecciona  elementos para renombrar&quot;
    Ren_Txt(6) = &quot;Imágenes&quot;
    Ren_Txt(7) = &quot;Tablas&quot;
@@ -822,8 +822,8 @@ Sub Trad_Renombrar
    Ren_Txt(3) = &quot;Renomear&quot;
    Ren_Txt(4) = &quot;Renomeia os elementos na sequência de aparência.&quot; &amp; Chr(13) &amp; _
    &quot;- O prefixo apropriado é usado (img_, frm_, tb_, sec_ ou toc_)&quot; &amp; Chr(13) &amp; _
-   &quot; + os primeiros seis caracteres do nome do arquivo&quot; &amp; Chr(13) &amp;  &quot;+ separador + número de 3 dígitos.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
-   &quot;- Exemplo de imagem 1 do capítulo 3 do guia do Draw:&quot; &amp; Chr(13) &amp;  Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG7603-001&quot;&quot;&quot;
+   &quot; + os primeiros sete caracteres do nome do arquivo&quot; &amp; Chr(13) &amp;  &quot;+ separador + número de 3 dígitos.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+   &quot;- Exemplo de imagem 1 do capítulo 3 do guia do Draw:&quot; &amp; Chr(13) &amp;  Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG24803-001&quot;&quot;&quot;
    Ren_Txt(5) = &quot;Selecione os elementos para renomear&quot;
    Ren_Txt(6) = &quot;Imagens&quot;
    Ren_Txt(7) = &quot;Tabelas&quot;
@@ -848,8 +848,8 @@ Sub Trad_Renombrar
    Ren_Txt(3) = &quot;Rename&quot;
    Ren_Txt(4) =&quot;Renames the selected elements in order of appearance.&quot; &amp; Chr(13) &amp; _
    &quot;- The appropriate prefix is used (img_, frm_, tb_, sec_ or toc_)&quot; &amp; Chr(13) &amp; _
-   &quot;+ the first six characters of the file name&quot; &amp; Chr(13) &amp;  &quot;+ separator + 3-digit number.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
-   &quot;- Example image 1 of chapter 3 of the Draw guide:&quot; &amp; Chr(13) &amp; Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG7603-001&quot;&quot;&quot;
+   &quot;+ the first seven characters of the file name&quot; &amp; Chr(13) &amp;  &quot;+ separator + 3-digit number.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
+   &quot;- Example image 1 of chapter 3 of the Draw guide:&quot; &amp; Chr(13) &amp; Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG24803-001&quot;&quot;&quot;
    Ren_Txt(5) = &quot;Select elements to rename&quot;
    Ren_Txt(6) = &quot;Images&quot;
    Ren_Txt(7) = &quot;Tables&quot;
