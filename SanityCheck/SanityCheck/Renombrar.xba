@@ -161,7 +161,7 @@ End Function
 Function F_SecCopyR
 
  Dim oIndex As Object,  oSecciones As Object
- DIM  sCRight As Object , sDisplay As Object , oCursor As Object
+ DIM  secCRight As Object , secDisplay As Object , oCursor As Object
    oSecciones = ThisComponent.TextSections
    If Not oSecciones.HasbyName(&quot;SEC_COPYRIGHT&quot;) _
      OR Not oSecciones.HasbyName(&quot;SEC_DISPLAYAREA&quot;) Then
@@ -171,17 +171,17 @@ Function F_SecCopyR
      oIndex = ThisComponent.getDocumentIndexes.GetbyIndex(0)
      oIndex.IsProtected = false
    End If
-   sCRight = oSecciones.getbyName(&quot;SEC_COPYRIGHT&quot;)
-   sDisplay = oSecciones.getbyName(&quot;SEC_DISPLAYAREA&quot;)
-   If  IsNull(sCRight.ParentSection) Then&apos; Aislada
-     sDisplay.Dispose
+   secCRight = oSecciones.getbyName(&quot;SEC_COPYRIGHT&quot;)
+   secDisplay = oSecciones.getbyName(&quot;SEC_DISPLAYAREA&quot;)
+   If  IsNull(secCRight.ParentSection) Then&apos; Aislada
+     secDisplay.Dispose
      oCursor = ThisComponent.Text.CreateTextCursor
      oCursor.gotoEnd(false)
-     ThisComponent.Text.InsertSTRING (oCursor,&quot; &quot;,false)
-     oCursor.gotoRange(sCRight.Anchor.Start, false)
-     oCursor.gotoEnd(true)
-     oCursor.goLeft(1,true)
-     Dim sec
+     ThisComponent.Text.InsertControlCharacter(oCursor, 0, false) &apos;
+     oCursor.ParaStyleName = &quot;Text body&quot;
+     oCursor.goLeft(1,false)
+     oCursor.gotoRange(secCRight.Anchor.Start, true)
+   Dim sec
      Sec = ThisComponent.CreateInstance(&quot;com.sun.star.text.TextSection&quot;)
      ThisComponent.Text.insertTextContent(oCursor, sec, true)
      Sec.Name = &quot;SEC_DISPLAYAREA&quot;
