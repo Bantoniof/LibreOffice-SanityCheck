@@ -6,7 +6,7 @@
  Rem Licencia GNU v3 o posterior
   
  Option Explicit
- Public estiloPU(20) As String
+ Public estiloPU(15) As String
  Public estiloCU(25) As String
  Public P_Uso As String
  Dim oDlgEstilos As Object
@@ -33,13 +33,12 @@ Sub CargaEstilos_PU_Guias
    estiloPU(13) = &quot;Legend Numbered&quot;
    estiloPU(14) = &quot;Listing&quot;
    estiloPU(15) = &quot;New Chapter&quot;
-Rem  Estilos html   
-   estiloPU(16) = &quot;HLegend Numbered&quot;
-   estiloPU(17) = &quot;HList 2&quot;
-   estiloPU(18) = &quot;HNumbering 1&quot;
-   estiloPU(19) = &quot;HNumbering 2&quot;
-   estiloPU(20) = &quot;HNumbering 3&quot;
-   
+Rem  Estilos html  ( desactivados )
+&apos;   estiloPU(16) = &quot;HLegend Numbered&quot;
+&apos;   estiloPU(17) = &quot;HList 2&quot;
+&apos;   estiloPU(18) = &quot;HNumbering 1&quot;
+&apos;   estiloPU(19) = &quot;HNumbering 2&quot;
+&apos;   estiloPU(20) = &quot;HNumbering 3&quot;
 &apos;   estiloPU(5) = &quot;Comment&quot; &apos; Nuevo estilo para comentarios 24x necesario???
 End Sub
 

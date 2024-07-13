@@ -37,7 +37,7 @@
   <dlg:button dlg:id="Btn_Eliminar_C" dlg:tab-index="4" dlg:left="265" dlg:top="171" dlg:width="49" dlg:height="15" dlg:page="1" dlg:help-text="Selecciona un estilo de la lista para eliminar" dlg:tabstop="true" dlg:value="Btn_Eliminar_C">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnBtEliminar_C?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="Btn_Sustituir" dlg:tab-index="5" dlg:left="34" dlg:top="193" dlg:width="55" dlg:height="14" dlg:page="1" dlg:value="Btn_Sustituir">
+  <dlg:button dlg:id="Btn_Sustituir" dlg:tab-index="5" dlg:left="27" dlg:top="193" dlg:width="78" dlg:height="14" dlg:page="1" dlg:value="Btn_Sustituir">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnBtn_Sustituir?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
  </dlg:bulletinboard>
