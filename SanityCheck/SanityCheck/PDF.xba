@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="PDF" script:language="StarBasic" script:moduleType="normal">REM  *****  BASIC  *****
+ Option Explicit
+ 
+ 
+ sub asd12
+
+ Dim oEstilo
+ oEstilo = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).getByName(&quot;Contents Heading&quot;)
+ oEstilo.OutlineLevel = 1
+ xray oEstilo
+ 
+ 
+ End Sub
+ 
+ Rem ############
+Sub PreparaPDF
+
+Dim oEstilo As Object, oFrame As Object,  oFCursor As Object
+
+ oEstilo = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).getByName(&quot;Contents Heading&quot;)
+ oEstilo.OutlineLevel = 1
+
+ Rem compruebo situación
+
+   If ThisComponent.TextFrames.count = 0 then
+     F_Exporta
+   Else   
+     oFrame = ThisComponent.TextFrames.getByIndex(0)
+     oFCursor = oFrame.Text.CreateTextCursor
+     oFcursor.GoTostart(false)
+     oFCursor.GoRight(1, true)
+     If oFCursor.String &lt;&gt; &quot;&quot; Then
+        msgbox &quot;Leyenda encima&quot;
+        F_Exporta
+     Else
+       F_AlternarLeyenda()
+       F_Exporta
+     End If 
+   End If
+
+End Sub
+
+
+Rem ############
+Function F_AlternarLeyenda()
+&apos;   Call L10n.Trad
+&apos;   If ThisComponent.TextFrames.Count = 0 Then : MsgBox (&quot;Txt(18) No hay Frames&quot;, 0+64+0, Extension): Exit Function: End If
+&apos;   If _Aux.F_Prueba_Sel = False then Exit Function
+   
+ Dim Document As Object, dispatcher As Object, vCursor as Object
+    Document  = ThisComponent.CurrentController.Frame
+    dispatcher = CreateUNOService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+    vcursor =  ThisComponent.CurrentController.getViewCursor
+ Dim oImages, oImg as Object : oImages = ThisComponent.GraphicObjects()
+ Dim oFCursor As Object, oFrame As Variant, i As Integer
+
+ For i = 0 To oImages.count - 1
+  oImg = oImages.getbyIndex(i)
+  oFrame = oImg.Anchor.TextFrame()
+ If Not isEmpty(oImg.Anchor.TextFrame()) Then
+    oFCursor = oFrame.Text.createTextCursor&apos; Entro en el marco
+    oFCursor.gotoStart(False)
+    vcursor.gotoRange(oFCursor,False)
+    dispatcher.executeDispatch(Document, &quot;.uno:MoveDown&quot;, &quot;&quot;, 0, Array())&apos;    End If
+  End If
+ Next
+&apos; Vuelvo al inicio
+ Dim marco1 : marco1 = ThisComponent.getTextFrames.getByIndex(0).Anchor
+   vcursor.gotoRange(marco1,False) &apos;vuelvo al inicio
+   MsgBox (&quot;Txt(19) Situación Cambiada&quot;, 0+64+0,)&apos; Extension)
+   F_AlternarLeyenda = Chr(13) &amp; &quot;Txt(19) Situación Cambiada&quot;
+End Function
+
+
+sub TOC_Update
+Dim oIndexes as Object, i as Integer
+
+if ((ThisComponent.supportsService(&quot;com.sun.star.text.TextDocument&quot;)) OR (ThisComponent.supportsService(&quot;com.sun.star.text.WebDocument&quot;))) Then
+	oIndexes = ThisComponent.getDocumentIndexes()
+	
+	for i = 0 to oIndexes.getCount() - 1
+	oIndexes (i).update
+	REM If you want to get a message box when the index is updated
+	REM remove the &quot;REM&quot; in front of the msgBox line below!!
+ msgBox (&quot;Index updated: &quot; &amp;  oIndexes.getByIndex (i).getServiceName ())
+	next i
+end if
+
+end sub
+
+
+ Rem ############
+Sub F_Exporta&apos; https://bugs.documentfoundation.org/show_bug.cgi?id=150600
+ Rem IsAddStream,True = PDF híbrido
+ Rem ViewPDFAfterExport No disponible
+ Rem AllowDuplicateFieldNames Debe estar en true por si se repiten las llamadas a figuras etc.
+ Rem IsSkipEmptyPages debe ser false para exportar guía (asegura portada en p Izq e Inicio cap. en p derecha.
+&apos;   Call _Aux.ActualizarTodo
+   Call TOC_Update
+ Dim FilterArgs()
+   FilterArgs = Array(PropertyValue(&quot;UseLosslessCompression&quot;,true),_
+   PropertyValue(&quot;Quality&quot;,90),_
+   PropertyValue(&quot;ReduceImageResolution&quot;,true),_
+   PropertyValue(&quot;MaxImageResolution&quot;,300),_
+   PropertyValue(&quot;Watermark&quot;,&quot;&quot;),_
+   PropertyValue(&quot;IsAddStream&quot;,false),_
+   PropertyValue(&quot;SelectPdfVersion&quot;,2),_
+   PropertyValue(&quot;UseTaggedPDF&quot;,true),_
+   PropertyValue(&quot;PDFUACompliance&quot;,true),_
+   PropertyValue(&quot;ExportFormFields&quot;,false),_
+   PropertyValue(&quot;FormsType&quot;,0),_
+   PropertyValue(&quot;AllowDuplicateFieldNames&quot;,true),_
+   PropertyValue(&quot;ExportBookmarks&quot;,true),_
+   PropertyValue(&quot;ExportPlaceholders&quot;,true),_
+   PropertyValue(&quot;ExportNotes&quot;,false),_
+   PropertyValue(&quot;ExportNotesInMargin&quot;,false),_
+   PropertyValue(&quot;IsSkipEmptyPages&quot;,false),_
+   PropertyValue(&quot;UseReferenceXObject&quot;,false),_
+  PropertyValue(&quot;InitialView&quot;,1),_
+   PropertyValue(&quot;InitialPage&quot;,1),_
+   PropertyValue(&quot;Magnification&quot;,0),_
+   PropertyValue(&quot;Zoom&quot;,100),_
+   PropertyValue(&quot;PageLayout&quot;,0),_
+   PropertyValue(&quot;FirstPageOnLeft&quot;,false),_
+   PropertyValue(&quot;ResizeWindowToInitialPage&quot;,false),_
+   PropertyValue(&quot;CenterWindow&quot;,false),_
+   PropertyValue(&quot;OpenInFullScreenMode&quot;,false),_
+   PropertyValue(&quot;DisplayPDFDocumentTitle&quot;,true),_
+   PropertyValue(&quot;UseTransitionEffects&quot;,true),_
+   PropertyValue(&quot;HideViewerMenubar&quot;,false),_
+   PropertyValue(&quot;HideViewerToolbar&quot;,false),_
+   PropertyValue(&quot;HideViewerWindowControls&quot;,false),_
+   PropertyValue(&quot;OpenBookmarkLevels&quot;,-1),_
+   PropertyValue(&quot;EnableTextAccessForAccessibilityTools&quot;,true),_
+   PropertyValue(&quot;ExportLinksRelativeFsys&quot;,true),_
+   PropertyValue(&quot;_OkButtonString&quot;,&quot;&quot;),_
+   PropertyValue(&quot;ExportBookmarksToPDFDestination&quot;,false),_
+   PropertyValue(&quot;ConvertOOoTargetToPDFTarget&quot;,false),_
+   PropertyValue(&quot;PDFViewSelection&quot;,0),_
+   PropertyValue(&quot;EncryptFile&quot;,false),_
+   PropertyValue(&quot;PreparedPasswords&quot;,empty),_
+   PropertyValue(&quot;RestrictPermissions&quot;,false),_
+   PropertyValue(&quot;PreparedPermissionPassword&quot;,Array(),_
+   PropertyValue(&quot;Printing&quot;,2),_
+   PropertyValue(&quot;Changes&quot;,4),_
+   PropertyValue(&quot;EnableCopyingOfContent&quot;,true),_
+   PropertyValue(&quot;SignPDF&quot;,false),_
+   PropertyValue(&quot;SignatureCertificate&quot;,empty),_
+   PropertyValue(&quot;SignaturePassword&quot;,&quot;&quot;),_
+   PropertyValue(&quot;SignatureLocation&quot;,0,&quot;&quot;),_
+   PropertyValue(&quot;SignatureContactInfo&quot;,&quot;&quot;),_ 
+   PropertyValue(&quot;SignatureReason&quot;,&quot;&quot;),_
+   PropertyValue(&quot;SignatureTSA&quot;,&quot;&quot;)))
+
+ Dim Archivo As String, cmdArgs(1) as New com.sun.star.beans.PropertyValue
+   Archivo = F_Dlg_PDF
+   cmdArgs(0).Name = &quot;FilterName&quot;
+   cmdArgs(0).Value = &quot;writer_pdf_Export&quot;
+   cmdArgs(1).Name = &quot;FilterData&quot;
+   cmdArgs(1).Value = filterArgs()
+On error goto ERRORES
+
+   If Archivo &lt;&gt; &quot;&quot; Then
+     ThisComponent.storeToURL(Archivo, cmdArgs())
+     If Msgbox (&quot;Exportación completa. &quot; &amp; Chr(13) &amp; &quot;¿Quieres abrir el PDF ? &quot;,4+32+0,&quot;Abrir PDF&quot; &amp; Extension)= 6 then
+       Info.AbreURL(ConvertFromUrl(Archivo))
+     End If
+     If msgbox(&quot;leyendas encima de imágenes. &quot; &amp; Chr(13) &amp; &quot;¿Cambiar situación? &quot;,4+32+0,&quot;Situación&quot;) = 6 Then
+       F_AlternarLeyenda()
+     End If
+   End If
+   
+ERRORES:
+   If Err = 0 Then
+     Exit Sub 
+   ElseIf Err = 1 Then
+    Msgbox ( &quot;Txt(40) Es posible que el archivo esté bloqueado por el visor de PDF&quot; &amp;  Chr(13) &amp; Chr(13) &amp; Error, 0+64+0, &quot;Error n. 1&quot; &amp; Extension )
+   Else
+     Msgbox (&quot;Error=  &quot;&amp; Err &amp; &quot;  Linea = &quot; &amp;  Erl &amp;  Chr(13) &amp; &quot;  Msg = &quot; &amp;  Error )
+   End If   
+   
+End sub
+
+ Rem ############
+Function PropertyValue(n, v)
+ Dim result as new com.sun.star.beans.PropertyValue
+   result.Name = n
+   result.Value = v
+   PropertyValue = result
+End function
+
+ Rem ############
+Function F_Dlg_PDF()
+ Dim oDlgExportar as Object, Opciones() As Variant, Archivos()
+
+   If Not BasicLibraries.IsLibraryLoaded(&quot;Tools&quot;) Then  BasicLibraries.LoadLibrary(&quot;Tools&quot;)
+ Dim aFile() As Variant, Nombre As String
+   aFile = Split (ThisComponent.getURL, &quot;/&quot;)
+   Nombre = aFile(Ubound(aFile))
+   If Mid (Nombre, Len(Nombre)-3, 1) = &quot;.&quot; Then
+     Nombre = left(Nombre, len(Nombre) -4 ) &amp; &quot;.pdf&quot;
+   End If
+   oDlgExportar = CreateUnoService (&quot;com.sun.star.ui.dialogs.OfficeFilePicker&quot;)
+   Opciones() = Array(1)&apos;1 = simple ,2 opciones
+   With oDlgExportar
+     .Initialize ( Opciones() ) 
+     .Title=&quot;TXT() Exportar a PDF &quot; &amp; &quot;Extension&quot; 
+     .DisplayDirectory = DirectoryNameoutofPath(ThisComponent.getURL,&quot;/&quot;)
+     .DefaultName = Nombre &apos;Disponible solo con OfficeFilePicker
+     .AppendFilter(&quot;PDF&quot;, &quot;*.pdf&quot;)
+     .CurrentFIlter(&quot;PDF&quot;, &quot;*.pdf&quot;)
+   End With
+   If oDlgExportar.Execute() = 1 Then
+     Archivos() = oDlgExportar.getFiles()
+      F_Dlg_PDF = Archivos(0)
+    End If
+End Function
+
+
+sub grabadpra
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+rem ----------------------------------------------------------------------
+dim args1(2) as new com.sun.star.beans.PropertyValue
+args1(0).Name = &quot;URL&quot;
+args1(0).Value = &quot;file:///H:/_Git/Books/bookshelf/en/WG24/WG2425-Listados.pdf&quot;
+args1(1).Name = &quot;FilterName&quot;
+args1(1).Value = &quot;writer_pdf_Export&quot;
+args1(2).Name = &quot;FilterData&quot;
+args1(2).Value = Array(Array(&quot;UseLosslessCompression&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Quality&quot;,0,90,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ReduceImageResolution&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;MaxImageResolution&quot;,0,300,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;UseTaggedPDF&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SelectPdfVersion&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PDFUACompliance&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportNotes&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportNotesInMargin&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ViewPDFAfterExport&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportBookmarks&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;OpenBookmarkLevels&quot;,0,-1,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;UseTransitionEffects&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;IsSkipEmptyPages&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportPlaceholders&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;IsAddStream&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportFormFields&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;FormsType&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;AllowDuplicateFieldNames&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;HideViewerToolbar&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;HideViewerMenubar&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;HideViewerWindowControls&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ResizeWindowToInitialPage&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;CenterWindow&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;OpenInFullScreenMode&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;DisplayPDFDocumentTitle&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;InitialView&quot;,0,1,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Magnification&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Zoom&quot;,0,100,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PageLayout&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;FirstPageOnLeft&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;InitialPage&quot;,0,1,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Printing&quot;,0,2,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Changes&quot;,0,4,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;EnableCopyingOfContent&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;EnableTextAccessForAccessibilityTools&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportLinksRelativeFsys&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PDFViewSelection&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ConvertOOoTargetToPDFTarget&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportBookmarksToPDFDestination&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignPDF&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;_OkButtonString&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Watermark&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;EncryptFile&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PreparedPasswords&quot;,0,,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;RestrictPermissions&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PreparedPermissionPassword&quot;,0,Array(),com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureLocation&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureReason&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureContactInfo&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignaturePassword&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureCertificate&quot;,0,,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureTSA&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;UseReferenceXObject&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE))
+
+dispatcher.executeDispatch(document, &quot;.uno:ExportToPDF&quot;, &quot;&quot;, 0, args1())
+
+
+end sub
+</script:module>

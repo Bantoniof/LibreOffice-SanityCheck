@@ -192,7 +192,7 @@ Sub Optimizar(oTabla As Object ,Tipo As String)
      For nRow = 0 To oTabla.getRows().getCount() - 1
        For nCol = 0 To oTabla.getColumns().getCount() - 1
          oCell = oTabla.getCellByPosition(nCol, nRow)
-           Formato_Par(oCell.getText(), &quot;Table Contents&quot;)
+&apos;           Formato_Par(oCell.getText(), &quot;Table Contents&quot;)
        Next
      Next
  Dim oBorderDistances As New com.sun.star.table.TableBorderDistances
@@ -204,7 +204,7 @@ Sub Optimizar(oTabla As Object ,Tipo As String)
        .IsTopDistanceValid =True   
        .LeftDistance = 0   
        .RightDistance = 0   
-       .TopDistance = 110   
+       .TopDistance = 0   
      End With
      oTabla.TableBorderDistances = oBorderDistances
    End If

@@ -49,7 +49,7 @@ Sub Cargar_Parametros
      .getbyname(&quot;Tx_Cap_T&quot;).Text = _Aux.F_Consulta_UDP(&quot;Chapter Title&quot;)
      .getbyname(&quot;Lbl_Mes&quot;).Label = _Aux.F_Consulta_UDP(&quot;Month&quot;)
 
-     If _Aux.F_EsPlantilla(ThisComponent) Then
+     If _Aux.F_EsPlantilla(ThisComponent) OR  Ucase(GetFileNameExtension(ThisComponent.getURL)) = &quot;ODM&quot; Then
      .getbyname(&quot;Tx_Cap_N&quot;).EnableVisible= False
      .getbyname(&quot;Lbl_coma&quot;).EnableVisible= False
      .getbyname(&quot;Tx_Cap_T&quot;).EnableVisible= False
@@ -61,18 +61,17 @@ Sub Cargar_Parametros
      Else
        .getbyname(&quot;Lbl_Plantilla&quot;).label = C_Txt(8)
      End If
-
+ Dim version()
      If Not oUDP.getPropertySetInfo().hasPropertyByName(&quot;LibreOffice Version&quot;) Then
        .getbyname(&quot;Num_Version&quot;).Value = 24
        .getbyname(&quot;Num_Sub&quot;).Value = 2
      Else
-       Dim version
        version = Split(_Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;),&quot;.&quot;)
-&apos;Print ubound(version) 
-         If UBound(version) &lt;&gt; -1 then
-           .getbyname(&quot;Num_Version&quot;).Value = version(0)
-         Elseif UBound(version) = 1 then 
-           .getbyname(&quot;Num_Sub&quot;).Value = version(1)
+         If UBound(version) &lt;&gt; -1  AND UBound(version) = 1 then 
+           .getbyname(&quot;Num_Version&quot;).Value = Cint(version(0))
+           .getbyname(&quot;Num_Sub&quot;).Value = CInt(version(1))
+         Elseif UBound(version) = 0 then 
+            .getbyname(&quot;Num_Version&quot;).Value = Cint(version(0))
          End If
      End If
 
@@ -165,18 +164,22 @@ End Sub
 Sub Onbtn_Establecer(oEv)
  Dim Dato As Variant
  Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
- Dim Archivo :Archivo= (ThisComponent.getURL)
- 
-   oDlgCampos = oEv.Source.Context
+ Dim Archivo : Archivo= (ThisComponent.getURL)
+    oDlgCampos = oEv.Source.Context
    If oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() = &quot;&quot; Then
      MsgBox (C_Txt(17), 0+48+0, C_Txt(0) &amp; Extension)
      Exit Sub
    End If
    With oDlgCampos.getModel
      Dato = .getbyname(&quot;Tx_Guia&quot;).Text : _Aux.Establece_UDP(&quot;Guide Name&quot;, Dato)
-     Dato = .getbyname(&quot;Num_Version&quot;).Value &amp; &quot;.&quot; &amp; .getbyname(&quot;Num_Sub&quot;).Value : _Aux.Establece_UDP(&quot;LibreOffice Version&quot;, Dato)
+     Dato = Cstr(.getbyname(&quot;Num_Version&quot;).Value) &amp; &quot;.&quot; &amp; Cstr(.getbyname(&quot;Num_Sub&quot;).Value) : _Aux.Establece_UDP(&quot;LibreOffice Version&quot;, Dato)
+
+
+  If Ucase(GetFileNameExtension(ThisComponent.getURL)) = &quot;ODT&quot; Then
      Dato = .getbyname(&quot;Tx_Cap_N&quot;).Text : _Aux.Establece_UDP(&quot;Chapter Number&quot;, Dato)
      Dato = .getbyname(&quot;Tx_Cap_T&quot;).Text : _Aux.Establece_UDP(&quot;Chapter Title&quot;, Dato)
+   End If 
+ 
      Dato =  oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() : _Aux.Establece_UDP(&quot;Month&quot;, Dato)
      Dato = cStr(.getbyname(&quot;Num_Ano&quot;).Value) : _Aux.Establece_UDP(&quot;Year&quot;, Dato)
  
@@ -204,7 +207,18 @@ Sub Onbtn_Establecer(oEv)
        oDocprops.Description = Dato 
      End If
    End With
-   _Aux.F_Elimina_UDP (&quot;LibreOffive Version&quot;)&apos; recurrente en vers. esp
+&apos; recurrente en vers. esp
+   _Aux.F_Elimina_UDP (&quot;LibreOffive Version&quot;)
+ &apos;Chapucilla para los MasterDocuments
+ Ucase(GetFileNameExtension(ThisComponent.getURL)) 
+
+
+
+
+  If Ucase(GetFileNameExtension(ThisComponent.getURL)) = &quot;ODM&quot; Then 
+     _Aux.F_Elimina_UDP (&quot;Chapter Number&quot;)
+     _Aux.F_Elimina_UDP (&quot;Chapter Title&quot;)&apos;
+   End If
    Call Campos.Cargar_Parametros2
 End Sub
 

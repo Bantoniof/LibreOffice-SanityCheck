@@ -15,7 +15,7 @@
  Dim A_Txt(8) As String
  Dim C_Txt(21) As String
  Dim E_Txt(23) As String
- Dim F_Txt(23) As String
+ Dim F_Txt(26) As String
  Dim I_Txt(50) As String
  Dim P_Txt(18) As String
  Dim R_Txt(21) As String
@@ -29,7 +29,7 @@ Function F_getLang As String
    Call _Aux.Carga_Tools
    Extension = _Aux.F_Extension
    F_getLang = GetStarOfficeLocale.language
-&apos;F_getLang = &quot;es&quot; &apos;Cambia el idioma para pruebas.
+&apos;F_getLang = &quot;pt&quot; &apos;Cambia el idioma para pruebas.
 End Function
 
  Rem ############
@@ -342,6 +342,9 @@ Sub   Trad_Formatos
    F_Txt(21) = &quot;-  No se ha encontrado la sección &quot;&quot;SEC_DISPLAYAREA&quot;&quot; . &quot;
    F_Txt(22) = &quot;   Errores corregidos párrafos anteriores a listas&quot;
    F_Txt(23) = &quot;,  cambiado por  &quot;
+   F_Txt(24) = &quot;Limpiando listas ...&quot;
+   F_Txt(25) = &quot;Reiniciando listas ...&quot;
+   F_Txt(26) = &quot;Reiniciando leyendas numeradas ...&quot;
 
    Case &quot;pt&quot;
    F_Txt(0) = &quot;Limpeza de formatos&quot;
@@ -380,6 +383,9 @@ Sub   Trad_Formatos
    F_Txt(21) = &quot;-  A seção &quot;&quot;SEC_DISPLAYAREA&quot;&quot; não foi encontrada.  &quot;
    F_Txt(22) = &quot;   Erros corrigidos no parágrafos precedentes à lista&quot;
    F_Txt(23) = &quot;,  cambiado por  &quot;
+   F_Txt(24) = &quot;Limpando listas...&quot;
+   F_Txt(25) = &quot;Redefinindo listas...&quot;
+   F_Txt(26) = &quot;Redefinindo legendas numeradas ...&quot;
 
    Case Else
    F_Txt(0) = &quot;Format Cleaning&quot;
@@ -418,6 +424,9 @@ Sub   Trad_Formatos
    F_Txt(21) = &quot;-  The section &quot;&quot;SEC_DISPLAYAREA&quot;&quot; was not found. &quot;     
    F_Txt(22) = &quot;   Errors fixed in paragraphs before lists&quot;
    F_Txt(23) = &quot;,  exchanged for  &quot;
+   F_Txt(24) = &quot;Clearing lists ...&quot;
+   F_Txt(25) = &quot;Resetting lists ...&quot;
+   F_Txt(26) = &quot;Resetting numbered captions ...&quot;
 
  End Select
 End Sub
@@ -899,8 +908,7 @@ Sub Trad_Tablas
    T_Txt(19) = &quot;Revisión de tablas detenida&quot;&apos;
    T_Txt(20) = &quot;Se aplica el estilo &quot;&quot;LO_Guides&quot;&quot; a la tabla&quot; &amp; Chr(13) &amp; &quot;anchura ajustada al 90%, centrada y optimizada &quot;
    T_Txt(21) = &quot;La tabla conservará su aspecto, pero se optimizará: &quot;
-   T_Txt(22) = &quot; - Espaciado de la tabla con el cuerpo de texto, celdas con alineación vertical centrada y altúra mínima.&quot; &amp; Chr(13) &amp;_
-   &quot;Estilo de párrafo: Contenido de la tabla&quot;
+   T_Txt(22) = &quot; - Espaciado de la tabla con el cuerpo de texto, celdas con alineación vertical centrada y altúra mínima.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Única tabla&quot;
    T_Txt(24) = &quot;Primero tienes que guardar el documento&quot;
    T_Txt(25) = &quot;Se han borrado todas las tablas, imposible continuar&quot;
@@ -930,8 +938,7 @@ Sub Trad_Tablas
    T_Txt(19) = &quot;Revisão da tabelas interrompida&quot;
    T_Txt(20) = &quot;Estilo &quot;&quot;LO_Guides&quot;&quot; é aplicado à tabela &quot;&amp;Chr(13) &amp; &quot;- Largura definida como 90%, centralizada e otimizada&quot;
    T_Txt(21) = &quot;A tabela manterá sua aparência, mas será otimizada: &quot;
-   T_Txt(22) = &quot; - Espaçamento da tabela com o corpo do texto, células com alinhamento vertical centralizado e altura mínima.&quot; &amp; Chr(13) &amp;_
-   &quot;- Estilo de parágrafo: Conteúdo da tabela&quot;
+   T_Txt(22) = &quot; - Espaçamento da tabela com o corpo do texto, células com alinhamento vertical centralizado e altura mínima.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Única tabela&quot;
    T_Txt(24) = &quot;Salve primeiro seu documento&quot;
    T_Txt(25) = &quot;Todas as tabelas foram excluídas, impossível continuar&quot;
@@ -960,8 +967,7 @@ Sub Trad_Tablas
    T_Txt(19) = &quot;Tables review halted&quot;
    T_Txt(20) = &quot;Style &quot;&quot;LO_Guides&quot;&quot; is applied to table &quot;&amp; Chr(13) &amp; &quot;width set to 90%, centered and optimized&quot;
    T_Txt(21) = &quot;The table will retain its appearance, but will be optimized: &quot;
-   T_Txt(22) = &quot; - Spacing of the table with the body of text, cells with centered vertical alignment and minimum height.&quot; &amp; Chr(13) &amp;_
-   &quot;- Paragraph style: Table Contents&quot;
+   T_Txt(22) = &quot; - Spacing of the table with the body of text, cells with centered vertical alignment and minimum height.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Table unique&quot;
    T_Txt(24) = &quot;You must to save the document first.&quot;
    T_Txt(25) = &quot;All tables have been deleted, impossible to continue&quot;

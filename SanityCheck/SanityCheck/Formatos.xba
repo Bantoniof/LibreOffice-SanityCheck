@@ -226,7 +226,7 @@ Function LimpiaParrafos
 End Function
 
  Rem ############
-Function F_Listados &apos;F_Listados
+Function F_Listados
  Rem Cambia el estilo anterior a lista 1 o Numeración 1
  Rem si es Cuerpo de texto por Body Text List Intro (fallo generalizado)
    Call L10n.Trad_Formatos
@@ -285,8 +285,8 @@ Function LimpiaNumerados
    Call L10n.Trad_Formatos
    Call _Aux.EliminaComentarios(F_Txt(0))&apos; Evito que se dupliquen comentarios
  Dim E_P_Num As Variant, E_P_Ant As Variant, E_Validos As Variant
-   E_P_Ant = Array(&quot;Body Text, List Intro&quot;,&quot;Numbering 1&quot;,&quot;Numbering 2&quot;)&apos;,&quot;Text body&quot;)
-   E_P_Num = Array(&quot;Numbering 1&quot;,&quot;Numbering 2&quot;,&quot;Numbering 3&quot;)&apos;,&quot;myIndentPlusNumbering&quot;)
+   E_P_Ant = Array(&quot;Body Text, List Intro&quot;,&quot;Numbering 1&quot;,&quot;Numbering 2&quot;)
+   E_P_Num = Array(&quot;Numbering 1&quot;,&quot;Numbering 2&quot;,&quot;Numbering 3&quot;)
    E_Validos = Array(&quot;Numbering 1&quot;,&quot;Numbering 2&quot;,&quot;Numbering 3&quot;,&quot;Legend Numbered&quot;,&quot;Heading 1&quot;,&quot;Heading 2&quot;,&quot;Heading 3&quot;,&quot;Heading 4&quot;,&quot;Definition Term&quot;, &quot;List 2&quot;) &apos;,&quot;Figure&quot;
  Dim oEstilos As Object: oEstilos = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;)
  Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
@@ -297,6 +297,9 @@ Function LimpiaNumerados
  Dim bFound As Boolean, P_Numerado As String ,P_Anterior As String
  Dim cursor_Num As Object, cursor_Ant As Object, cursor_Post As Object, i As Integer
    oParEnum = ThisComponent.Text.createEnumeration()
+   If not isnull(oDlgFmt) Then
+     oDlgFmt.getmodel.getbyName(&quot;Tx_Registro&quot;).Text = F_Txt(24)
+   End If
    Do While oParEnum.hasMoreElements()
      oPar = oParEnum.nextElement()
      Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
@@ -321,11 +324,13 @@ Function LimpiaNumerados
          cursor_Ant.gotoPreviousParagraph(False)
          If cursor_Ant.ParaStyleName = P_Anterior Then&apos; ej  TBL-Intro = TBL-Intro
  Rem reinicio numeracion en Cursor Numerado
+           If not isnull(oDlgFmt) Then
+             oDlgFmt.getmodel.getbyName(&quot;Tx_Registro&quot;).Text = F_Txt(25) 
+           End If
            cursor_Num.NumberingStartValue = 1 
- Rem reinicio numeración después de títulos y el las leyendas numeradas
+ Rem reinicio numeración después de títulos
          ElseIf cursor_Ant.ParaStyleName &lt;&gt; P_Anterior Then
-            Call Renum_Num1_Tras_Titulos
-           Call ReiniciarLeyendasNum 
+            Call ReiniciarTrasTitulos
  Rem evito comentarios en (E_Validos) y comento los posibles reinicios.
            If _Aux.F_BuscarEnMatriz(E_Validos,cursor_Ant.ParaStyleName) = False Then
              Dim E_Num : E_Num = oEstilos.getByName(cursor_Num.ParaStyleName).DisplayName
@@ -337,16 +342,19 @@ Function LimpiaNumerados
        End If
      End If
    Loop
-   oProgressbar.End
+   Call ReiniciarLeyendasNum
+   Wait 10 
    If contarMarcados &lt;&gt; 0 Then
     LimpiaNumerados = F_Txt(11) &amp; Chr(9) &amp; contarMarcados &amp; F_Txt(12)
    Else
     LimpiaNumerados = F_Txt(11) &amp; Chr(13) &amp; F_Txt(16)
    End If 
+   oProgressbar.End   
+   
  End Function
 
  Rem ############
-Sub Renum_Num1_Tras_Titulos
+Sub ReiniciarTrasTitulos
  Dim oParEnum, oPar, P_Titulo, bFound ,i 
  Dim E_Titulos : E_Titulos = Array(&quot;Heading 1&quot;,&quot;Heading 2&quot;,&quot;Heading 3&quot;,&quot;Definition Term&quot;) 
  Dim cursor_Num as Object
@@ -373,8 +381,17 @@ Sub Renum_Num1_Tras_Titulos
 End sub
 
  Rem ############
-Sub ReiniciarLeyendasNum
- Dim  oSec, oSubSecs, oSubSec, oCursor, i
+Function ReiniciarLeyendasNum
+
+  Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
+   If not isnull(oDlgFmt) Then
+   oDlgFmt.getmodel.getbyName(&quot;Tx_Registro&quot;).Text = F_Txt(26)
+   End If
+   oProgressbar.start( F_Txt(13), ThisComponent.ParagraphCount ) &apos; x2 si se unen
+   oProgressbar.setValue(1) : PBcounter = 0
+
+ Rem Reinicia en secciones
+ Dim  oSec As Variant, oSubSecs As Variant, oCursor As Object, i As Integer
    On Error goto ERRORES
    oSec = ThisComponent.TextSections().getByName(&quot;SEC_DISPLAYAREA&quot;)&apos;.getChildSections
    oSubSecs = oSec.getChildSections
@@ -383,12 +400,67 @@ Sub ReiniciarLeyendasNum
      oCursor.gotoRange(oSubSecs(i).getAnchor.Start,False)
      If oCursor.ParaStyleName = &quot;Legend Numbered&quot; Then
        oCursor.NumberingStartValue = 1
+       Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
      End If
    Next
+ 
+ Rem limpia tablas
+ Dim oTablas As Object, oTabla As Object, j As Integer
+ Dim nRow As Variant, ncol As Variant, ocell As Object
+ Dim oEnum As Object, opar As Object, label As String
+
+   oTablas = ThisComponent.TextTables
+   For  i = 0 To oTablas.getCount -1
+     oTabla = oTablas.getbyIndex(i)
+     For nRow = 0 To oTabla.getRows().getCount() - 1
+       For nCol = 0 To oTabla.getColumns().getCount() - 1
+         oCell = oTabla.getCellByPosition(nCol, nRow)
+         oEnum = oCell.getText.CreateEnumeration
+         Do While oEnum.hasMoreElements
+           oPar = oEnum.nextElement()
+            Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
+           If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) And _
+              oPar.paraStyleName = &quot;Legend Numbered&quot; Then
+             oCursor = oPar.getText().createTextCursorByRange(oPar)   
+             oCursor.gotoEndOfParagraph(false) &apos; -para el comentario
+             oCursor.setAllPropertiesToDefault 
+             oPar.NumberingLevel = 0
+             oPar.NumberingStyleName = &quot;&quot;
+             oPar.NumberingStyleName = &quot;Legend Numbered&quot;
+              Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
+           End If
+         loop
+       Next
+     Next 
+   Next  
+
+ REM Reinicia primeraCelda
+   For  i = 0 To oTablas.getCount -1
+     oTabla = oTablas.getbyIndex(i)
+     oCell = oTabla.getCellByPosition(0,0)
+     oEnum = oCell.getText.CreateEnumeration
+     Do While oEnum.hasMoreElements 
+       oPar = oEnum.nextElement()
+       If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) And _
+         oPar.paraStyleName = &quot;Legend Numbered&quot; Then
+         oCursor = oPar.getText().createTextCursorByRange(oPar)   
+         oCursor.gotoEndOfParagraph(false) &apos; -para el comentario
+         oCursor.setAllPropertiesToDefault 
+         oPar.NumberingLevel = 0
+         oPar.NumberingStyleName = &quot;&quot;
+         oPar.NumberingStyleName = &quot;Legend Numbered&quot;
+         opar.NumberingStartValue = 1 
+         Exit Do           
+       End If
+     loop
+   Next  
+&apos;   oProgressbar.End 
+
 ERRORES:
    If Err &lt;&gt; 0 Then
      MsgBox ( &quot;Error: &quot; &amp; Err  &amp; &quot;  Linea n. &quot; &amp; Erl &amp; Chr(13)  &amp; Chr(13) &amp; Error, 0+48+0, F_Txt(0) &amp; Extension)
    End If
-End Sub
+   End Function&apos;sub
+
  Rem ==================== Fin Formatos ==================================
 </script:module>

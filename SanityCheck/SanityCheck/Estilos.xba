@@ -411,10 +411,12 @@ Function F_ResaltaCarAjenos(Matriz As Variant)
    oEstilos = ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;)
    For i = LBound(Matriz) to UBound(Matriz)
      oEstilo = oEstilos.getByName(Matriz(i))
-     If oEstilo.CharBackColor &lt;&gt; 0 then
-       oEstilo.CharBackColor = 0
-       oEstilo.CharColor = RGB(255,255,100)
-     End If
+     If left(oEstilo.DisplayName,4) &lt;&gt; &quot;Ch2_&quot; then
+       If oEstilo.CharBackColor &lt;&gt; 0 then
+         oEstilo.CharBackColor = 0
+         oEstilo.CharColor = RGB(255,255,100)&apos; Evitar Problema con macros
+       End If
+     End If    
    Next i
 End Function
 

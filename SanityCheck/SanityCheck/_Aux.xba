@@ -39,7 +39,7 @@ Function F_EsPlantilla(Doc) As Boolean
    Call Carga_Tools
  Dim Archivo : Archivo = (Doc.getURL)
  Dim Ext: Ext = GetFileNameExtension(Archivo)
-   If UCase(Ext) = &quot;OTT&quot; OR UCase(Ext) = &quot;OTM&quot; then
+   If UCase(Ext) = &quot;OTT&quot; OR UCase(Ext) = &quot;OTM&quot; Then &apos;OR UCase(Ext) = &quot;ODM&quot;  then
      F_EsPlantilla = 1
    Else
      F_EsPlantilla = 0
@@ -204,7 +204,8 @@ End Function
 Sub F_Elimina_UDP(sProp)
  Dim oUDP
    oUDP = ThisComponent.getDocumentProperties().UserDefinedProperties
-   If oUDP.getPropertySetInfo().hasPropertyByName(sProp) Then
+   If Ucase(GetFileNameExtension(ThisComponent.getURL)) = &quot;ODT&quot;  _
+      AND oUDP.getPropertySetInfo().hasPropertyByName(sProp)   Then
      Establece_UDP (sProp, sProp &amp; C_Txt(15))
      oUDP.RemoveProperty(sProp)
    end If
