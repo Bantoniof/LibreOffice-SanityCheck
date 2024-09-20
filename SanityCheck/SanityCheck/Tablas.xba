@@ -15,7 +15,7 @@
  Dim Indice_Tbl As Integer
  Dim Ultima_Tbl As Integer
 
- Rem ############
+ Rem ### MENU #########
 Sub Dlg_Tablas&apos;(oTabla)
    Call L10n.Trad_Tablas
  If  ThisComponent.HasLocation = False Then : MsgBox (T_Txt(24), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If &apos; Primero tienes que guardar el archivo

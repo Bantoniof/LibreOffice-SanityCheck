@@ -20,10 +20,16 @@ Sub E_Numerados
  E_Num(6) = &quot;Numbering 3 Cont.&quot;
 End Sub
 
- Rem ############
+ Rem #### MENU ########
 Sub Dlg_Formatos
-   If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub
+   
    Call L10n.Trad_Formatos
+   If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; then
+   Msgbox (F_Txt(27), 0+16+0, F_Txt(0) &amp;  Extension )
+     exit Sub
+   End If
+   If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub
+
    DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgFmt = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFormatos&quot;))
    With oDlgFmt.getModel
@@ -96,33 +102,43 @@ Sub OnBtn_Limpiar(oEv)
      oDlgFmt.getControl(&quot;Btn_Salir&quot;).Enable = False
      .getbyname(&quot;Btn_Salir&quot;).PositionY = 105
      .getbyname(&quot;Btn_Salir&quot;).PositionX = 152
-     If Txt = 1 Then
+
+
+     If txt = 1 Then
        .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
-       s = Formatos.LimpiaTexto &amp; Chr(13)
+       s = F_LimpiaTexto 
+    End If   
+    If Txt = 1 And Num = 0  Then
+      s =  s &amp; Chr(13) &amp; Chr(9) &amp; &quot;las numeraciónes son consecutivas en todo el documento&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
+      &quot;deberías limpiar los párrafos numerados para corregirlo&quot;
      End If
+
      If Par = 1 Then
        Pregunta = Msgbox (F_Txt(18), 1+64+128 ,F_Txt(0) &amp; Extension)     
        If Pregunta = 1 Then 
          .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
-         s = s &amp; Formatos.LimpiaParrafos &amp; Chr(13)
+         s = s  &amp; Chr(13) &amp; F_LimpiaParrafos
        Else
-        s = F_Txt(19)  
+        s =  s  &amp; Chr(13) &amp; F_Txt(19)  
        End If 
      End If
-     If Num = 1 Then
-       If ThisComponent.TextSections.HasByName(&quot;SEC_DISPLAYAREA&quot;) Then
+
+      If Num = 1  Then
+        If ThisComponent.TextSections.HasByName(&quot;SEC_DISPLAYAREA&quot;) Then
          Pregunta = Msgbox (F_Txt(17), 1+64+128 ,F_Txt(0) &amp; Extension)
          If Pregunta = 1 Then
            .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
-           s = s &amp; F_Listados &amp; Chr(13)
-           s = s &amp; Formatos.LimpiaNumerados &amp; Chr(13)
+           s = s &amp; Chr(13) &amp; F_Listados
+           s = s &amp; Chr(13) &amp; F_LimpiaNumerados
          Else
-           s = F_Txt(8)
+           s =  s &amp; Chr(13) &amp; F_Txt(8)
          End If
        Else 
          s = s &amp;  F_Txt(21) &amp; Chr(13) &amp; Chr(9) &amp; F_Txt(8) &apos;, 0+64+0, F_Txt(0) &amp; Extension)
        End If      
+
      End If
+
      .getbyname(&quot;Tx_Registro&quot;).Text = s
      .getbyname(&quot;Ch_Text&quot;).State = 0
      .getbyname(&quot;Ch_Par&quot;).State = 0
@@ -146,11 +162,12 @@ Sub OnCasillaFormatos(oEv)
      Else
        .getbyname(&quot;Btn_Limpiar&quot;).State = 0
      End If
+REM     If  .getbyname(&quot;Ch_Text&quot;).State = 1 then .getbyname(&quot;Ch_Num&quot;).State = 1
    End With
 End Sub
 
  Rem ############
-Function LimpiaTexto
+Function F_LimpiaTexto
  Rem Limpia el formato Directo del texto (no párrafos)
  Rem En el cuerpo de texto, tablas y Marcos
  Rem ======================================================
@@ -183,11 +200,11 @@ Rem Texto en Cuadros de texto (DIBUJO) Desactivado por cuadro en página contrap
 &apos;     End If
 &apos;   Next
    Call _Aux.ActualizarTodo
-   LimpiaTexto = F_Txt(9)
+   F_LimpiaTexto = F_Txt(9)
 End Function
 
  Rem ############
-Function LimpiaParrafos
+Function F_LimpiaParrafos
  Rem Limpia el formato directo de párrafos (sangrías, listas etc.)
  Rem En todos los párrafos excepto los Numerados
  Rem ======================================================
@@ -213,7 +230,7 @@ Function LimpiaParrafos
          Call _Aux.InsertAnnotation (oPar, oCursor, F_NtoDN(&quot;Standard&quot;) &amp; _
              F_Txt(23) &amp; CHr(13) &amp; _Aux.F_NtoDN(&quot;Text body&quot;), F_Txt(0))
        End If
-       If _Aux.F_BuscarEnMatriz(E_Num, oPar.Parastylename) = False Then
+       If _Aux.F_BuscarEnMatriz(E_Num, oPar.Parastylename) = 0 Then
          oPar.NumberingLevel = 0 &apos;no sé si es necesario
          oPar.NumberingStyleName = &quot;&quot; &apos;Elimina numeraciones
          oCursor.setAllPropertiesToDefault Rem Resetea TODOS los Párrafos
@@ -221,7 +238,7 @@ Function LimpiaParrafos
      End If
    Loop
    Call _Aux.ActualizarTodo
-   LimpiaParrafos =  F_Txt(10)
+   F_LimpiaParrafos =  F_Txt(10)
    oProgressBar.End
 End Function
 
@@ -275,7 +292,7 @@ Function F_Listados
  End Function
 
  Rem ############
-Function LimpiaNumerados
+Function F_LimpiaNumerados
  Rem Limpia el formato directo de párrafos Numerados (matriz E_P_Num)
  Rem y reinicia la numeración si el estilo del párrafo anterior
  Rem  está en el mismo orden en la matriz E_P_Ant.
@@ -344,10 +361,10 @@ Function LimpiaNumerados
    Loop
    Call ReiniciarLeyendasNum
    Wait 10 
-   If contarMarcados &lt;&gt; 0 Then
-    LimpiaNumerados = F_Txt(11) &amp; Chr(9) &amp; contarMarcados &amp; F_Txt(12)
+   If contarMarcados = 0 Then
+    F_LimpiaNumerados = F_Txt(11) &amp; Chr(13) &amp; F_Txt(16)
    Else
-    LimpiaNumerados = F_Txt(11) &amp; Chr(13) &amp; F_Txt(16)
+    F_LimpiaNumerados = F_Txt(11) &amp; Chr(9) &amp; contarMarcados &amp; F_Txt(12)
    End If 
    oProgressbar.End   
    
@@ -404,7 +421,7 @@ Function ReiniciarLeyendasNum
      End If
    Next
  
- Rem limpia tablas
+ Rem limpia leyendas numeradas  en tablas
  Dim oTablas As Object, oTabla As Object, j As Integer
  Dim nRow As Variant, ncol As Variant, ocell As Object
  Dim oEnum As Object, opar As Object, label As String

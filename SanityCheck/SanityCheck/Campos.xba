@@ -8,10 +8,17 @@
  Option Explicit
  Dim oDlgCampos
 
- Rem ############
+ Rem #### MENU ########
 Sub Dlg_Campos
    Call L10n.Trad_Campos &apos; la biblioteca Tools se carga al cargar la traducción  
    If  ThisComponent.HasLocation = False Then : MsgBox (C_Txt(16), 0+48+0, C_Txt(0) &amp; Extension) : Exit Sub : End If
+   Dim Tipo : Tipo = _Aux.F_TIpoDoc
+   Select Case Tipo
+     Case &quot;Plantilla&quot;, &quot;Documento&quot;,&quot;Otro&quot;
+     Msgbox (C_Txt(22), 0+16+0, Extension)
+     Exit Sub
+   End Select   
+   
    DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgCampos = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgCampos&quot;))
    Call Campos.Cargar_Parametros
@@ -49,7 +56,9 @@ Sub Cargar_Parametros
      .getbyname(&quot;Tx_Cap_T&quot;).Text = _Aux.F_Consulta_UDP(&quot;Chapter Title&quot;)
      .getbyname(&quot;Lbl_Mes&quot;).Label = _Aux.F_Consulta_UDP(&quot;Month&quot;)
 
-     If _Aux.F_EsPlantilla(ThisComponent) OR  Ucase(GetFileNameExtension(ThisComponent.getURL)) = &quot;ODM&quot; Then
+&apos;print _Aux.F_TipoDoc
+&apos;     If _Aux.F_EsPlantilla(ThisComponent) OR  Ucase(GetFileNameExtension(ThisComponent.getURL)) = &quot;ODM&quot; Then
+     If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; then
      .getbyname(&quot;Tx_Cap_N&quot;).EnableVisible= False
      .getbyname(&quot;Lbl_coma&quot;).EnableVisible= False
      .getbyname(&quot;Tx_Cap_T&quot;).EnableVisible= False
@@ -64,7 +73,7 @@ Sub Cargar_Parametros
  Dim version()
      If Not oUDP.getPropertySetInfo().hasPropertyByName(&quot;LibreOffice Version&quot;) Then
        .getbyname(&quot;Num_Version&quot;).Value = 24
-       .getbyname(&quot;Num_Sub&quot;).Value = 2
+       &apos;.getbyname(&quot;Num_Sub&quot;).Value = 
      Else
        version = Split(_Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;),&quot;.&quot;)
          If UBound(version) &lt;&gt; -1  AND UBound(version) = 1 then 
@@ -138,7 +147,8 @@ Sub Cargar_Parametros2
      .getByName(&quot;Lbl_AsuntoT&quot;).label = oDocprops.Subject
      .getbyname(&quot;Tx_Coment&quot;).Enabled = False&apos;.ReadOnly = True
      .getbyname(&quot;Tx_Coment&quot;).Text =  oDocprops.Description
-     If F_LOVersion &gt;= 24 Then
+
+     If F_LOVersion &gt;= 24 Then &apos;los campos contributor y publisher arrays
        .getbyName(&quot;Lbl_Col&quot;).Label = C_Txt(20)
        .getbyName(&quot;Lbl_Edit&quot;).Label = C_Txt(21)
        If uBound(oDocprops.Contributor) &lt;&gt; -1 then
@@ -162,38 +172,52 @@ End Sub
 
  Rem ############
 Sub Onbtn_Establecer(oEv)
+
  Dim Dato As Variant
  Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
- Dim Archivo : Archivo= (ThisComponent.getURL)
+&apos; Dim Archivo : Archivo= (ThisComponent.getURL)
     oDlgCampos = oEv.Source.Context
    If oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() = &quot;&quot; Then
      MsgBox (C_Txt(17), 0+48+0, C_Txt(0) &amp; Extension)
      Exit Sub
    End If
    With oDlgCampos.getModel
-     Dato = .getbyname(&quot;Tx_Guia&quot;).Text : _Aux.Establece_UDP(&quot;Guide Name&quot;, Dato)
-     Dato = Cstr(.getbyname(&quot;Num_Version&quot;).Value) &amp; &quot;.&quot; &amp; Cstr(.getbyname(&quot;Num_Sub&quot;).Value) : _Aux.Establece_UDP(&quot;LibreOffice Version&quot;, Dato)
 
+     Dato = .getbyname(&quot;Tx_Guia&quot;).Text
+      _Aux.Establece_UDP(&quot;Guide Name&quot;, Dato)
+     Dato = Cstr(.getbyname(&quot;Num_Version&quot;).Value) &amp; &quot;.&quot; &amp; Cstr(.getbyname(&quot;Num_Sub&quot;).Value) 
+     _Aux.Establece_UDP(&quot;LibreOffice Version&quot;, Dato)
 
-  If Ucase(GetFileNameExtension(ThisComponent.getURL)) = &quot;ODT&quot; Then
-     Dato = .getbyname(&quot;Tx_Cap_N&quot;).Text : _Aux.Establece_UDP(&quot;Chapter Number&quot;, Dato)
-     Dato = .getbyname(&quot;Tx_Cap_T&quot;).Text : _Aux.Establece_UDP(&quot;Chapter Title&quot;, Dato)
-   End If 
+     If _Aux.F_TipoDoc = &quot;Capitulo&quot; Then
+       Dato = .getbyname(&quot;Tx_Cap_N&quot;).Text 
+       _Aux.Establece_UDP(&quot;Chapter Number&quot;, Dato)
+       Dato = .getbyname(&quot;Tx_Cap_T&quot;).Text 
+       _Aux.Establece_UDP(&quot;Chapter Title&quot;, Dato)
+     End If 
  
-     Dato =  oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem() : _Aux.Establece_UDP(&quot;Month&quot;, Dato)
-     Dato = cStr(.getbyname(&quot;Num_Ano&quot;).Value) : _Aux.Establece_UDP(&quot;Year&quot;, Dato)
- 
-     If _Aux.F_EsPlantilla(ThisComponent) Then
-       Dato = split(FileNameOutofPath(ThisComponent.getUrl),&quot;.&quot;)(0)
-     Else
-       Dato =  .getbyName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
+     Dato =  oDlgCampos.getControl(&quot;List_Mes&quot;).SelectedItem()
+      _Aux.Establece_UDP(&quot;Month&quot;, Dato)
+     Dato = cStr(.getbyname(&quot;Num_Ano&quot;).Value)
+     _Aux.Establece_UDP(&quot;Year&quot;, Dato)
+
+REM Título Documento 
+
+ Dim Tipo: Tipo = _Aux.F_TipoDoc
+   Dato =  .getbyName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot;  &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
+   If Tipo = &quot;Guia&quot; OR  Tipo = &quot;Maestro&quot; Then
+     _Aux.F_Elimina_UDP (&quot;Chapter Number&quot;)
+     _Aux.F_Elimina_UDP (&quot;Chapter Title&quot;)&apos;
+    oDocprops.Title = Dato
+   ElseIf Tipo = &quot;Capitulo&quot; Then
+       REM  Si es un apéndice no debe llevar el nº de capítulo
        If  .getbyname(&quot;Tx_Cap_N&quot;).Text &lt;&gt; &quot;&quot;  AND  .getbyname(&quot;Tx_Cap_T&quot;).Text &lt;&gt; &quot;&quot; Then
          Dato = Dato &amp; &quot; - &quot; &amp;   .getbyName(&quot;Tx_Cap_N&quot;).Text &amp; &quot;, &quot; &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text      
        ElseIf  .getbyname(&quot;Tx_Cap_N&quot;).Text = &quot;&quot;  AND  .getbyname(&quot;Tx_Cap_T&quot;).Text &lt;&gt; &quot;&quot; Then
          Dato = Dato &amp; &quot; - &quot;  &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text               
        End If
      oDocprops.Title = Dato
-     End IF
+   End If
+&apos; Descripciones
      Dato = &quot;LibreOffice  - &quot; &amp; .GetByName(&quot;Tx_Guia&quot;).Text &amp; &quot; &quot; &amp; _Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;)
      oDocprops.Subject = Dato
       If F_LOVersion &gt;= 24 Then
@@ -207,18 +231,10 @@ Sub Onbtn_Establecer(oEv)
        oDocprops.Description = Dato 
      End If
    End With
-&apos; recurrente en vers. esp
+
+&apos; Elimino campo recurrente en guías en español
    _Aux.F_Elimina_UDP (&quot;LibreOffive Version&quot;)
- &apos;Chapucilla para los MasterDocuments
- Ucase(GetFileNameExtension(ThisComponent.getURL)) 
 
-
-
-
-  If Ucase(GetFileNameExtension(ThisComponent.getURL)) = &quot;ODM&quot; Then 
-     _Aux.F_Elimina_UDP (&quot;Chapter Number&quot;)
-     _Aux.F_Elimina_UDP (&quot;Chapter Title&quot;)&apos;
-   End If
    Call Campos.Cargar_Parametros2
 End Sub
 

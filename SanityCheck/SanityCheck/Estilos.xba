@@ -74,7 +74,7 @@ Sub CargaEstilos_CU_Guias
    estiloCU(25) = &quot;Subscript&quot;
 End Sub
 
- Rem ############
+ Rem ### MENU #########
 Sub CompEstilos
    Call L10n.Trad_Estilos
    If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub

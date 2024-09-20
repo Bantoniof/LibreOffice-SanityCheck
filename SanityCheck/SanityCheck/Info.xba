@@ -5,7 +5,7 @@
  Option Explicit
  Dim oDlgInfo
 
- Rem ############
+ Rem #### MENU ########
 Sub Dlg_Info
 
  Dim sv As Variant, icono as Variant, Inf_Txt(2) As String

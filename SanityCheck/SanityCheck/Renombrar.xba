@@ -8,11 +8,15 @@
  Option Explicit
  Dim  oDlgRenombrar
  
- Rem ############
+ Rem #### MENU ########
 Sub Dlg_Renombrar
    Call L10n.Trad_Renombrar
+   If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; Then 
+     Msgbox (Ren_Txt(20), 0+16+0, Ren_Txt(0) &amp; Extension)
+     Exit Sub
+   End If
    If  ThisComponent.HasLocation = False OR ThisComponent.IsModified = True Then
-     If  Msgbox (Ren_Txt(16), 4+32+256, E_Txt(0) &amp; Extension) = 6 then
+     If  Msgbox (Ren_Txt(16), 4+32+256, Ren_Txt(0) &amp; Extension) = 6 then
        Call _Aux.GuardaRecarga
      Else 
        Exit sub
@@ -34,6 +38,7 @@ Sub Dlg_Renombrar
      .getbyName(&quot;Ch_Tablas&quot;).Label = Ren_Txt(7)
      .getbyName(&quot;Ch_Imgs&quot;).Label = Ren_Txt(6)
      .getbyName(&quot;Ch_Marcos&quot;).Label = Ren_Txt(8)
+     .getbyName(&quot;Ch_Ole&quot;).Label = Ren_Txt(19)
      .getbyname(&quot;Tx_Registro&quot;).Text = &quot;&quot;
      .getbyname(&quot;Tx_Ayuda&quot;).text = Ren_Txt(4)
    End With
@@ -44,13 +49,14 @@ End Sub
 Sub Casillas_Renombrar(oEv)
 
   oDlgRenombrar = oEv.Source.Context
- Dim Imgs, Marcos, Tablas, Secciones, Indice, suma
+ Dim Imgs, Marcos, Tablas, Secciones, Indice, Ole, suma
    With oDlgRenombrar.getModel
      Secciones = .getbyname(&quot;Ch_Secciones&quot;).State
      Indice = .getbyname(&quot;Ch_Indice&quot;).State
      Tablas = .getbyname(&quot;Ch_Tablas&quot;).State
      Imgs = .getbyname(&quot;Ch_Imgs&quot;).State
      Marcos = .getbyname(&quot;Ch_Marcos&quot;).State
+     Ole =  .getbyname(&quot;Ch_Ole&quot;).State
      suma = Secciones + Indice + Tablas + Imgs + Marcos
      If suma &lt;&gt; 0 Then
        .getbyname(&quot;Btn_Renombrar&quot;).State = 1
@@ -84,7 +90,7 @@ End Sub
  Rem ############
 Sub OnBtn_Renombrar(oEv)
    oDlgRenombrar = oEv.Source.Context
- Dim Imgs , Marcos, Tablas, Indice, Secciones, s
+ Dim Imgs , Marcos, Tablas, Indice, Secciones, Ole, s
    With oDlgRenombrar.Model
      s = .getbyname(&quot;Tx_Registro&quot;).Text
      Secciones = .getbyname(&quot;Ch_Secciones&quot;).State
@@ -92,8 +98,9 @@ Sub OnBtn_Renombrar(oEv)
      Tablas = .getbyname(&quot;Ch_Tablas&quot;).State
      Imgs = .getbyname(&quot;Ch_Imgs&quot;).State
      Marcos = .getbyname(&quot;Ch_Marcos&quot;).State
+     Ole =  .getbyname(&quot;Ch_Ole&quot;).State
    End With
- Dim suma As Integer : suma = Imgs + Marcos + Tablas + Secciones + Indice
+ Dim suma As Integer : suma = Imgs + Marcos + Tablas + Secciones + Indice + Ole
    If suma = 0 Then : MsgBox (Ren_Txt(5), 0+64+0, I_Txt(0) &amp; Extension ) : Exit Sub : End If
    If Secciones = 1 Then
      s = s &amp; F_Renombra_Sec &amp; Chr(13)
@@ -103,6 +110,7 @@ Sub OnBtn_Renombrar(oEv)
    If Tablas = 1 Then : s = s &amp; F_Renombra(&quot;Tablas&quot;) &amp; Chr(13) : End If
    If Imgs = 1 Then : s = s &amp; F_Renombra(&quot;Imagenes&quot;) &amp; Chr(13) : End If
    If Marcos = 1 Then : s = s &amp;  F_Renombra(&quot;Marcos&quot;) &amp; Chr(13) : End If
+   If Ole = 1 Then : s = s &amp;  F_RenombraOLE &amp; Chr(13) : End If
    s = s &amp; &quot;  ==============================  &quot;  
    With oDlgRenombrar.Model
      .getbyname(&quot;Tx_Registro&quot;).Text = s
@@ -250,6 +258,41 @@ Function F_Renombra(Objetos As String, Optional separador ) As String
    F_Renombra = Traduc &amp; Ren_Txt(13)
 End Function
 
+Function F_RenombraOLE(Optional separador) As String
+ Dim oDoc As Object, oItems As Object, oItem As Object, i As Integer
+ Dim prefijo As String, n_archivo As String, nombre As String, contador As String
+   If IsMissing(separador) Then : separador = &quot;-&quot; : End If
+   prefijo = &quot;ole_&quot;
+   n_archivo =  left(Trim(FileNameoutofpath(ThisComponent.getURL)),7)
+   oITems = ThisComponent.getEmbeddedObjects()
+   If oItems.getCount() = 0 Then : F_RenombraOLE =  Ren_Txt(12) &amp; Ren_Txt(19) : Exit Function : End If 
+
+   For i = 0 To oItems.getCount()-1
+     oItem = oItems.getByIndex(i)
+       If oItem.supportsService(&quot;com.sun.star.text.TextEmbeddedObject&quot;) Then
+
+         If i &lt; 10 Then : contador = &quot;00&quot; &amp; cStr(i)
+         ElseIf i &lt; 100 Then : contador = &quot;0&quot; &amp; cStr(i)
+         Else : contador = &quot;&quot; &amp; cStr(i)
+         End If
+         nombre = prefijo &amp; n_archivo &amp; separador &amp; contador &apos;Nombres sin espacios
+         If Not oItems.hasByName(nombre) Then
+           oItem.Name = nombre
+         Else
+           separador = &quot;_&quot;   Rem solución nombres duplicados
+           nombre = prefijo &amp; Replace(n_archivo,&quot; &quot;,&quot;&quot;) &amp; separador &amp; contador
+           oItem.Name = nombre
+         End If
+       End If
+          If oItem.CLSID = &quot;078B7ABA-54FC-457F-8551-6147e776a997&quot; Then &apos; Formulas
+            oItem.Description = &quot;Formula -&quot; &amp; n_archivo &amp; separador &amp; contador
+            oItem.Title= &quot;Formula -&quot; &amp; n_archivo &amp; separador &amp; contador
+          End If
+   Next
+   F_RenombraOLE = Ren_Txt(19) &amp; Ren_Txt(13)
+&apos;   Msgbox s
+End Function
+
  Rem ############
 Sub Corregir_NombresObjetos
  Rem Recargar Doc, descomentar la linea adecuada y ejecutar la macro
@@ -257,6 +300,7 @@ Sub Corregir_NombresObjetos
 &apos;   F_Renombra(&quot;Marcos&quot;,&quot;$&quot;) : F_Renombra(&quot;Marcos&quot;)
 &apos;   F_Renombra(&quot;Tablas&quot;)&apos;,&quot;$&quot;) : F_Renombra(&quot;Tablas&quot;)
 &apos;   F_Renombra_Sec(&quot;$&quot;) : F_Renombra_Sec
+&apos;   F_RenombraOLE(&quot;$&quot;) : F_RenombraOLE
 End Sub 
  Rem ================= Fin Renombrar ==================================================  
 </script:module>

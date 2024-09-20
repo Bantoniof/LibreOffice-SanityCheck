@@ -215,7 +215,7 @@
 
 				<node oor:name="m001" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
-						<value>com.sun.star.text.TextDocument</value>
+						<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 					</prop>
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>vnd.sun.star.script:SanityCheck.Resaltes.AlternarResalte?language=Basic&amp;location=application</value>
@@ -354,7 +354,7 @@
 
 					<node oor:name="m003" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
-							<value>com.sun.star.text.TextDocument</value>
+							<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 						</prop>
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Tablas.Dlg_Tablas?language=Basic&amp;location=application</value>
@@ -388,7 +388,7 @@
 
 					<node oor:name="m005" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
-							<value>com.sun.star.text.TextDocument</value>
+							<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
 						</prop>
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>vnd.sun.star.script:SanityCheck.Imagenes.Dlg_Imagenes?language=Basic&amp;location=application</value>

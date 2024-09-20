@@ -2,27 +2,13 @@
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="PDF" script:language="StarBasic" script:moduleType="normal">REM  *****  BASIC  *****
  Option Explicit
- 
- 
- sub asd12
 
- Dim oEstilo
- oEstilo = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).getByName(&quot;Contents Heading&quot;)
- oEstilo.OutlineLevel = 1
- xray oEstilo
- 
- 
- End Sub
  
  Rem ############
 Sub PreparaPDF
 
-Dim oEstilo As Object, oFrame As Object,  oFCursor As Object
-
- oEstilo = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).getByName(&quot;Contents Heading&quot;)
- oEstilo.OutlineLevel = 1
-
- Rem compruebo situación
+Dim  oFrame As Object,  oFCursor As Object
+ Rem compruebo situación Leyendas
 
    If ThisComponent.TextFrames.count = 0 then
      F_Exporta
@@ -39,15 +25,10 @@ Dim oEstilo As Object, oFrame As Object,  oFCursor As Object
        F_Exporta
      End If 
    End If
-
 End Sub
-
 
 Rem ############
 Function F_AlternarLeyenda()
-&apos;   Call L10n.Trad
-&apos;   If ThisComponent.TextFrames.Count = 0 Then : MsgBox (&quot;Txt(18) No hay Frames&quot;, 0+64+0, Extension): Exit Function: End If
-&apos;   If _Aux.F_Prueba_Sel = False then Exit Function
    
  Dim Document As Object, dispatcher As Object, vCursor as Object
     Document  = ThisComponent.CurrentController.Frame
@@ -73,7 +54,6 @@ Function F_AlternarLeyenda()
    F_AlternarLeyenda = Chr(13) &amp; &quot;Txt(19) Situación Cambiada&quot;
 End Function
 
-
 sub TOC_Update
 Dim oIndexes as Object, i as Integer
 
@@ -82,10 +62,8 @@ if ((ThisComponent.supportsService(&quot;com.sun.star.text.TextDocument&quot;)) 
 	
 	for i = 0 to oIndexes.getCount() - 1
 	oIndexes (i).update
-	REM If you want to get a message box when the index is updated
-	REM remove the &quot;REM&quot; in front of the msgBox line below!!
- msgBox (&quot;Index updated: &quot; &amp;  oIndexes.getByIndex (i).getServiceName ())
 	next i
+    msgBox (&quot;Índices actualizados &quot;)&apos;&amp;  oIndexes.getByIndex (i).getServiceName ())
 end if
 
 end sub
@@ -99,6 +77,8 @@ Sub F_Exporta&apos; https://bugs.documentfoundation.org/show_bug.cgi?id=150600
  Rem IsSkipEmptyPages debe ser false para exportar guía (asegura portada en p Izq e Inicio cap. en p derecha.
 &apos;   Call _Aux.ActualizarTodo
    Call TOC_Update
+
+
  Dim FilterArgs()
    FilterArgs = Array(PropertyValue(&quot;UseLosslessCompression&quot;,true),_
    PropertyValue(&quot;Quality&quot;,90),_
@@ -164,12 +144,14 @@ On error goto ERRORES
 
    If Archivo &lt;&gt; &quot;&quot; Then
      ThisComponent.storeToURL(Archivo, cmdArgs())
+     Progressbar
+     
      If Msgbox (&quot;Exportación completa. &quot; &amp; Chr(13) &amp; &quot;¿Quieres abrir el PDF ? &quot;,4+32+0,&quot;Abrir PDF&quot; &amp; Extension)= 6 then
        Info.AbreURL(ConvertFromUrl(Archivo))
      End If
-     If msgbox(&quot;leyendas encima de imágenes. &quot; &amp; Chr(13) &amp; &quot;¿Cambiar situación? &quot;,4+32+0,&quot;Situación&quot;) = 6 Then
-       F_AlternarLeyenda()
-     End If
+&apos;     If msgbox(&quot;leyendas encima de imágenes. &quot; &amp; Chr(13) &amp; &quot;¿Cambiar situación? &quot;,4+32+0,&quot;Situación&quot;) = 6 Then
+&apos;       F_AlternarLeyenda()
+&apos;     End If
    End If
    
 ERRORES:
@@ -218,28 +200,48 @@ Function F_Dlg_PDF()
     End If
 End Function
 
+ Rem ############
+Function F_ParrafosEnDoc
+ Dim Datos As Variant, i As Integer, cuenta As Variant
+   Datos = ThisComponent.DocumentProperties.DocumentStatistics
+   For i = LBound(Datos) to  Ubound(Datos)
+     If Datos(i).Name = &quot;ParagraphCount&quot;  Then
+       cuenta= Datos(i).Value
+       Exit For
+     End if
+   next
+   F_ParrafosEnDoc = cuenta
+End Function
 
-sub grabadpra
-rem ----------------------------------------------------------------------
-rem define variables
-dim document   as object
-dim dispatcher as object
-rem ----------------------------------------------------------------------
-rem get access to the document
-document   = ThisComponent.CurrentController.Frame
-dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+ Rem ############
+Sub ProgressBar()
+&apos;https://ask.libreoffice.org/t/basic-calc-progress-bar/46444/2
+	Dim oProgressBar as Object, oProgressBarModel As Object, oDialog as Object
+	Dim ProgressValue As Long, ProgressValueMin as Integer, ProgressValueMax as Integer
+	DialogLibraries.loadLibrary(&quot;Standard&quot;)
+	oDialog = CreateUnoDialog(DialogLibraries.Standard.Barra)
+	REM progress bar settings
+    ProgressValueMin = 1
+    ProgressValueMax = F_ParrafosEnDoc
+	Const ProgressStep = 1
+	REM set minimum and maximum progress value
+	oProgressBarModel = oDialog.getModel().getByName( &quot;ProgressBar1&quot; )
+	oProgressBarModel.setPropertyValue( &quot;ProgressValueMin&quot;, ProgressValueMin)
+	oProgressBarModel.setPropertyValue( &quot;ProgressValueMax&quot;, ProgressValueMax)
+	REM show progress bar
+	oDialog.setVisible( True )
+	REM increase progress value every second
+    REM This is where you perform whatever action you are wanting 
+   DIm oCursor
+   oCursor = ThisComponent.Text.createTextCursor
+   oCursor.gotoStart(False)
+&apos;Print ProgressValueMax
+	For ProgressValue = ProgressValueMin To ProgressValueMax Step ProgressStep
+		oProgressBarModel.setPropertyValue( &quot;ProgressValue&quot;, ProgressValue )
+&apos;       oCursor.gotoNextParagraph(false) 
+		Wait 10
+	Next ProgressValue
 
-rem ----------------------------------------------------------------------
-dim args1(2) as new com.sun.star.beans.PropertyValue
-args1(0).Name = &quot;URL&quot;
-args1(0).Value = &quot;file:///H:/_Git/Books/bookshelf/en/WG24/WG2425-Listados.pdf&quot;
-args1(1).Name = &quot;FilterName&quot;
-args1(1).Value = &quot;writer_pdf_Export&quot;
-args1(2).Name = &quot;FilterData&quot;
-args1(2).Value = Array(Array(&quot;UseLosslessCompression&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Quality&quot;,0,90,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ReduceImageResolution&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;MaxImageResolution&quot;,0,300,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;UseTaggedPDF&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SelectPdfVersion&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PDFUACompliance&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportNotes&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportNotesInMargin&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ViewPDFAfterExport&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportBookmarks&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;OpenBookmarkLevels&quot;,0,-1,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;UseTransitionEffects&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;IsSkipEmptyPages&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportPlaceholders&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;IsAddStream&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportFormFields&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;FormsType&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;AllowDuplicateFieldNames&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;HideViewerToolbar&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;HideViewerMenubar&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;HideViewerWindowControls&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ResizeWindowToInitialPage&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;CenterWindow&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;OpenInFullScreenMode&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;DisplayPDFDocumentTitle&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;InitialView&quot;,0,1,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Magnification&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Zoom&quot;,0,100,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PageLayout&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;FirstPageOnLeft&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;InitialPage&quot;,0,1,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Printing&quot;,0,2,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Changes&quot;,0,4,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;EnableCopyingOfContent&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;EnableTextAccessForAccessibilityTools&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportLinksRelativeFsys&quot;,0,true,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PDFViewSelection&quot;,0,0,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ConvertOOoTargetToPDFTarget&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;ExportBookmarksToPDFDestination&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignPDF&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;_OkButtonString&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;Watermark&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;EncryptFile&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PreparedPasswords&quot;,0,,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;RestrictPermissions&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;PreparedPermissionPassword&quot;,0,Array(),com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureLocation&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureReason&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureContactInfo&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignaturePassword&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureCertificate&quot;,0,,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;SignatureTSA&quot;,0,&quot;&quot;,com.sun.star.beans.PropertyState.DIRECT_VALUE),Array(&quot;UseReferenceXObject&quot;,0,false,com.sun.star.beans.PropertyState.DIRECT_VALUE))
-
-dispatcher.executeDispatch(document, &quot;.uno:ExportToPDF&quot;, &quot;&quot;, 0, args1())
-
-
-end sub
+&apos;    oCell.SetString(&quot;Done&quot;)
+End Sub
 </script:module>

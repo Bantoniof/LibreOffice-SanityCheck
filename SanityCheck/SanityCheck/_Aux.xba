@@ -8,9 +8,9 @@
  Option Explicit
  
  Rem ############
-Function F_CompPlantilla
+Function F_CompPlantilla &apos;comprueba Estilos, si no están devuelve un número y presenta las faltas
  Dim  oEstilos As Object, oEstilo As Variant, i As Integer, contador as integer
- Dim sEnlaza As String, s As String
+ Dim sEnumera As String, s As String
  Dim oDocprops As Object : oDocprops = ThisComponent.getDocumentProperties
    Call L10n.Trad_Aux
    Call CargaEstilos_PU_Guias
@@ -24,18 +24,18 @@ Function F_CompPlantilla
    next
    If Contador &lt;&gt; 0 then
      If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
-       sEnlaza = A_Txt(5) &amp; oDocprops.TemplateName
+       sEnumera = A_Txt(5) &amp; oDocprops.TemplateName
      Else 
-       sEnlaza = A_Txt(6)  
+       sEnumera = A_Txt(6)  
      End If
-     Msgbox (A_Txt(7) &amp; s &amp; Chr(13) &amp; sEnlaza &amp; Chr(13) &amp; A_Txt(8),0+16+0, A_Txt(4) &amp; Extension)
+     Msgbox (A_Txt(7) &amp; s &amp; Chr(13) &amp; sEnumera &amp; Chr(13) &amp; A_Txt(8),0+16+0, A_Txt(4) &amp; Extension)
    End If  
    F_CompPlantilla = Contador
 End Function 
 
  Rem ############
 Function F_EsPlantilla(Doc) As Boolean
-
+Call L10n.Trad_Plantilla
    Call Carga_Tools
  Dim Archivo : Archivo = (Doc.getURL)
  Dim Ext: Ext = GetFileNameExtension(Archivo)
@@ -45,6 +45,66 @@ Function F_EsPlantilla(Doc) As Boolean
      F_EsPlantilla = 0
    End If
 End Function
+
+ Rem ############
+Function F_TipoDoc&apos; (nOMBRE As String, EXT As String) As String
+   Call L10n.Trad_Plantilla
+ Dim Archivo : Archivo = (ThisComponent.getURL)
+ Dim Nombre : Nombre = filenameoutofpath(thiscomponent.getUrl)
+ Dim Ext : Ext = GetFileNameExtension(Archivo)
+ Dim cuenta
+
+   Select Case UCase(Ext)
+      Case&quot;ODM&quot;
+      F_TipoDoc = &quot;Maestro&quot;
+     Case &quot;OTT&quot;,&quot;OTM&quot;
+                &apos;    MsgBox (P_Txt(18), 0+48+0, P_Txt(0) &amp; Extension)
+     F_TipoDoc = &quot;Plantilla&quot; 
+     Case &quot;ODT&quot;
+   If left(nombre,2) &lt;&gt; &quot;BG&quot; XOR left(nombre,2) &lt;&gt; &quot;CG&quot; XOR _
+       left(nombre,2) &lt;&gt; &quot;DG&quot; XOR  left(nombre,2) &lt;&gt; &quot;GS&quot; XOR _
+       left(nombre,2) &lt;&gt; &quot;IG&quot; XOR  left(nombre,2) &lt;&gt; &quot;MG&quot; XOR _
+       left(nombre,2) &lt;&gt; &quot;WG&quot; Then
+       F_TipoDoc = &quot;Documento&quot;
+       Exit Function
+    Else
+     cuenta = left(Nombre,6)
+     cuenta = right(cuenta,4)
+     If Not isNumeric(cuenta) then
+&apos;       Msgbox (P_Txt(20),0+64+0, P_Txt(0) &amp; Extension) 
+       F_TipoDoc = &quot;Guia&quot;
+       Exit Function
+     ElseIf isNumeric(cuenta) Then
+       F_TipoDoc = &quot;Capitulo&quot;
+     End If
+     End If
+     Case else 
+     F_TipoDoc =&quot;Otro&quot;
+End select
+  
+  
+
+
+End Function
+
+
+sUB PRUEBA
+Print F_TipoDoc(&quot;BG1223- sssad&quot;,&quot;odt&quot;)
+Print F_TipoDoc(&quot;WG76- Draw Guideaertt&quot;,&quot;odt&quot;)
+Print F_TipoDoc(&quot;IG76-Draw Guid&quot;,&quot;odm&quot;)
+Print F_TipoDoc(&quot;CG2402- objetosertt&quot;,&quot;ott&quot;)
+Print F_TipoDoc(&quot;aertt&quot;,&quot;pdf&quot;)
+
+
+Print F_TipoDoc(&quot;aertt&quot;,&quot;OdT&quot;)
+Print F_TipoDoc(&quot;aertt&quot;,&quot;OTt&quot;)
+Print F_TipoDoc(&quot;aertt&quot;,&quot;OdM&quot;)
+Print F_TipoDoc(&quot;aertt&quot;,&quot;oTM&quot;)
+
+
+eND SUB
+
+
  
  Rem ############
 Function F_Prueba_Sel()As Boolean &apos;pasar prueba selección
@@ -81,18 +141,6 @@ End Sub
 Function F_Conv (Color As String ) As Long
  Dim a : a() = Split(Color,&quot;,&quot;)
    F_Conv =  RGB(a(0),a(1),a(2))
-End Function
-
- Rem ############
-Function F_GuiaVer
- dim s as Variant
- Dim oUDP : oUDP = ThisComponent.getDocumentProperties().UserDefinedProperties
- If Not oUDP.getPropertySetInfo().hasPropertyByName(&quot;LibreOffice Version&quot;) Then
-   s = &quot;No hay información de la versión de esta guía, se asume que es anterior a la 20&quot;
- Else
-   s = oUDP.getPropertyValue(&quot;LibreOffice Version&quot;)
- End If
- F_GuiaVer = s
 End Function
 
  Rem ############
@@ -254,11 +302,11 @@ Function F_BuscarEnMatriz(Matriz(), Texto As String) As Boolean
  Dim i As Integer
    For i = LBound(Matriz) To UBound(Matriz())
      If InStr(Join(Matriz), Texto) &lt;&gt; 0 Then
-       F_BuscarEnMatriz = True
+       F_BuscarEnMatriz = 1
        Exit Function
      End If
    Next i
-   F_BuscarEnMatriz = False
+   F_BuscarEnMatriz = 0
 End Function
 
  Rem ############
@@ -271,11 +319,11 @@ Function F_ElementoEnMatriz(Matriz(), IndiceSup As Integer, Elemento As String) 
  Dim i As Integer
    For i = LBound(Matriz()) To IndiceSup
      If UCase(Matriz(i)) = UCase(Elemento) Then
-       F_ElementoEnMatriz = True
+       F_ElementoEnMatriz = 1
        Exit Function
      End If
      Next
-     F_ElementoEnMatriz = False
+     F_ElementoEnMatriz = 0
 End Function
 
  Rem ############

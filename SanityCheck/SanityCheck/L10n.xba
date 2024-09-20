@@ -13,13 +13,13 @@
   
  Option Explicit
  Dim A_Txt(8) As String
- Dim C_Txt(21) As String
+ Dim C_Txt(22) As String
  Dim E_Txt(23) As String
- Dim F_Txt(26) As String
+ Dim F_Txt(27) As String
  Dim I_Txt(50) As String
- Dim P_Txt(18) As String
+ Dim P_Txt(21) As String
  Dim R_Txt(21) As String
- Dim Ren_Txt(18) As String
+ Dim Ren_Txt(20) As String
  Dim T_Txt(25) As String
  Dim Lista() As String
  Global Extension
@@ -118,6 +118,8 @@ Sub Trad_Campos
    &quot;◘ Si el documento se edita con la versión 24.x se rellenan esos nuevos campos de propiedades del documento.&quot;   
    C_Txt(20) = &quot;Colaborador&quot;
    C_Txt(21) = &quot;Editor&quot;
+   C_Txt(22) = &quot;Tipo de documento no admitido.&quot; &amp; Chr(13) &amp; &quot;Utilice las propiedades del documento&quot;
+
    Lista = Array (&quot;enero&quot;,&quot;febrero&quot;,&quot;marzo&quot;,&quot;abril&quot;,&quot;mayo&quot;,&quot;junio&quot;,&quot;julio&quot;,&quot;agosto&quot;,&quot;septiembre&quot;,&quot;octubre&quot;,&quot;noviembre&quot;,&quot;diciembre&quot;)
 
    Case &quot;pt&quot;
@@ -150,6 +152,8 @@ Sub Trad_Campos
    &quot;◘ Essas novas propriedades do documento serão preenchidas quando o documento for editado com a versão 24.x.&quot;
    C_Txt(20) = &quot;Contributor&quot;
    C_Txt(21) = &quot;Editor&quot; 
+   C_Txt(22) = &quot;Tipo de documento não aceito.&quot; &amp; Chr(13) &amp; &quot;Use as propriedades do documento&quot;
+
    Lista = Array (&quot;janeiro&quot;,&quot;fevereiro&quot;,&quot;março&quot;,&quot;abril&quot;,&quot;maio&quot;,&quot;junho&quot;,&quot;julho&quot;,&quot;agosto&quot;,&quot;setembro&quot;,&quot;outubro&quot;,&quot;novembro&quot;,&quot;dezembro&quot;)
  
    Case Else
@@ -182,7 +186,10 @@ Sub Trad_Campos
    &quot;◘ These new document properties fields are filled in when edited with version 24.x.&quot;
    C_Txt(20) = &quot;Contributor&quot;
    C_Txt(21) = &quot;Publisher&quot; 
+   C_Txt(22) = &quot;Document type not supported.&quot; &amp; Chr(13) &amp; &quot;Use document properties&quot;
+
    Lista = Array (&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,&quot;July&quot;,&quot;August&quot;,&quot;September&quot;,&quot;October&quot;,&quot;November&quot;,&quot;December&quot;)
+
    End Select
 End Sub
 
@@ -307,12 +314,13 @@ Sub   Trad_Formatos
 
    Case &quot;es&quot;
    F_Txt(0) = &quot;Limpieza de formatos&quot;
-   F_Txt(1) = &quot;◘ Texto:&quot; &amp; Chr(13) &amp; &quot;Limpia el formato directo aplicado a cadenas de texto&quot; &amp; Chr(13) &amp; _
-   &quot;◘ Parrafos:&quot;&amp; Chr(13) &amp; &quot;Limpia el fomato directo aplicado a los párrafos (Incluidas las listas no numeradas).&quot; &amp; Chr(13) &amp; _
-   &quot;  -- Ten en cuenta que elimina el fomato directo de numeraciones&quot; &amp; Chr(13) &amp;_
-   &quot;◘ Párrafos Numerados:&quot; &amp; Chr(13) &amp; &quot;Limpia el formato aplicado a los párrafos de listas numeradas.&quot; &amp; _ 
-   &quot; Aplica el estilo correcto a los párrafos anteriores a las listas y reinicia las numeraciones.&quot; &amp; Chr(13) &amp; _      
-   &quot;  -- Se marcan los párrafos en los que el reinicio de numeración no es claro.&quot;
+   F_Txt(1) = &quot;◘ Texto:&quot; &amp; Chr(13) &amp; &quot;Limpia el formato directo de cadenas de texto y de párrafos&quot; &amp;  Chr(13) &amp; _
+   &quot;y aplica numeración consecutiva en todas las listas ordenadas.&quot; &amp; Chr(13) &amp; _
+   &quot;◘ Parrafos:&quot;&amp; Chr(13) &amp; &quot;Limpia el fomato directo párrafos normales y listas no ordenadas.&quot; &amp; Chr(13) &amp; _
+   &quot;  -- Elimina el fomato directo de listas en parrafos normales&quot; &amp; Chr(13) &amp;_
+   &quot;◘ Párrafos Numerados:&quot; &amp; Chr(13) &amp; &quot;Limpia el formato directo de lista en listas con un estilo de numeración.&quot; &amp; _ 
+   &quot; Aplica el estilo correcto a los párrafos anteriores a todas las listas y reinicia las numeraciones.&quot; &amp; Chr(13) &amp; _      
+   &quot;  -- Se marcan los párrafos en los que el reinicio de numeración no está claro.&quot;
    F_Txt(2) = &quot;Texto (Caracteres)&quot;
    F_Txt(3) = &quot;Párrafos&quot;
    F_Txt(4) = &quot;Párrafos numerados&quot;
@@ -335,7 +343,7 @@ Sub   Trad_Formatos
    &quot;Se cambiará el estilo &quot;&quot;Cuerpo de texto&quot;&quot; por &quot;&quot;Body Text, List Intro&quot;&quot;&quot; &amp; Chr(13) &amp;_
    &quot;antes de cualquier lista y se reiniciarán las numeraciones.&quot;
    F_Txt(18) = &quot;Se limpiará el formato directo a:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;- Párrafos comunes&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
-   &quot;- Párrafos de listas no ordenadas&quot; &amp; Chr(13) &amp; Chr(13)  &amp;_
+   &quot;- Párrafos con estilos de lista no ordenada&quot; &amp; Chr(13) &amp; Chr(13)  &amp;_
    &quot;Ten en cuenta que elimina el formato directo de numeraciones o viñetas&quot;  
    F_Txt(19) = &quot;El formato directo de párrafos no se ha limpiado&quot;
    F_Txt(20) = &quot;Estilo anterior a Listas&quot;
@@ -345,6 +353,8 @@ Sub   Trad_Formatos
    F_Txt(24) = &quot;Limpiando listas ...&quot;
    F_Txt(25) = &quot;Reiniciando listas ...&quot;
    F_Txt(26) = &quot;Reiniciando leyendas numeradas ...&quot;
+   F_Txt(27) = &quot;Esta macro está diseñada para capítulos de las guías. &quot; &amp; Chr(13) &amp;_
+   &quot; Su uso en otros documentos puede causar resultados inesperados&quot;
 
    Case &quot;pt&quot;
    F_Txt(0) = &quot;Limpeza de formatos&quot;
@@ -386,6 +396,8 @@ Sub   Trad_Formatos
    F_Txt(24) = &quot;Limpando listas...&quot;
    F_Txt(25) = &quot;Redefinindo listas...&quot;
    F_Txt(26) = &quot;Redefinindo legendas numeradas ...&quot;
+   F_Txt(27) = &quot;Esta macro foi projetada para capítulos de guia.&quot; &amp; Chr(13) &amp;_
+   &quot;Seu uso em outros documentos pode causar resultados inesperados&quot;
 
    Case Else
    F_Txt(0) = &quot;Format Cleaning&quot;
@@ -427,6 +439,8 @@ Sub   Trad_Formatos
    F_Txt(24) = &quot;Clearing lists ...&quot;
    F_Txt(25) = &quot;Resetting lists ...&quot;
    F_Txt(26) = &quot;Resetting numbered captions ...&quot;
+   F_Txt(27) = &quot;This macro is designed for guide chapters. &quot; &amp; Chr(13) &amp;_
+   &quot;Its use in other documents may cause unexpected results&quot;
 
  End Select
 End Sub
@@ -493,7 +507,9 @@ Sub Trad_Imagenes
    I_Txt(48) =  &quot;Revisa la Escala:&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Diálogo «Imagen», pág. «Recortar»&quot; &amp; Chr(13) &amp; _
    &quot;(% Anchura debe ser igual a % Altura)&quot;
    I_Txt(49) = &quot;Recorrer Imágenes&quot;
-   I_Txt(50) = &quot;Recorrer Comentarios&quot;     
+   I_Txt(50) = &quot;Esta macro está diseñada para capítulos de las guías. &quot; &amp; Chr(13) &amp;_
+   &quot; Su uso en otros documentos puede causar resultados inesperados&quot;
+
 
    Case &quot;pt&quot;
    I_Txt(0) = &quot;Revisão de imagens&quot;
@@ -553,7 +569,8 @@ Sub Trad_Imagenes
    I_Txt(48) = &quot;Verifique a escala:&quot; &amp; Chr(13) &amp; &quot;Caixa de diálogo &quot;&quot;Imagem&quot;&quot;, guia &quot;&quot;Cortar&quot;&quot;&quot; &amp; Chr(13) &amp; _
    &quot;(a % Largura deve ser igual a % Altura)&quot;
    I_Txt(49) = &quot;Percorrer Imagens&quot;
-   I_Txt(50) = &quot;Percorrer comentários&quot;
+   I_Txt(50) = &quot;Esta macro foi projetada para capítulos de guia.&quot; &amp; Chr(13) &amp;_
+   &quot;Seu uso em outros documentos pode causar resultados inesperados&quot;
   
    Case Else
    I_Txt(0) = &quot;Images Review&quot;
@@ -614,7 +631,8 @@ Sub Trad_Imagenes
    I_Txt(48) = &quot;Check the Scale:&quot; &amp; Chr(13) &amp; Chr(13) &amp;  &quot;&quot;&quot;Image&quot;&quot; dialog, &quot;&quot;Crop&quot;&quot; Tab&quot; &amp; Chr(13) &amp; _
    &quot;(% Width must be equal to % Height)&quot;
    I_Txt(49) = &quot;Browse images&quot;
-   I_Txt(50) = &quot;Browse comments&quot;
+   I_Txt(50) = &quot;This macro is designed for guide chapters. &quot; &amp; Chr(13) &amp;_
+   &quot;Its use in other documents may cause unexpected results&quot;
 
    End Select
 End Sub
@@ -649,8 +667,14 @@ Sub Trad_Plantilla
    P_Txt(15) = &quot;Ninguna&quot;
    P_Txt(16) = &quot;Cancelar&quot;
    P_Txt(17) = &quot;Primero tienes que guardar el documento&quot;
-   P_Txt(18) = &quot;Este documento es una plantilla&quot; 
-     
+   P_Txt(18) = &quot;Este documento es una plantilla,&quot; &amp; Chr(13) &amp; _ 
+   &quot;no es conveniente asociarlo a otra plantilla&quot; 
+   P_Txt(19) = &quot;El documento no parece ser de las guías&quot; &amp; Chr(13) &amp; _
+   &quot;¿Quieres asociarlo a la plantilla de capítulos?&quot;
+   P_Txt(20) = &quot;El documento parece una guía completa. &quot; &amp; Chr(13) &amp; _ 
+   &quot;la plantilla necesaria es la misma que la de documentos maestros&quot;
+   P_Txt(21) = &quot;Tipo de documento no admitido&quot;
+        
    Case &quot;pt&quot;
    P_Txt(0) = &quot;Vincular modelo&quot;
    P_Txt(1) = &quot;Documento vinculado ao modelo:&quot; &amp; Chr(13) &amp; Chr(9)
@@ -674,7 +698,13 @@ Sub Trad_Plantilla
    P_Txt(15) = &quot;Nenhum&quot;
    P_Txt(16) = &quot;Cancelar&quot;
    P_Txt(17) = &quot;Salve primeiro o seu documento&quot;
-   P_Txt(18) = &quot;Este documento é um modelo&quot;
+   P_Txt(18) = &quot;Este documento é um modelo&quot; &amp; Chr(13) &amp;_ 
+   &quot;não é conveniente associá-lo a outro modelo&quot;
+   P_Txt(19) = &quot;O documento não parece ser dos guias&quot; &amp; Chr(13) &amp; _
+   &quot;Deseja associá-lo ao modelo de capítulo?&quot;
+   P_Txt(20) = &quot;O documento parece um guia completo.&quot;  &amp; Chr(13) &amp; _
+   &quot;o modelo necessário é o mesmo dos documentos mestre&quot;
+   P_Txt(21) = &quot;Tipo de documento não aceito&quot;
    
    Case else
    P_Txt(0) = &quot;Link Template&quot;
@@ -699,7 +729,13 @@ Sub Trad_Plantilla
    P_Txt(15) = &quot;None&quot;
    P_Txt(16) = &quot;Cancel&quot;
    P_Txt(17) = &quot;You must save the document first.&quot;
-   P_Txt(18) = &quot;This document is a template&quot;
+   P_Txt(18) = &quot;This document is a template&quot; &amp; Chr(13) &amp; &quot;it is not convenient to link it to another template&quot;
+   P_Txt(19) = &quot;The document does not seem to be from the guides&quot; &amp; Chr(13) &amp; _
+   &quot;Do you want to associate it with the Chapter template?&quot;
+   P_Txt(20) = &quot;The document looks like a complete guide.&quot; &amp; Chr(13) &amp; _ 
+   &quot;the necessary template is the same as for master documents&quot;
+   P_Txt(21) = &quot;Document type not accepted&quot;
+
    End select
 End Sub
 
@@ -804,7 +840,7 @@ Sub Trad_Renombrar
    Ren_Txt(2) = &quot;&lt; Volver&quot;
    Ren_Txt(3) = &quot;Renombrar&quot;
    Ren_Txt(4) = &quot;Renombra los elementos en la secuencia de aparición.&quot; &amp; Chr(13) &amp; _
-   &quot;- Se utiliza el prefijo adecuado (img_, frm_, tb_, sec_ o toc_)&quot; &amp; Chr(13) &amp;  _
+   &quot;- Se utiliza el prefijo adecuado (img, frm, tb, ole, sec o toc)&quot; &amp; Chr(13) &amp;  _
    &quot;+  los  siete primeros caracteres del nombre de archivo&quot; &amp; Chr(13) &amp;  &quot;+ separador + número de 3 dígitos.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
    &quot;- Ejemplo: imagen 1 del cap 3 de la guía de Draw :&quot; &amp; Chr(13) &amp;  Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG24803-001&quot;&quot;&quot;
    Ren_Txt(5) = &quot;Selecciona  elementos para renombrar&quot;
@@ -823,6 +859,9 @@ Sub Trad_Renombrar
    &quot;¿Guardar y recargar?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- No podrás deshacer los cambios efectuados hasta ahora&quot;
    Ren_Txt(17) = &quot;Comprueba las secciones y sus nombres&quot;
    Ren_Txt(18) = &quot; &quot;&quot;SEC_COPYRIGHT&quot;&quot; movida al inicio de &quot;&quot;SEC_DISPLAYAREA&quot;&quot; &quot;
+   Ren_Txt(19) = &quot;Objetos OLE&quot;
+   Ren_Txt(20) = &quot;Esta macro está diseñada para capítulos de las guías. &quot; &amp; Chr(13) &amp;_
+   &quot; Su uso en otros documentos puede causar resultados inesperados&quot;
 
    Case &quot;pt&quot;
    Ren_Txt(0) = &quot;Renomear objetos&quot;
@@ -830,7 +869,7 @@ Sub Trad_Renombrar
    Ren_Txt(2) = &quot;&lt; Voltar&quot;
    Ren_Txt(3) = &quot;Renomear&quot;
    Ren_Txt(4) = &quot;Renomeia os elementos na sequência de aparência.&quot; &amp; Chr(13) &amp; _
-   &quot;- O prefixo apropriado é usado (img_, frm_, tb_, sec_ ou toc_)&quot; &amp; Chr(13) &amp; _
+   &quot;- O prefixo apropriado é usado (img, frm, tb, ole, sec ou toc_)&quot; &amp; Chr(13) &amp; _
    &quot; + os primeiros sete caracteres do nome do arquivo&quot; &amp; Chr(13) &amp;  &quot;+ separador + número de 3 dígitos.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
    &quot;- Exemplo de imagem 1 do capítulo 3 do guia do Draw:&quot; &amp; Chr(13) &amp;  Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG24803-001&quot;&quot;&quot;
    Ren_Txt(5) = &quot;Selecione os elementos para renomear&quot;
@@ -841,7 +880,7 @@ Sub Trad_Renombrar
    Ren_Txt(10) = &quot;Seções&quot;
    Ren_Txt(11) = &quot;Não há outras seções além daquelas específicas das guias&quot;
    Ren_Txt(12) = &quot;No documento não há  &quot;
-   Ren_Txt(13) = &quot; Renomeados&quot;
+   Ren_Txt(13) = &quot; Renomead@s&quot;
    Ren_Txt(14) = &quot;Não há índices ou há mais de 1 índice&quot;
    Ren_Txt(15) = &quot;Índice renomeado&quot;
    Ren_Txt(16) = &quot;O documento foi modificado.&quot; &amp; Chr(13) &amp; &quot;Para garantir que os objetos sejam nomeados &quot; &amp; _
@@ -849,6 +888,9 @@ Sub Trad_Renombrar
    &quot;Salvar e recarregar?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- Você não poderá desfazer as alterações feitas até agora.&quot;
    Ren_Txt(17) = &quot;Verifique as seções e seus nomes&quot;
    Ren_Txt(18) = &quot; &quot;&quot;SEC_COPYRIGHT&quot;&quot; movida para o início de &quot;&quot;SEC_DISPLAYAREA&quot;&quot; &quot;
+   Ren_Txt(19) = &quot;Objetos OLE&quot;
+   Ren_Txt(20) = &quot;Esta macro foi projetada para capítulos de guia.&quot; &amp; Chr(13) &amp;_
+   &quot;Seu uso em outros documentos pode causar resultados inesperados&quot;
      
    Case Else
    Ren_Txt(0) = &quot;Rename objects&quot;
@@ -856,7 +898,7 @@ Sub Trad_Renombrar
    Ren_Txt(2) = &quot;&lt; Back&quot;
    Ren_Txt(3) = &quot;Rename&quot;
    Ren_Txt(4) =&quot;Renames the selected elements in order of appearance.&quot; &amp; Chr(13) &amp; _
-   &quot;- The appropriate prefix is used (img_, frm_, tb_, sec_ or toc_)&quot; &amp; Chr(13) &amp; _
+   &quot;- The appropriate prefix is used (img, frm, tb, ole, sec or toc)&quot; &amp; Chr(13) &amp; _
    &quot;+ the first seven characters of the file name&quot; &amp; Chr(13) &amp;  &quot;+ separator + 3-digit number.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
    &quot;- Example image 1 of chapter 3 of the Draw guide:&quot; &amp; Chr(13) &amp; Chr(9) &amp; Chr(9) &amp; &quot;&quot;&quot;img_DG24803-001&quot;&quot;&quot;
    Ren_Txt(5) = &quot;Select elements to rename&quot;
@@ -875,8 +917,11 @@ Sub Trad_Renombrar
    &quot;Save and reload?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- You will not be able to undo the changes made so far.&quot;
    Ren_Txt(17) = &quot;Check the sections and their names.&quot;
    Ren_Txt(18) = &quot; &quot;&quot;SEC_COPYRIGHT&quot;&quot; moved to the beginning of &quot;&quot;SEC_DISPLAYAREA&quot;&quot; &quot;
-  
+   Ren_Txt(19) = &quot;OLE objects&quot;
+   Ren_Txt(20) = &quot;This macro is designed for guide chapters. &quot; &amp; Chr(13) &amp;_
+   &quot;Its use in other documents may cause unexpected results&quot;
   End Select
+  
 End Sub
 
  Rem ############

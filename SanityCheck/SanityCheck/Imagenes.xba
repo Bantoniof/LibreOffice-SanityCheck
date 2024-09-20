@@ -18,10 +18,15 @@
  Dim oProgressBar
  Dim PBcounter As Integer
 
- Rem ############
+ Rem ### MENU #########
 Sub AjusteFiguras
    Call L10n.Trad_Imagenes
+   If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; Then
+     Msgbox (I_Txt(50),0+16+0, I_Txt(0) &amp; Extension)
+     Exit sub
+   End If
    If Not ThisComponent.HasLocation Then : MsgBox (I_Txt(34), 0+48+0, I_Txt(0) &amp; Extension ) : Exit Sub : End If
+
    oImgs = ThisComponent.GraphicObjects()
    If oImgs.getCount = 0 Then : MsgBox (I_Txt(39), 0+48+0, I_Txt(0) &amp; Extension) : Exit Sub  : End If
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
