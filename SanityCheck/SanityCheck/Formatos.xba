@@ -25,7 +25,7 @@ Sub Dlg_Formatos
    
    Call L10n.Trad_Formatos
    If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; then
-   Msgbox (F_Txt(27), 0+16+0, F_Txt(0) &amp;  Extension )
+   Msgbox (F_Txt(30), 0+16+0, F_Txt(0) &amp;  Extension )
      exit Sub
    End If
    If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub
@@ -85,9 +85,10 @@ End Sub
 
  Rem ############
 Sub OnBtn_Limpiar(oEv)
+
    oDlgFmt = oEv.Source.Context
  Dim Txt As Integer , Par As Integer , Num As Integer , Suma As Integer
- Dim Pregunta As Variant, s As String
+ Dim Pregunta As Variant, s As String, Linea as String
    Suma = 0 : s = &quot;&quot;
    With oDlgFmt.Model
      .Height = 122
@@ -103,40 +104,33 @@ Sub OnBtn_Limpiar(oEv)
      .getbyname(&quot;Btn_Salir&quot;).PositionY = 105
      .getbyname(&quot;Btn_Salir&quot;).PositionX = 152
 
-
      If txt = 1 Then
        .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
        s = F_LimpiaTexto 
-    End If   
+     End If   
+
     If Txt = 1 And Num = 0  Then
-      s =  s &amp; Chr(13) &amp; Chr(9) &amp; &quot;las numeraciónes son consecutivas en todo el documento&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
-      &quot;deberías limpiar los párrafos numerados para corregirlo&quot;
+      If s &lt;&gt; &quot;&quot; then linea = Chr(13)
+      s =  s &amp; Linea &amp; F_Txt(27)
      End If
 
      If Par = 1 Then
+       If s &lt;&gt; &quot;&quot; then linea = Chr(13)
        Pregunta = Msgbox (F_Txt(18), 1+64+128 ,F_Txt(0) &amp; Extension)     
        If Pregunta = 1 Then 
          .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
-         s = s  &amp; Chr(13) &amp; F_LimpiaParrafos
+         s = s  &amp; Linea &amp; F_LimpiaParrafos
        Else
-        s =  s  &amp; Chr(13) &amp; F_Txt(19)  
+        s =  s  &amp; Linea &amp; F_Txt(19)  
        End If 
      End If
 
-      If Num = 1  Then
-        If ThisComponent.TextSections.HasByName(&quot;SEC_DISPLAYAREA&quot;) Then
-         Pregunta = Msgbox (F_Txt(17), 1+64+128 ,F_Txt(0) &amp; Extension)
-         If Pregunta = 1 Then
-           .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
-           s = s &amp; Chr(13) &amp; F_Listados
-           s = s &amp; Chr(13) &amp; F_LimpiaNumerados
-         Else
-           s =  s &amp; Chr(13) &amp; F_Txt(8)
-         End If
-       Else 
-         s = s &amp;  F_Txt(21) &amp; Chr(13) &amp; Chr(9) &amp; F_Txt(8) &apos;, 0+64+0, F_Txt(0) &amp; Extension)
-       End If      
-
+     If Num = 1  Then
+       Msgbox (F_Txt(17),0+64+0 ,F_Txt(0) &amp; Extension)
+       .getbyname(&quot;Tx_Registro&quot;).Text = F_Txt(13)
+       If s &lt;&gt; &quot;&quot; then linea = Chr(13)
+       s = s &amp; linea &amp; F_Listados
+       s = s &amp; linea &amp; F_LimpiaNumerados
      End If
 
      .getbyname(&quot;Tx_Registro&quot;).Text = s
@@ -228,7 +222,7 @@ Function F_LimpiaParrafos
        If oPar.ParaStyleName = &quot;Standard&quot; Then
          oCursor.ParaStyleName = _Aux.F_NtoDN(&quot;Text body&quot;) &apos;Cambia Predeterminado por C. Texto
          Call _Aux.InsertAnnotation (oPar, oCursor, F_NtoDN(&quot;Standard&quot;) &amp; _
-             F_Txt(23) &amp; CHr(13) &amp; _Aux.F_NtoDN(&quot;Text body&quot;), F_Txt(0))
+             F_Txt(23) &amp; Chr(13) &amp; _Aux.F_NtoDN(&quot;Text body&quot;), F_Txt(0))
        End If
        If _Aux.F_BuscarEnMatriz(E_Num, oPar.Parastylename) = 0 Then
          oPar.NumberingLevel = 0 &apos;no sé si es necesario
@@ -359,15 +353,17 @@ Function F_LimpiaNumerados
        End If
      End If
    Loop
-   Call ReiniciarLeyendasNum
+
+ Dim s As String   
+   s = F_ReiniciarLeyendasNum
    Wait 10 
    If contarMarcados = 0 Then
-    F_LimpiaNumerados = F_Txt(11) &amp; Chr(13) &amp; F_Txt(16)
+     s = s &amp; Chr(13) &amp; F_Txt(11) &amp; Chr(13) &amp; F_Txt(16)
    Else
-    F_LimpiaNumerados = F_Txt(11) &amp; Chr(9) &amp; contarMarcados &amp; F_Txt(12)
+     s = s &amp; Chr(13) &amp; F_Txt(11) &amp; Chr(9) &amp; contarMarcados &amp; F_Txt(12)
    End If 
+   F_LimpiaNumerados = s
    oProgressbar.End   
-   
  End Function
 
  Rem ############
@@ -398,34 +394,23 @@ Sub ReiniciarTrasTitulos
 End sub
 
  Rem ############
-Function ReiniciarLeyendasNum
+Function F_ReiniciarLeyendasNum
+&apos;   Call L10n.Trad_Formatos
 
-  Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
+ Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
    If not isnull(oDlgFmt) Then
    oDlgFmt.getmodel.getbyName(&quot;Tx_Registro&quot;).Text = F_Txt(26)
    End If
    oProgressbar.start( F_Txt(13), ThisComponent.ParagraphCount ) &apos; x2 si se unen
    oProgressbar.setValue(1) : PBcounter = 0
-
- Rem Reinicia en secciones
- Dim  oSec As Variant, oSubSecs As Variant, oCursor As Object, i As Integer
    On Error goto ERRORES
-   oSec = ThisComponent.TextSections().getByName(&quot;SEC_DISPLAYAREA&quot;)&apos;.getChildSections
-   oSubSecs = oSec.getChildSections
-   oCursor = ThisComponent.Text.CreateTextCursor
-   For i = LBound(oSubSecs) To UBound(oSubSecs)
-     oCursor.gotoRange(oSubSecs(i).getAnchor.Start,False)
-     If oCursor.ParaStyleName = &quot;Legend Numbered&quot; Then
-       oCursor.NumberingStartValue = 1
-       Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
-     End If
-   Next
- 
- Rem limpia leyendas numeradas  en tablas
+
+ Rem leyendas numeradas  en tablas
  Dim oTablas As Object, oTabla As Object, j As Integer
  Dim nRow As Variant, ncol As Variant, ocell As Object
- Dim oEnum As Object, opar As Object, label As String
-
+ Dim oEnum As Object, opar As Object, s As String
+ Dim detectar as Boolean
+   Detectar = 0
    oTablas = ThisComponent.TextTables
    For  i = 0 To oTablas.getCount -1
      oTabla = oTablas.getbyIndex(i)
@@ -437,47 +422,55 @@ Function ReiniciarLeyendasNum
            oPar = oEnum.nextElement()
             Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
            If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) And _
-              oPar.paraStyleName = &quot;Legend Numbered&quot; Then
+             oPar.paraStyleName = &quot;Legend Numbered&quot; Then
+             Detectar = 1              
              oCursor = oPar.getText().createTextCursorByRange(oPar)   
              oCursor.gotoEndOfParagraph(false) &apos; -para el comentario
              oCursor.setAllPropertiesToDefault 
              oPar.NumberingLevel = 0
              oPar.NumberingStyleName = &quot;&quot;
              oPar.NumberingStyleName = &quot;Legend Numbered&quot;
-              Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
+             If ncol = 0 and nrow = 0 then 
+               opar.NumberingStartValue = 1 
+             End If
+             Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
            End If
          loop
        Next
      Next 
    Next  
-
- REM Reinicia primeraCelda
-   For  i = 0 To oTablas.getCount -1
-     oTabla = oTablas.getbyIndex(i)
-     oCell = oTabla.getCellByPosition(0,0)
-     oEnum = oCell.getText.CreateEnumeration
-     Do While oEnum.hasMoreElements 
-       oPar = oEnum.nextElement()
-       If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) And _
-         oPar.paraStyleName = &quot;Legend Numbered&quot; Then
-         oCursor = oPar.getText().createTextCursorByRange(oPar)   
-         oCursor.gotoEndOfParagraph(false) &apos; -para el comentario
-         oCursor.setAllPropertiesToDefault 
-         oPar.NumberingLevel = 0
-         oPar.NumberingStyleName = &quot;&quot;
-         oPar.NumberingStyleName = &quot;Legend Numbered&quot;
-         opar.NumberingStartValue = 1 
-         Exit Do           
-       End If
-     loop
-   Next  
-&apos;   oProgressbar.End 
+   If Detectar &lt;&gt; 0 then
+     s = F_Txt(28)
+   End If
+ Rem leyendas numeradas  en secciones  
+   If Not ThisComponent.TextSections.HasByName(&quot;SEC_DISPLAYAREA&quot;) Then
+     s = s &amp; Chr(13) &amp; F_Txt(21) &amp; Chr(13) &amp; Chr(9) &amp; F_Txt(8) &apos;, 0+64+0, F_Txt(0) &amp; Extension)
+     F_ReiniciarLeyendasNum = s
+     exit Function
+   End If      
+   Detectar = 0
+ Dim  oSec As Variant, oSubSecs As Variant, oCursor2 As Object&apos;, i As Integer
+   oSec = ThisComponent.TextSections().getByName(&quot;SEC_DISPLAYAREA&quot;)&apos;.getChildSections
+   oSubSecs = oSec.getChildSections
+   oCursor2 = ThisComponent.Text.CreateTextCursor
+   oCursor2.gotoStart(false)
+   For i = LBound(oSubSecs) To UBound(oSubSecs)
+     oCursor2.gotoRange(oSubSecs(i).getAnchor.Start,False)
+     If oCursor2.ParaStyleName = &quot;Legend Numbered&quot; Then
+       Detectar = 1
+       oCursor2.NumberingStartValue = 1
+       Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
+     End If
+   Next
+   If Detectar &lt;&gt; 0 Then
+     s = s &amp; F_Txt(29)
+   End If
+   F_ReiniciarLeyendasNum = s
 
 ERRORES:
    If Err &lt;&gt; 0 Then
-     MsgBox ( &quot;Error: &quot; &amp; Err  &amp; &quot;  Linea n. &quot; &amp; Erl &amp; Chr(13)  &amp; Chr(13) &amp; Error, 0+48+0, F_Txt(0) &amp; Extension)
+     MsgBox ( &quot;Error: &quot; &amp; Err  &amp; &quot;  Línea n. &quot; &amp; Erl &amp; Chr(13)  &amp; Chr(13) &amp; Error, 0+48+0, F_Txt(0) &amp; Extension)
    End If
    End Function&apos;sub
-
  Rem ==================== Fin Formatos ==================================
 </script:module>

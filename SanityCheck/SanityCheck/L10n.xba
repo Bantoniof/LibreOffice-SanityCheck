@@ -15,7 +15,7 @@
  Dim A_Txt(8) As String
  Dim C_Txt(22) As String
  Dim E_Txt(23) As String
- Dim F_Txt(27) As String
+ Dim F_Txt(30) As String
  Dim I_Txt(50) As String
  Dim P_Txt(21) As String
  Dim R_Txt(21) As String
@@ -320,14 +320,14 @@ Sub   Trad_Formatos
    &quot;  -- Elimina el fomato directo de listas en parrafos normales&quot; &amp; Chr(13) &amp;_
    &quot;◘ Párrafos Numerados:&quot; &amp; Chr(13) &amp; &quot;Limpia el formato directo de lista en listas con un estilo de numeración.&quot; &amp; _ 
    &quot; Aplica el estilo correcto a los párrafos anteriores a todas las listas y reinicia las numeraciones.&quot; &amp; Chr(13) &amp; _      
-   &quot;  -- Se marcan los párrafos en los que el reinicio de numeración no está claro.&quot;
+   &quot;  -- Se marcan los párrafos en los que no se puede determinar la numeración.&quot;
    F_Txt(2) = &quot;Texto (Caracteres)&quot;
    F_Txt(3) = &quot;Párrafos&quot;
    F_Txt(4) = &quot;Párrafos numerados&quot;
    F_Txt(5) = &quot;Limpiar&quot;
    F_Txt(6) = &quot;Salir&quot;
    F_Txt(7) = &quot;Volver&quot;
-   F_Txt(8) = &quot;El formato directo de párrafos numerados no se ha limpiado&quot;
+   F_Txt(8) = Chr(9) &amp; &quot;No se pudo reiniciar leyendas numeradas en secciones &quot;&apos;&quot;El formato directo de párrafos numerados no se ha limpiado&quot;
    F_Txt(9) = &quot;- Limpieza de formato directo de texto concluída&quot;
    F_Txt(10) = &quot;- Limpieza de formato directo de párrafos concluída&quot;
    F_Txt(11) = &quot;- Limpieza y Reinicio de Numeraciones concluída &quot;  &amp; Chr(13)
@@ -345,22 +345,27 @@ Sub   Trad_Formatos
    F_Txt(18) = &quot;Se limpiará el formato directo a:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;- Párrafos comunes&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
    &quot;- Párrafos con estilos de lista no ordenada&quot; &amp; Chr(13) &amp; Chr(13)  &amp;_
    &quot;Ten en cuenta que elimina el formato directo de numeraciones o viñetas&quot;  
-   F_Txt(19) = &quot;El formato directo de párrafos no se ha limpiado&quot;
+   F_Txt(19) = &quot;◘ El formato directo de párrafos no se ha limpiado&quot;
    F_Txt(20) = &quot;Estilo anterior a Listas&quot;
-   F_Txt(21) = &quot;-  No se ha encontrado la sección &quot;&quot;SEC_DISPLAYAREA&quot;&quot; . &quot;
+   F_Txt(21) = &quot;◘ No se ha encontrado la sección &quot;&quot;SEC_DISPLAYAREA&quot;&quot; . &quot;
    F_Txt(22) = &quot;   Errores corregidos párrafos anteriores a listas&quot;
    F_Txt(23) = &quot;,  cambiado por  &quot;
    F_Txt(24) = &quot;Limpiando listas ...&quot;
    F_Txt(25) = &quot;Reiniciando listas ...&quot;
    F_Txt(26) = &quot;Reiniciando leyendas numeradas ...&quot;
-   F_Txt(27) = &quot;Esta macro está diseñada para capítulos de las guías. &quot; &amp; Chr(13) &amp;_
+   F_Txt(27) =  Chr(9) &amp; &quot;las numeraciónes son consecutivas en todo el documento&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
+   &quot;deberías limpiar los párrafos numerados para corregirlo&quot;   
+   F_Txt(28) = Chr(9) &amp; &quot;- Reinicio leyendas numeradas en tablas completado&quot;      
+   F_Txt(29) = Chr(13) &amp; Chr(9) &amp; &quot;- Reinicio leyendas numeradas en secciones completado&quot;   
+   F_Txt(30) = &quot;Esta macro está diseñada para capítulos de las guías. &quot; &amp; Chr(13) &amp;_
    &quot; Su uso en otros documentos puede causar resultados inesperados&quot;
 
    Case &quot;pt&quot;
    F_Txt(0) = &quot;Limpeza de formatos&quot;
    F_Txt(1) = &quot;◘ Texto:&quot; &amp; Chr(13) &amp; &quot;Limpa a formatação direta aplicada a trechos de texto&quot; &amp; Chr(13) &amp; _
+   &quot;e aplica numeração consecutiva a todas as listas ordenadas.&quot; &amp; Chr(13) &amp; _
    &quot;◘ Parágrafos:&quot;&amp; Chr(13) &amp; &quot;Limpa a formatação direta aplicada a parágrafos (incluindo listas não numeradas).&quot; &amp; Chr(13) &amp; _
-   &quot; -- Note que exclui a formatação direta da numeração&quot; &amp; Chr(13) &amp;_
+   &quot;-- Elimina a formatação direta de listas em parágrafos normais&quot; &amp; Chr(13) &amp;_
    &quot;◘ Parágrafos numerados:&quot; &amp; Chr(13) &amp; &quot;Limpa a formatação aplicada aos parágrafos de listas numeradas.&quot; &amp; _
    &quot;Aplica o estilo correto aos parágrafos anteriores às listas e redefine a numeração.&quot; &amp; Chr(13) &amp; _
    &quot;- São marcados os parágrafos em que a numeração não pode ser determinada.&quot;
@@ -370,7 +375,7 @@ Sub   Trad_Formatos
    F_Txt(5) = &quot;Limpar&quot;
    F_Txt(6) = &quot;Sair&quot;
    F_Txt(7) = &quot;Retornar&quot;
-   F_Txt(8) = &quot;A formatação direta dos parágrafos numerados não foi limpa&quot;
+   F_Txt(8) = Chr(9) &amp; &quot;Não foi possível redefinir as legendas numeradas nas seções&quot;&apos;&quot;A formatação direta dos parágrafos numerados não foi limpa&quot;
    F_Txt(9) = &quot;- Limpeza de formatação direta de texto concluída&quot;
    F_Txt(10) = &quot;- Limpeza de formatação direta de parágrafos concluída&quot;
    F_Txt(11) = &quot;- Limpeza e redefinição de numeração concluídas &quot; &amp; Chr(13)
@@ -388,22 +393,27 @@ Sub   Trad_Formatos
    F_Txt(18) = &quot;A formatação direta será limpa para:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;- Parágrafos comuns&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
    &quot;- Parágrafos de listas não ordenadas&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;Note que exclui a formatação direta de numeração ou marcadores&quot;
-   F_Txt(19) = &quot;A formatação direta dos parágrafos não foi limpa&quot;
+   F_Txt(19) = &quot;◘ A formatação direta dos parágrafos não foi limpa&quot;
    F_Txt(20) = &quot;Estilo precedente a listas&quot;
-   F_Txt(21) = &quot;-  A seção &quot;&quot;SEC_DISPLAYAREA&quot;&quot; não foi encontrada.  &quot;
+   F_Txt(21) = &quot;◘ A seção &quot;&quot;SEC_DISPLAYAREA&quot;&quot; não foi encontrada.  &quot;
    F_Txt(22) = &quot;   Erros corrigidos no parágrafos precedentes à lista&quot;
    F_Txt(23) = &quot;,  cambiado por  &quot;
    F_Txt(24) = &quot;Limpando listas...&quot;
    F_Txt(25) = &quot;Redefinindo listas...&quot;
    F_Txt(26) = &quot;Redefinindo legendas numeradas ...&quot;
-   F_Txt(27) = &quot;Esta macro foi projetada para capítulos de guia.&quot; &amp; Chr(13) &amp;_
+   F_Txt(27) = Chr(9) &amp; &quot;a numeração é consecutiva em todo o documento&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
+   &quot;você deve limpar os parágrafos numerados para corrigi-lo&quot;   
+   F_Txt(28) = Chr(9) &amp; &quot;- Redefinir legendas numeradas em tabelas concluída&quot;      
+   F_Txt(29) = Chr(13) &amp; Chr(9) &amp; &quot;- Redefinir legendas numeradas em seções concluída&quot;   
+   F_Txt(30) = &quot;Esta macro foi projetada para capítulos de guia.&quot; &amp; Chr(13) &amp;_
    &quot;Seu uso em outros documentos pode causar resultados inesperados&quot;
 
    Case Else
    F_Txt(0) = &quot;Format Cleaning&quot;
    F_Txt(1) = &quot;◘ Text:&quot; &amp; Chr(13) &amp; &quot;Cleans up direct formatting applied to text strings&quot; &amp; Chr(13) &amp; _
+   &quot;and applies consecutive numbering to all ordered lists.&quot; &amp; Chr(13) &amp; _
    &quot;◘ Paragraphs:&quot;&amp; Chr(13) &amp; &quot;Clears direct formatting applied to paragraphs (Including unordered lists).&quot; &amp; Chr(13) &amp; _
-   &quot; -- Note that it cleans direct numbering formatting&quot; &amp; Chr(13) &amp;_
+   &quot; --  Clean direct formatting of lists in normal paragraphs&quot; &amp; Chr(13) &amp;_
    &quot;◘ Numbered Paragraphs:&quot; &amp; Chr(13) &amp; &quot;Cleans up the formatting applied to numbered list paragraphs.&quot; &amp; _
    &quot;Applies the correct style to the paragraphs before the lists and resets the numbering.&quot; &amp; Chr(13) &amp; _
    &quot; -- Paragraphs which the renumbering is not explicitely set are flagged.&quot;
@@ -413,7 +423,7 @@ Sub   Trad_Formatos
    F_Txt(5) = &quot;Clear&quot;
    F_Txt(6) = &quot;Exit&quot;
    F_Txt(7) = &quot;Return&quot;
-   F_Txt(8) = &quot;Numbered paragraph direct formatting has not been cleaned up&quot;
+   F_Txt(8) = Chr(9) &amp; &quot;Could not reset numbered legends in sections&quot;&apos;&quot;Numbered paragraph direct formatting has not been cleaned up&quot;
    F_Txt(9) = &quot;- Text direct format cleanup done&quot;
    F_Txt(10) = &quot;- Paragraph direct format cleanup done&quot;
    F_Txt(11) = &quot;- Numbering format Cleanup an Reset done &quot; &amp; Chr(13)
@@ -431,15 +441,19 @@ Sub   Trad_Formatos
    F_Txt(18) = &quot;Direct formatting will be cleaned to:&quot; &amp; Chr(13) &amp; Chr(9) &amp; &quot;- Common paragraphs&quot; &amp; Chr(13) &amp; Chr(9) &amp;_
    &quot;- Paragraphs of unordered lists&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;Note that it eliminates the direct format of numbering or bullets.&quot;
-   F_Txt(19) = &quot;Direct paragraph formatting has not been cleaned up&quot;
+   F_Txt(19) = &quot;◘ Direct paragraph formatting has not been cleaned up&quot;
    F_Txt(20) = &quot;Style before lists&quot;
-   F_Txt(21) = &quot;-  The section &quot;&quot;SEC_DISPLAYAREA&quot;&quot; was not found. &quot;     
+   F_Txt(21) = &quot;◘ The section &quot;&quot;SEC_DISPLAYAREA&quot;&quot; was not found. &quot;     
    F_Txt(22) = &quot;   Errors fixed in paragraphs before lists&quot;
    F_Txt(23) = &quot;,  exchanged for  &quot;
    F_Txt(24) = &quot;Clearing lists ...&quot;
    F_Txt(25) = &quot;Resetting lists ...&quot;
    F_Txt(26) = &quot;Resetting numbered captions ...&quot;
-   F_Txt(27) = &quot;This macro is designed for guide chapters. &quot; &amp; Chr(13) &amp;_
+   F_Txt(27) = Chr(9) &amp; &quot;the numberings are consecutive throughout the document&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
+   &quot;you should clean up the numbered paragraphs to correct it&quot;   
+   F_Txt(28) = Chr(9) &amp; &quot;- Reset numbered legends in tables done&quot;      
+   F_Txt(29) = Chr(13) &amp; Chr(9) &amp; &quot;- Reset numbered legends in sections done&quot;
+   F_Txt(30) = &quot;This macro is designed for guide chapters. &quot; &amp; Chr(13) &amp;_
    &quot;Its use in other documents may cause unexpected results&quot;
 
  End Select
