@@ -965,7 +965,7 @@ Sub Trad_Tablas
    T_Txt(18) = &quot;Se han borrado o añadido tablas&quot; &amp; Chr(13) &amp; &quot; 1) Guarda los cambios&quot; &amp; Chr(13) &amp; _
    &quot; 2) Recarga el documento&quot; &amp; Chr(13) &amp;  &quot; 3) Renombra las tablas otra vez.&quot;
    T_Txt(19) = &quot;Revisión de tablas detenida&quot;&apos;
-   T_Txt(20) = &quot;Se aplica el estilo &quot;&quot;LO_Guides&quot;&quot; a la tabla&quot; &amp; Chr(13) &amp; &quot;anchura ajustada al 90%, centrada y optimizada &quot;
+   T_Txt(20) = &quot;Se aplica el estilo &quot;&quot;LO User Guides&quot;&quot; a la tabla&quot; &amp; Chr(13) &amp; &quot;anchura ajustada al 90%, centrada y optimizada &quot;
    T_Txt(21) = &quot;La tabla conservará su aspecto, pero se optimizará: &quot;
    T_Txt(22) = &quot; - Espaciado de la tabla con el cuerpo de texto, celdas con alineación vertical centrada y altúra mínima.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Única tabla&quot;
@@ -995,7 +995,7 @@ Sub Trad_Tablas
    T_Txt(18) = &quot;Foram excluídas ou adicionadas tabelas&quot; &amp; Chr(13) &amp; &quot; 1) Salve as alterações&quot; &amp; Chr(13) &amp; _
    &quot; 2) Recarrege o documento&quot; &amp; Chr(13) &amp; &quot; 3) Renomeie as tabelas novamente.&quot;
    T_Txt(19) = &quot;Revisão da tabelas interrompida&quot;
-   T_Txt(20) = &quot;Estilo &quot;&quot;LO_Guides&quot;&quot; é aplicado à tabela &quot;&amp;Chr(13) &amp; &quot;- Largura definida como 90%, centralizada e otimizada&quot;
+   T_Txt(20) = &quot;Estilo &quot;&quot;LO User Guides&quot;&quot; é aplicado à tabela &quot;&amp;Chr(13) &amp; &quot;- Largura definida como 90%, centralizada e otimizada&quot;
    T_Txt(21) = &quot;A tabela manterá sua aparência, mas será otimizada: &quot;
    T_Txt(22) = &quot; - Espaçamento da tabela com o corpo do texto, células com alinhamento vertical centralizado e altura mínima.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Única tabela&quot;
@@ -1024,7 +1024,7 @@ Sub Trad_Tablas
    T_Txt(18) = &quot;Tables have been deleted or added&quot; &amp; Chr(13) &amp; &quot; 1) Save changes&quot; &amp; Chr(13) &amp; _
    &quot; 2) Reload the document&quot; &amp; Chr(13) &amp; &quot; 3) Rename the tables again.&quot;
    T_Txt(19) = &quot;Tables review halted&quot;
-   T_Txt(20) = &quot;Style &quot;&quot;LO_Guides&quot;&quot; is applied to table &quot;&amp; Chr(13) &amp; &quot;width set to 90%, centered and optimized&quot;
+   T_Txt(20) = &quot;Style &quot;&quot;LO User Guides&quot;&quot; is applied to table &quot;&amp; Chr(13) &amp; &quot;width set to 90%, centered and optimized&quot;
    T_Txt(21) = &quot;The table will retain its appearance, but will be optimized: &quot;
    T_Txt(22) = &quot; - Spacing of the table with the body of text, cells with centered vertical alignment and minimum height.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Table unique&quot;

@@ -80,32 +80,9 @@ Function F_TipoDoc&apos; (nOMBRE As String, EXT As String) As String
      End If
      Case else 
      F_TipoDoc =&quot;Otro&quot;
-End select
-  
-  
-
-
+   End select
 End Function
 
-
-sUB PRUEBA
-Print F_TipoDoc(&quot;BG1223- sssad&quot;,&quot;odt&quot;)
-Print F_TipoDoc(&quot;WG76- Draw Guideaertt&quot;,&quot;odt&quot;)
-Print F_TipoDoc(&quot;IG76-Draw Guid&quot;,&quot;odm&quot;)
-Print F_TipoDoc(&quot;CG2402- objetosertt&quot;,&quot;ott&quot;)
-Print F_TipoDoc(&quot;aertt&quot;,&quot;pdf&quot;)
-
-
-Print F_TipoDoc(&quot;aertt&quot;,&quot;OdT&quot;)
-Print F_TipoDoc(&quot;aertt&quot;,&quot;OTt&quot;)
-Print F_TipoDoc(&quot;aertt&quot;,&quot;OdM&quot;)
-Print F_TipoDoc(&quot;aertt&quot;,&quot;oTM&quot;)
-
-
-eND SUB
-
-
- 
  Rem ############
 Function F_Prueba_Sel()As Boolean &apos;pasar prueba selección
  Rem Devuelve 1 si estamos en texto y podemos continuar (correcto)
