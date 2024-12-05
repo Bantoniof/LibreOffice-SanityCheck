@@ -152,8 +152,9 @@ End Function
 
  Rem ############
 Sub DialogoEstilos
-  DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
-  oDlgEstilos = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgEstilos&quot;))
+   DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+   oDlgEstilos = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgEstilos&quot;))
+   If getGUIType &gt; 1 then oDlgEstilos.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    With oDlgEstilos.getModel
      .Step = 1
      .Title = E_Txt(0) &amp; Extension

@@ -24,6 +24,7 @@ Sub Dlg_Renombrar
    End If
    DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgRenombrar = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgRenombrar&quot;))
+   If getGUIType &gt; 1 then oDlgRenombrar.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    With oDlgRenombrar.Model
      .Title = Ren_Txt(0) &amp; Extension
      .Height = 80

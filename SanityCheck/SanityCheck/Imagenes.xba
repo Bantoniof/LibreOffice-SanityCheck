@@ -283,6 +283,7 @@ End Sub
      Dlg_Mostrado = True
      DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
      oDlgImgs = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgImagenes&quot;))
+     If getGUIType &gt; 1 then oDlgImgs.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
      With oDlgImgs.Model()
        .TiTle = I_Txt(0) &amp; Extension : .PositionX = 530: .PositionY = 60: .Step = 1
        .GetByName(&quot;Btn_Img_Name&quot;).Label = I_Txt(1)

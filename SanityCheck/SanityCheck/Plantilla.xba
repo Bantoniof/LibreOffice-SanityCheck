@@ -14,9 +14,24 @@ Option explicit
  Dim oRulesD as object, oRulesT as object, i as integer
  Dim oDlgPlantillas as Object
 
+ Rem ############
+Sub IdiomaDoc
+ Rem Cambia el idioma global del documento
+ Dim pais as string, idioma as String
+ Dim Locales As New com.sun.star.lang.Locale
+   Select case F_getLang
+     Case &quot;es&quot; :  pais= &quot;es&quot; : idioma = &quot;es&quot;
+     Case &quot;pt&quot; : pais= &quot;br&quot; : idioma = &quot;pt&quot;
+     Case &quot;en&quot; : pais= &quot;us&quot; : idioma = &quot;en&quot;
+     Case else : idioma = L10n.F_getLang
+   End select
+   Locales.Language = idioma
+   Locales.Country = pais
+   ThisComponent.CharLocale = Locales
+end sub
+
  Rem ### MENU #####
 Sub Dlg_Plantillas
-
  Dim oDocprops as Object, nplant as String   &apos;, cuenta As String
    Call L10n.Trad_Plantilla
    If  ThisComponent.HasLocation = False Then : MsgBox (P_Txt(17), 0+48+0, P_Txt(0) &amp; Extension) : Exit Sub : End If
@@ -63,6 +78,7 @@ Sub Dlg_Plantillas
 
    DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgPlantillas = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgPlantillas&quot;))
+   If getGUIType &gt; 1 then oDlgPlantillas.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    With oDlgPlantillas.getModel
      .Title = P_Txt(0) &amp; Extension
      .getByName(&quot;Txt_Plantilla&quot;).Text = P_Txt(8)
@@ -138,7 +154,6 @@ end sub
 
  Rem ########
 Sub ActivarPlantilla
-
    Call L10n.Trad_Plantilla
    Docprops = ThisComponent.DocumentProperties
    If ThisComponent.getDocumentProperties.TemplateName = &quot;&quot;  Then
@@ -156,9 +171,7 @@ End Sub
 
  Rem ########
 Sub DesactivarPlantilla
-
    Call L10n.Trad_Plantilla
-   
    DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; ) 
    DocSettings.UpdateFromTemplate = False
    Msgbox (P_Txt(7),0+64+0, P_Txt(0) &amp; Extension)
@@ -166,7 +179,7 @@ end sub
 
 
  Rem ########
- sub S_loadTemplate (templateURL as string, oTemplate as object, templateName as string)
+Sub S_loadTemplate (templateURL as string, oTemplate as object, templateName as string)
 
  Dim aFile() as string, sFileName as string
  Dim aArgs(4)  As New com.sun.star.beans.PropertyValue
@@ -181,7 +194,6 @@ end sub
    aArgs(4).Name = &quot;UpdateDocMode&quot;
    aArgs(4).Value = com.sun.star.document.UpdateDocMode.NO_UPDATE 
    oTemplate = StarDesktop.loadComponentFromURL( templateURL, &quot;_blank&quot;, 0,aArgs() )
-   
 &apos;   If oTemplate.DocumentProperties.Title = &quot;&quot; Then
      aFile = Split (templateURL, &quot;/&quot;)
      sFileName = aFile(Ubound(aFile))
@@ -238,6 +250,7 @@ Sub S_applyTemplate(doc as object, templateUrl as string)
        oRulesD.replaceByIndex(i, oRulesT.getByIndex(i))
      next
    end if
+   Call IdiomaDoc
 end Sub
 
  Rem ########

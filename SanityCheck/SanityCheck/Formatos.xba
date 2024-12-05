@@ -32,6 +32,7 @@ Sub Dlg_Formatos
 
    DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgFmt = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFormatos&quot;))
+   If getGUIType &gt; 1 then oDlgFmt.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    With oDlgFmt.getModel
      .Step = 1
      .Title = F_Txt(0) &amp; Extension &apos; N diálogo
@@ -196,6 +197,34 @@ Rem Texto en Cuadros de texto (DIBUJO) Desactivado por cuadro en página contrap
    Call _Aux.ActualizarTodo
    F_LimpiaTexto = F_Txt(9)
 End Function
+
+
+Sub CambiaFDListas
+Dim ope, ocursor, opar
+
+  oPE= ThisComponent.Text.createEnumeration
+ ocursor = ThisComponent.Text.createtextCursor
+  While oPE.hasMoreElements()
+     oPar = oPE.nextElement()
+ 
+   if oPar.ListId &lt;&gt; &quot;&quot;  AND  oPar.ListLabelString = &quot;&quot;  AND oPar.ParaStyleName = F_N2DN(&quot;Text body&quot;)   then 
+&apos;xray opar
+&apos; print opar.ListId
+ &apos;opar.ListId= &quot;&quot;
+ &apos;  opar.setPropertyToDefault(&quot;ListId&quot;) 
+ &apos;        oPar.NumberingLevel = 0 &apos;no sé si es necesario
+         oPar.NumberingStyleName = &quot;&quot; &apos;
+         oPar.ParaStyleName = F_N2DN(&quot;List 1&quot;)
+&apos;oPar.NumberingLevel = 0 &apos;no sé si es necesario
+ &apos;    oCursor.gotoRange(oPar.Anchor,False)
+&apos;     oCursor.gotoendOfparagraph(True)
+  &apos;   oCursor.setAllPropertiesToDefault
+ &apos;     
+    end if
+  Wend  
+End Sub 
+
+
 
  Rem ############
 Function F_LimpiaParrafos

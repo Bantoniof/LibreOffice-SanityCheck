@@ -18,9 +18,10 @@ Sub Dlg_Campos
      Msgbox (C_Txt(22), 0+16+0, Extension)
      Exit Sub
    End Select   
-   
-   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+
+  DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgCampos = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgCampos&quot;))
+   If getGUIType &gt; 1 then oDlgCampos.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    Call Campos.Cargar_Parametros
    oDlgCampos.execute
 End Sub

@@ -33,6 +33,7 @@ Sub Dlg_Tablas&apos;(oTabla)
    If Dlg_Activo = False Then
      DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
      oDlgTablas = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgTablas&quot;))
+     If getGUIType &gt; 1 then oDlgTablas.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
      Dlg_Activo = True
      Dlg_Mostrado = True
      With oDlgTablas.Model

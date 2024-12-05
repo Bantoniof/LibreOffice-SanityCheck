@@ -145,6 +145,7 @@ On error goto ERRORES
    If Archivo &lt;&gt; &quot;&quot; Then
      ThisComponent.storeToURL(Archivo, cmdArgs())
      Progressbar
+  &apos;      If  Not isnull (oDlg_Barra) then oDlg_Barra.Dispose&apos; setVisible(False)
      
      If Msgbox (&quot;Exportación completa. &quot; &amp; Chr(13) &amp; &quot;¿Quieres abrir el PDF ? &quot;,4+32+0,&quot;Abrir PDF&quot; &amp; Extension)= 6 then
        Info.AbreURL(ConvertFromUrl(Archivo))
@@ -185,6 +186,7 @@ Function F_Dlg_PDF()
      Nombre = left(Nombre, len(Nombre) -4 ) &amp; &quot;.pdf&quot;
    End If
    oDlgExportar = CreateUnoService (&quot;com.sun.star.ui.dialogs.OfficeFilePicker&quot;)
+   If getGUIType &gt; 1 then oDlgExportar.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    Opciones() = Array(1)&apos;1 = simple ,2 opciones
    With oDlgExportar
      .Initialize ( Opciones() ) 
@@ -239,9 +241,8 @@ Sub ProgressBar()
 	For ProgressValue = ProgressValueMin To ProgressValueMax Step ProgressStep
 		oProgressBarModel.setPropertyValue( &quot;ProgressValue&quot;, ProgressValue )
 &apos;       oCursor.gotoNextParagraph(false) 
-		Wait 10
+&apos;		Wait 5
 	Next ProgressValue
-
 &apos;    oCell.SetString(&quot;Done&quot;)
 End Sub
 </script:module>

@@ -410,6 +410,7 @@ Sub DialogoResaltes
    Call _Aux.Carga_Tools
    DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgResaltes = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgResaltes&quot;))
+   If getGUIType &gt; 1 then oDlgResaltes.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    oDlgResaltes.Model.Step = 1
 Call ParametrosResaltes
    oDlgResaltes.execute()
