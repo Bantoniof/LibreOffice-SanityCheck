@@ -22,7 +22,6 @@ End Sub
 
  Rem #### MENU ########
 Sub Dlg_Formatos
-   
    Call L10n.Trad_Formatos
    If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; then
    Msgbox (F_Txt(30), 0+16+0, F_Txt(0) &amp;  Extension )
@@ -86,7 +85,6 @@ End Sub
 
  Rem ############
 Sub OnBtn_Limpiar(oEv)
-
    oDlgFmt = oEv.Source.Context
  Dim Txt As Integer , Par As Integer , Num As Integer , Suma As Integer
  Dim Pregunta As Variant, s As String, Linea as String
@@ -197,34 +195,6 @@ Rem Texto en Cuadros de texto (DIBUJO) Desactivado por cuadro en página contrap
    Call _Aux.ActualizarTodo
    F_LimpiaTexto = F_Txt(9)
 End Function
-
-
-Sub CambiaFDListas
-Dim ope, ocursor, opar
-
-  oPE= ThisComponent.Text.createEnumeration
- ocursor = ThisComponent.Text.createtextCursor
-  While oPE.hasMoreElements()
-     oPar = oPE.nextElement()
- 
-   if oPar.ListId &lt;&gt; &quot;&quot;  AND  oPar.ListLabelString = &quot;&quot;  AND oPar.ParaStyleName = F_N2DN(&quot;Text body&quot;)   then 
-&apos;xray opar
-&apos; print opar.ListId
- &apos;opar.ListId= &quot;&quot;
- &apos;  opar.setPropertyToDefault(&quot;ListId&quot;) 
- &apos;        oPar.NumberingLevel = 0 &apos;no sé si es necesario
-         oPar.NumberingStyleName = &quot;&quot; &apos;
-         oPar.ParaStyleName = F_N2DN(&quot;List 1&quot;)
-&apos;oPar.NumberingLevel = 0 &apos;no sé si es necesario
- &apos;    oCursor.gotoRange(oPar.Anchor,False)
-&apos;     oCursor.gotoendOfparagraph(True)
-  &apos;   oCursor.setAllPropertiesToDefault
- &apos;     
-    end if
-  Wend  
-End Sub 
-
-
 
  Rem ############
 Function F_LimpiaParrafos
