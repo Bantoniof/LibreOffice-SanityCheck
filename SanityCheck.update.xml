@@ -3,11 +3,11 @@
     <identifier value="vnd.bantoniof.sanitycheck"/>
     <version value="1.0.9" />
     <update-download> 
-    <src xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck/raw/v1.1.0/SanityCheck.oxt"/>
+    <src xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck/raw/v1.0.9/SanityCheck.oxt"/>
       <!--  <src xlink:href="https://github.com/Bantoniof/libreoffice-SanityCheck/raw/v1.0.5/SanityCheck.oxt" /> -->
     </update-download>
     <release-notes>
-		<src xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck/releases/tag/v1.1.0" lang ="en" />
+		<src xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck/releases/tag/v1.0.9" lang ="en" />
     <!--<src xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck/blob/v1.0.5/README.md"/> -->
     </release-notes>
 </description>
