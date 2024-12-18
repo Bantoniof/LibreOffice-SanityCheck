@@ -33,6 +33,10 @@ Sub CargaEstilos_PU_Guias
    estiloPU(13) = &quot;Legend Numbered&quot;
    estiloPU(14) = &quot;Listing&quot;
    estiloPU(15) = &quot;New Chapter&quot;
+   
+&apos;   estiloPU(16) = &quot;Listado&quot; &apos;es
+&apos;   estiloPU(17) = &quot;Listagem&quot; &apos;pt   
+
 Rem  Estilos html  ( desactivados )
 &apos;   estiloPU(16) = &quot;HLegend Numbered&quot;
 &apos;   estiloPU(17) = &quot;HList 2&quot;
@@ -142,6 +146,8 @@ Function  Avisos_Estilos_Ajenos(Familia As String)
    ElseIf UBound(enUso) &lt;&gt; -1 Then
      If Familia = &quot;P&quot; Then
        P_Uso = _Aux.F_MatrizCuadroTexto(enUso) &apos;Convierte la matriz en texto (cuadro de texto estilos párrafo)
+       Dim Listados() : Listados = Array(&quot;Listado&quot;, &quot;Listagem&quot;)
+       enUso = _Aux.F_RestaMatrices(enUso,Listados)
        Call F_Comentar_Parrafos(enUso) &apos;Comenta los párrafos
      ElseIf Familia = &quot;C&quot; Then
        C_Uso = _Aux.F_MatrizCuadroTexto(enUso) &apos;Convierte la matriz en texto (cuadro de texto estilos caracter)
@@ -412,7 +418,7 @@ Function F_ResaltaCarAjenos(Matriz As Variant)
    oEstilos = ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;)
    For i = LBound(Matriz) to UBound(Matriz)
      oEstilo = oEstilos.getByName(Matriz(i))
-     If left(oEstilo.DisplayName,4) &lt;&gt; &quot;Ch2_&quot; then
+     If left(oEstilo.DisplayName,4) &lt;&gt; &quot;ch2_&quot; then
        If oEstilo.CharBackColor &lt;&gt; 0 then
          oEstilo.CharBackColor = 0
          oEstilo.CharColor = RGB(255,255,100)&apos; Evitar Problema con macros
