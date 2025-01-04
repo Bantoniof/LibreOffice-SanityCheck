@@ -23,12 +23,12 @@ End Sub
  Rem #### MENU ########
 Sub Dlg_Formatos
    Call L10n.Trad_Formatos
+   If _Aux.F_Guardado = 0 Then : Exit Sub : End If   
    If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; then
    Msgbox (F_Txt(30), 0+16+0, F_Txt(0) &amp;  Extension )
      exit Sub
    End If
    If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub
-
    DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgFmt = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFormatos&quot;))
    If getGUIType &gt; 1 then oDlgFmt.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
@@ -395,7 +395,6 @@ End sub
  Rem ############
 Function F_ReiniciarLeyendasNum
 &apos;   Call L10n.Trad_Formatos
-
  Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
    If not isnull(oDlgFmt) Then
    oDlgFmt.getmodel.getbyName(&quot;Tx_Registro&quot;).Text = F_Txt(26)
@@ -405,14 +404,15 @@ Function F_ReiniciarLeyendasNum
    On Error goto ERRORES
 
  Rem leyendas numeradas  en tablas
- Dim oTablas As Object, oTabla As Object, j As Integer
+ Dim oTablas As Object, oTabla As Object, Reinicio As Integer
  Dim nRow As Variant, ncol As Variant, ocell As Object
  Dim oEnum As Object, opar As Object, s As String
- Dim detectar as Boolean
+ Dim Detectar as Boolean
    Detectar = 0
    oTablas = ThisComponent.TextTables
    For  i = 0 To oTablas.getCount -1
      oTabla = oTablas.getbyIndex(i)
+     Reinicio = 0
      For nRow = 0 To oTabla.getRows().getCount() - 1
        For nCol = 0 To oTabla.getColumns().getCount() - 1
          oCell = oTabla.getCellByPosition(nCol, nRow)
@@ -429,9 +429,10 @@ Function F_ReiniciarLeyendasNum
              oPar.NumberingLevel = 0
              oPar.NumberingStyleName = &quot;&quot;
              oPar.NumberingStyleName = &quot;Legend Numbered&quot;
-             If ncol = 0 and nrow = 0 then 
+             If Reinicio = 0 then
                opar.NumberingStartValue = 1 
              End If
+             Reinicio = Reinicio + 1
              Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
            End If
          loop
@@ -470,6 +471,6 @@ ERRORES:
    If Err &lt;&gt; 0 Then
      MsgBox ( &quot;Error: &quot; &amp; Err  &amp; &quot;  Línea n. &quot; &amp; Erl &amp; Chr(13)  &amp; Chr(13) &amp; Error, 0+48+0, F_Txt(0) &amp; Extension)
    End If
-   End Function&apos;sub
+   End Function
  Rem ==================== Fin Formatos ==================================
 </script:module>

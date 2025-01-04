@@ -18,8 +18,8 @@
   <dlg:menulist dlg:id="Lst_Eliminar_C" dlg:tab-index="3" dlg:left="137" dlg:top="114" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="true" dlg:multiselection="true" dlg:linecount="10">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:SanityCheck.Estilos.OnLstBox_C_Change?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:menulist>
-  <dlg:textfield dlg:id="Tx_C_Uso" dlg:tab-index="12" dlg:left="10" dlg:top="114" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="false" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_C_Uso"/>
-  <dlg:textfield dlg:id="Tx_P_Uso" dlg:tab-index="13" dlg:left="10" dlg:top="33" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="false" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_P_Uso"/>
+  <dlg:textfield dlg:id="Tx_C_Uso" dlg:tab-index="12" dlg:left="10" dlg:top="114" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="false" dlg:hscroll="true" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_C_Uso"/>
+  <dlg:textfield dlg:id="Tx_P_Uso" dlg:tab-index="13" dlg:left="10" dlg:top="33" dlg:width="120" dlg:height="70" dlg:page="1" dlg:tabstop="false" dlg:hscroll="true" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Tx_P_Uso"/>
   <dlg:fixedline dlg:id="FixedLine2" dlg:tab-index="14" dlg:left="12" dlg:top="106" dlg:width="302" dlg:height="2" dlg:page="1"/>
   <dlg:fixedline dlg:id="FixedLine1" dlg:tab-index="15" dlg:left="132" dlg:top="33" dlg:width="2" dlg:height="153" dlg:page="1" dlg:align="vertical"/>
   <dlg:text dlg:style-id="0" dlg:id="Lbl_Estilos" dlg:tab-index="7" dlg:left="33" dlg:top="5" dlg:width="200" dlg:height="12" dlg:page="1" dlg:value="Lbl_Estilos" dlg:align="center"/>

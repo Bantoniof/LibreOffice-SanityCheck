@@ -7,6 +7,23 @@
  
  Option Explicit
  
+ Rem ########
+Sub DirectorioPlantillas
+ Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
+ Dim Asociada() : Asociada = split (oDocprops.TemplateURL,&quot;/&quot;)
+ Dim Ext() : Ext = Split(F_Pathextension,&quot;/&quot;)
+ Dim elementos
+   elementos = Ubound(asociada())
+   Redim Preserve Asociada(elementos - 5)
+   elementos = Ubound(Ext())
+   Redim Preserve Ext(elementos - 1)
+   If Asociada(Ubound(Asociada)) &lt;&gt; Ext(Ubound(Ext)) then
+     Trad_Aux
+     Msgbox (A_Txt(9), 0+64+0, Extension)
+     Call Plantilla.Dlg_Plantillas
+   end If
+End Sub
+ 
  Rem ############
 Function F_CompPlantilla &apos;comprueba Estilos, si no están devuelve un número y presenta las faltas
  Dim  oEstilos As Object, oEstilo As Variant, i As Integer, contador as integer
@@ -34,52 +51,46 @@ Function F_CompPlantilla &apos;comprueba Estilos, si no están devuelve un núme
 End Function 
 
  Rem ############
-Function F_EsPlantilla(Doc) As Boolean
-Call L10n.Trad_Plantilla
-   Call Carga_Tools
- Dim Archivo : Archivo = (Doc.getURL)
- Dim Ext: Ext = GetFileNameExtension(Archivo)
-   If UCase(Ext) = &quot;OTT&quot; OR UCase(Ext) = &quot;OTM&quot; Then &apos;OR UCase(Ext) = &quot;ODM&quot;  then
-     F_EsPlantilla = 1
-   Else
-     F_EsPlantilla = 0
+Function F_Guardado() As boolean
+   Call L10n.Trad_Aux
+   If  ThisComponent.HasLocation = False Then 
+     MsgBox (A_Txt(10), 0+48+0, Extension)
+    F_Guardado = 0
+   Else 
+     F_Guardado = 1
    End If
 End Function
 
  Rem ############
-Function F_TipoDoc&apos; (nOMBRE As String, EXT As String) As String
+Function F_TipoDoc
    Call L10n.Trad_Plantilla
- Dim Archivo : Archivo = (ThisComponent.getURL)
- Dim Nombre : Nombre = filenameoutofpath(thiscomponent.getUrl)
+ Dim Archivo : Archivo = ThisComponent.getUrl 
+ Dim Nombre : Nombre = Filenameoutofpath(Archivo)
  Dim Ext : Ext = GetFileNameExtension(Archivo)
  Dim cuenta
-
    Select Case UCase(Ext)
-      Case&quot;ODM&quot;
-      F_TipoDoc = &quot;Maestro&quot;
+     Case&quot;ODM&quot;
+       F_TipoDoc = &quot;Maestro&quot;
      Case &quot;OTT&quot;,&quot;OTM&quot;
-                &apos;    MsgBox (P_Txt(18), 0+48+0, P_Txt(0) &amp; Extension)
-     F_TipoDoc = &quot;Plantilla&quot; 
+       F_TipoDoc = &quot;Plantilla&quot; 
      Case &quot;ODT&quot;
-   If left(nombre,2) &lt;&gt; &quot;BG&quot; XOR left(nombre,2) &lt;&gt; &quot;CG&quot; XOR _
-       left(nombre,2) &lt;&gt; &quot;DG&quot; XOR  left(nombre,2) &lt;&gt; &quot;GS&quot; XOR _
-       left(nombre,2) &lt;&gt; &quot;IG&quot; XOR  left(nombre,2) &lt;&gt; &quot;MG&quot; XOR _
-       left(nombre,2) &lt;&gt; &quot;WG&quot; Then
-       F_TipoDoc = &quot;Documento&quot;
-       Exit Function
-    Else
-     cuenta = left(Nombre,6)
-     cuenta = right(cuenta,4)
-     If Not isNumeric(cuenta) then
-&apos;       Msgbox (P_Txt(20),0+64+0, P_Txt(0) &amp; Extension) 
-       F_TipoDoc = &quot;Guia&quot;
-       Exit Function
-     ElseIf isNumeric(cuenta) Then
-       F_TipoDoc = &quot;Capitulo&quot;
-     End If
-     End If
+       If left(nombre,2) &lt;&gt; &quot;BG&quot; XOR left(nombre,2) &lt;&gt; &quot;CG&quot; XOR _
+         left(nombre,2) &lt;&gt; &quot;DG&quot; XOR  left(nombre,2) &lt;&gt; &quot;GS&quot; XOR _
+         left(nombre,2) &lt;&gt; &quot;IG&quot; XOR  left(nombre,2) &lt;&gt; &quot;MG&quot; XOR _
+         left(nombre,2) &lt;&gt; &quot;WG&quot; Then
+         F_TipoDoc = &quot;Documento&quot;
+         Exit Function
+       Else
+         cuenta = left(Nombre,6) : cuenta = right(cuenta,4)
+         If Not isNumeric(cuenta) then
+           F_TipoDoc = &quot;Guia&quot;
+           Exit Function
+         ElseIf isNumeric(cuenta) Then
+           F_TipoDoc = &quot;Capitulo&quot;
+         End If
+       End If
      Case else 
-     F_TipoDoc =&quot;Otro&quot;
+       F_TipoDoc =&quot;Otro&quot;
    End select
 End Function
 
@@ -130,7 +141,6 @@ Function F_LOVersion() As Double
    aAux(0).Name = &quot;nodepath&quot;
    aAux(0).Value = &quot;/org.openoffice.Setup/Product&quot;
    oSet = oCfgProvider.createInstanceWithArguments(&quot;com.sun.star.configuration.ConfigurationAccess&quot;, aAux())
-
  Rem Corrige problema separador decimal (config. Regional)
  Rem Basic opera con . pero las conversiones las hace con coma en Español o punto en inglés
  Rem En español CDbl(&quot;7.5&quot;) = 75 / CDbl(&quot;7,5&quot;)= 7,5
@@ -140,27 +150,27 @@ Function F_LOVersion() As Double
 End Function
 
  Rem ############
-  Rem Devuelve la versión SanityCheck
-Function F_Extension&apos;(identificateur As String) As String
- dim sv As Object, e as variant, x as variant
-   sv = GetDefaultContext().getByName(&quot;/singletons/com.sun.star.deployment.PackageInformationProvider&quot;)
-   e = sv.getExtensionList()
-   for each x in e
-     if  x(0) = &quot;vnd.bantoniof.sanitycheck&quot;  then
-       F_Extension = &quot; - SanityCheck &quot; &amp; x(1)
-       Exit Function
-     end if
-   next
-   F_Extension = &quot; - SanityCheck 1x (no instalada)&quot; &apos;extension pas trouvée
-End Function
-
- Rem ############
 Function F_PathExtension
  Dim sv
    sv = GetDefaultContext.getByName(&quot;/singletons/com.sun.star.deployment.PackageInformationProvider&quot;)
    F_PathExtension = sv.getPackageLocation(&quot;vnd.bantoniof.sanitycheck&quot;) 
 End Function
-	
+
+ Rem ############
+  Rem Devuelve la versión SanityCheck
+Function F_Extension
+ dim sv As Object, e as variant, x as variant
+   sv = GetDefaultContext().getByName(&quot;/singletons/com.sun.star.deployment.PackageInformationProvider&quot;)
+   e = sv.getExtensionList()
+   for each x in e
+     if  x(0) = &quot;vnd.bantoniof.sanitycheck&quot;  then
+       F_Extension = &quot;  SanityCheck &quot; &amp; x(1)
+       Exit Function
+     end if
+   next
+   F_Extension = &quot;  SanityCheck X.x (no instalada)&quot;
+End Function
+
  Rem ############
 Sub ImplParaStyleCheck(Matriz As Object, oParEnum As Object)
  Rem Ayuda para la función F_ComentarParrafos
@@ -179,8 +189,7 @@ Sub ImplParaStyleCheck(Matriz As Object, oParEnum As Object)
        Next
        If (bFound) = True Then
          oCursor = oPar.getText().createTextCursorByRange(oPar)
-&apos;         oCursor.gotoStartOfParagraph(False)
-         oCursor.gotoEndOfParagraph(False)&apos; com final parrafo
+         oCursor.gotoEndOfParagraph(False)
         Call _Aux.InsertAnnotation (oPar, oCursor, sStyle &amp; Chr(13) &amp; E_Txt(17), E_Txt(0) )
         Contador= Contador +1
        End If

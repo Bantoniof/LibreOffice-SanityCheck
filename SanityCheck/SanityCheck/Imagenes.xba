@@ -21,12 +21,11 @@
  Rem ### MENU #########
 Sub AjusteFiguras
    Call L10n.Trad_Imagenes
+   If _Aux.F_Guardado = 0 Then : Exit Sub : End If   
    If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; Then
-     Msgbox (I_Txt(50),0+16+0, I_Txt(0) &amp; Extension)
+     Msgbox (I_Txt(29),0+16+0, I_Txt(0) &amp; Extension)
      Exit sub
    End If
-   If Not ThisComponent.HasLocation Then : MsgBox (I_Txt(34), 0+48+0, I_Txt(0) &amp; Extension ) : Exit Sub : End If
-
    oImgs = ThisComponent.GraphicObjects()
    If oImgs.getCount = 0 Then : MsgBox (I_Txt(39), 0+48+0, I_Txt(0) &amp; Extension) : Exit Sub  : End If
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
@@ -35,13 +34,8 @@ End Sub
 
  Rem ############
 Function F_Ajuste_Imagenes_Marcos
- Rem Ajusta imágenes y luego llama a las funciones
- Rem F_Ajuste_Marcos para ajustar los marcos 
- Rem y F_Descripciones_Marcos
- Rem (marcos e imágenes) y comentarios en imágenes con defectos
- Rem ======================================================
    Call _Aux.EliminaComentarios(I_Txt(0))&apos; Evito que se dupliquen comentarios
-   If Not ThisComponent.HasLocation Then : MsgBox (I_Txt(34), 0+48+0, I_Txt(0) &amp; Extension ) : Exit Function : End If
+   If _Aux.F_Guardado = 0 Then : Exit Function : End If
    If _Aux.F_Prueba_Sel = 0 Then : Exit Function : End If
      Rem 1º: Formato de imagen (Obligatorio  antes de formato marcos)
  Dim i As Integer
@@ -223,7 +217,7 @@ Function F_Desc_Comm_Imgs
        oCursor = oPar.getText().createTextCursorByRange(oPar)
        oCursor.gotoEndOfParagraph(False) &apos; Antes start
        Contador = Contador + 1
-       Call _Aux.InsertAnnotation(oPar, oCursor, I_Txt(47), I_Txt(0))
+       Call _Aux.InsertAnnotation(oPar, oCursor, I_Txt(33), I_Txt(0))
      End If
  Rem Imagen deformada, comentario
      Aspecto = Format(oImg.ActualSize.Width / oImg.ActualSize.Height, &quot;###00.0&quot;)
@@ -232,7 +226,7 @@ Function F_Desc_Comm_Imgs
        oCursor = oPar.getText().createTextCursorByRange(oPar)
        oCursor.gotoEndOfParagraph(False) &apos; antes start
        Contador = Contador +1
-       Call _Aux.InsertAnnotation(oPar, oCursor, I_Txt(48), I_Txt(0))
+       Call _Aux.InsertAnnotation(oPar, oCursor, I_Txt(34), I_Txt(0))
      End If
    Next
    oProgressBar.End
@@ -250,7 +244,7 @@ Sub Dlg_Figuras(Registro as String)
      oDlgFiguras = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFiguras&quot;))
    With oDlgFiguras.Model
      .Title = I_Txt(0) &amp; Extension
-     .getbyname(&quot;Btn_Img&quot;).Label = I_Txt(49)
+     .getbyname(&quot;Btn_Img&quot;).Label = I_Txt(38)
      .GetByName(&quot;Btn_Salir&quot;).Label = I_Txt(8)
      .getbyname(&quot;Tx_Registro&quot;).text = Registro
    End With
@@ -267,7 +261,7 @@ End Sub
  Rem ############
   Sub Dlg_Imagenes
    Call L10n.Trad_Imagenes
-   If  ThisComponent.HasLocation = False Then : MsgBox (I_Txt(34),0+48+0, I_Txt(0) &amp; Extension) : Exit Sub : End If
+   If _Aux.F_Guardado = 0 Then : Exit Sub : End If   
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
    Dlg_Mostrado = False
    DLg_Activo = False

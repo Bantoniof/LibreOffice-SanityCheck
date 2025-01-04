@@ -32,13 +32,11 @@ end sub
 
  Rem ### MENU #####
 Sub Dlg_Plantillas
- Dim oDocprops as Object, nplant as String   &apos;, cuenta As String
    Call L10n.Trad_Plantilla
-   If  ThisComponent.HasLocation = False Then : MsgBox (P_Txt(17), 0+48+0, P_Txt(0) &amp; Extension) : Exit Sub : End If
-   oDocprops = ThisComponent.getDocumentProperties
- dim Tipo
- Tipo =  _Aux.F_TipoDoc
-   Select case Tipo
+   If _Aux.F_Guardado = 0 Then : Exit Sub : End If
+ Dim oDocprops as Object : oDocprops = ThisComponent.getDocumentProperties
+ Dim nplant As String
+   Select case _Aux.F_TipoDoc
      Case &quot;Plantilla&quot;
        MsgBox (P_Txt(18), 0+48+0, P_Txt(0) &amp; Extension)
        Exit Sub
@@ -49,7 +47,7 @@ Sub Dlg_Plantillas
          Case else : nplant = &quot;LO_UG_Master_2Xx_EN&quot;
        End Select
      Case &quot;Guia&quot;
-       Msgbox (P_Txt(20),0+64+0, P_Txt(0) &amp; Extension)
+       Msgbox (P_Txt(17),0+64+0, P_Txt(0) &amp; Extension)
        Select case  L10n.F_getLang
          Case &quot;es&quot;: nplant = &quot;LO_UG_Patron_2Xx_ES&quot;
          Case &quot;pt&quot;: nplant = &quot;LO_UG_Mestre_2Xx_PT&quot;
@@ -72,7 +70,7 @@ Sub Dlg_Plantillas
          Exit sub
        End If
      Case &quot;Otro&quot;
-       Msgbox (P_Txt(21), 0+16+0, P_Txt(0) &amp; Extension)
+       Msgbox (P_Txt(9), 0+16+0, P_Txt(0) &amp; Extension)
        Exit Sub
    End Select
 
@@ -100,7 +98,7 @@ Sub Dlg_Plantillas
          .getByName(&quot;Btn_Asociar&quot;).Label = P_Txt(13)
          .getByName(&quot;Btn_Cancelar&quot;).EnableVisible = True         
        End If  
-     Else
+     Else &apos;oDocprops.TemplateName = &quot;&quot; Then
        .getByName(&quot;Lbl_Plantilla&quot;).label = P_Txt(15)
        .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(255,0,0)
        .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☒&quot;
@@ -110,9 +108,9 @@ Sub Dlg_Plantillas
 End sub
 
  Rem ########
-Sub onBtn_Asociar(oev)
+Sub onBtn_Asociar&apos;(oev)
 
-   oDlgPlantillas = oEv.Source.Context
+&apos;   oDlgPlantillas = oEv.Source.Context
    Select Case _Aux.F_TipoDoc
      Case &quot;Guia&quot;,&quot;Maestro&quot;
        Select case L10n.F_getLang
@@ -137,7 +135,7 @@ Sub onBtn_Asociar(oev)
      S_setTemplateAndDate (ThisComponent, templateName, templateURL, oTemplate.DocumentProperties.ModificationDate)
      S_applyTemplate(ThisComponent, templateUrl)
      S_activateWriterHeadings(ThisComponent)
-     oDlgPlantillas.EndExecute
+     If not isnull(oDlgPlantillas) then oDlgPlantillas.EndExecute
      msgbox (P_Txt(1) &amp; templateName, 0+64+0, P_Txt(0) &amp; Extension)       
    End If
 End Sub

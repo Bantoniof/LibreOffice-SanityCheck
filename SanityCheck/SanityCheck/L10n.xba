@@ -12,15 +12,15 @@
  Rem to apply the correct template of the new language
   
  Option Explicit
- Dim A_Txt(8) As String
- Dim C_Txt(22) As String
+ Dim A_Txt(10) As String
+ Dim C_Txt(21) As String
  Dim E_Txt(23) As String
  Dim F_Txt(30) As String
- Dim I_Txt(50) As String
- Dim P_Txt(21) As String
+ Dim I_Txt(46) As String
+ Dim P_Txt(19) As String
  Dim R_Txt(21) As String
  Dim Ren_Txt(20) As String
- Dim T_Txt(25) As String
+ Dim T_Txt(23) As String
  Dim Lista() As String
  Global Extension
 
@@ -50,6 +50,9 @@ Sub Trad_Aux
    A_Txt(7) = &quot;Los siguientes estilos de párrafo no existen en el documento:&quot; &amp;  Chr(13)
    A_Txt(8) = &quot;◘ Aplica la plantilla correcta o importa los estilos&quot; &amp; Chr(13) &amp; _
    &quot;para usar estas macros&quot;
+   A_Txt(9) = &quot;Al actualizar SanityCheck se cambia el directorio de las plantillas de la documentación.&quot; &amp; Chr(13) &amp;_
+     &quot;Es necesario asociar el documento con la plantilla en su nueva ubicación&quot;
+   A_Txt(10) = &quot;Primero tienes que guardar el documento&quot;
 
    Case &quot;pt&quot;
    A_Txt(0) = &quot;Percorrer objetos&quot;
@@ -65,7 +68,10 @@ Sub Trad_Aux
    A_Txt(7) = &quot;Os seguintes estilos de parágrafo não existem no documento:&quot; &amp;  Chr(13)
    A_Txt(8) = &quot;◘ Aplique o modelo correto ou importe os estilos&quot; &amp; Chr(13) &amp; _
    &quot;para usar essas macros.&quot;
-   
+   A_Txt(9) = &quot;Atualizar o SanityCheck altera o diretório de modelos de documentação.&quot; &amp; Chr(13) &amp;_
+     &quot;Você precisa associar o documento ao modelo em seu novo local&quot;
+   A_Txt(10) = &quot;Salve primeiro o seu documento&quot;   
+
    Case else
    A_Txt(0) = &quot;Browse objects&quot;
    A_Txt(1) = &quot;Err: 1 - An object may be selected: image, frame, etc.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
@@ -80,7 +86,9 @@ Sub Trad_Aux
    A_Txt(7) = &quot;The following paragraph styles do not exist in the document:&quot;  &amp;  Chr(13)
    A_Txt(8) = &quot;◘ Apply the correct template or import the styles&quot; &amp; Chr(13) &amp; _
    &quot;to use these macros.&quot;
-     
+  A_Txt(9) = &quot;Updating SanityCheck changes the documentation templates directory.&quot; &amp; Chr(13) &amp;_
+     &quot;You need to associate the document with the template in its new location&quot;
+   A_Txt(10) =  &quot;You must save the document first.&quot;          
    End Select
 End Sub
 
@@ -105,7 +113,7 @@ Sub Trad_Campos
    C_Txt(13) = &quot;Campos establecidos&quot;
    C_Txt(14) = &quot;Con estilos de la plantilla:  &quot;
    C_Txt(15) = &quot;  eliminado, Usa el adecuado&quot;
-   C_Txt(16) = &quot;Primero tienes que guardar el documento&quot;
+   C_Txt(16) = &quot;Tipo de documento no admitido.&quot; &amp; Chr(13) &amp; &quot;Utilice las propiedades del documento.&quot;
    C_Txt(17) = &quot;Selecciona un mes de la lista&quot;
    C_Txt(18) = &quot;Asunto&quot;
    C_Txt(19) = &quot;Permite establecer las propiedades necesarias del capítulo en un solo paso&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
@@ -118,7 +126,6 @@ Sub Trad_Campos
    &quot;◘ Si el documento se edita con la versión 24.x se rellenan esos nuevos campos de propiedades del documento.&quot;   
    C_Txt(20) = &quot;Colaborador&quot;
    C_Txt(21) = &quot;Editor&quot;
-   C_Txt(22) = &quot;Tipo de documento no admitido.&quot; &amp; Chr(13) &amp; &quot;Utilice las propiedades del documento&quot;
 
    Lista = Array (&quot;enero&quot;,&quot;febrero&quot;,&quot;marzo&quot;,&quot;abril&quot;,&quot;mayo&quot;,&quot;junio&quot;,&quot;julio&quot;,&quot;agosto&quot;,&quot;septiembre&quot;,&quot;octubre&quot;,&quot;noviembre&quot;,&quot;diciembre&quot;)
 
@@ -139,7 +146,7 @@ Sub Trad_Campos
    C_Txt(13) = &quot;Campos definidos&quot;
    C_Txt(14) = &quot;Com estilos de modelo:&quot;
    C_Txt(15) = &quot;  removido, use o apropriado&quot;
-   C_Txt(16) = &quot;Salve primeiro o seu documento&quot;
+   C_Txt(16) = &quot;Tipo de documento não aceito.&quot; &amp; Chr(13) &amp; &quot;Use as propriedades do documento.&quot;
    C_Txt(17) = &quot;Selecione um mês da lista&quot;
    C_Txt(18) = &quot;Assunto&quot;
    C_Txt(19) = &quot;Permite definir as propriedades necessárias do capítulo em uma única etapa&quot;&amp; Chr(13) &amp; Chr(13) &amp;_ 
@@ -152,7 +159,6 @@ Sub Trad_Campos
    &quot;◘ Essas novas propriedades do documento serão preenchidas quando o documento for editado com a versão 24.x.&quot;
    C_Txt(20) = &quot;Contributor&quot;
    C_Txt(21) = &quot;Editor&quot; 
-   C_Txt(22) = &quot;Tipo de documento não aceito.&quot; &amp; Chr(13) &amp; &quot;Use as propriedades do documento&quot;
 
    Lista = Array (&quot;janeiro&quot;,&quot;fevereiro&quot;,&quot;março&quot;,&quot;abril&quot;,&quot;maio&quot;,&quot;junho&quot;,&quot;julho&quot;,&quot;agosto&quot;,&quot;setembro&quot;,&quot;outubro&quot;,&quot;novembro&quot;,&quot;dezembro&quot;)
  
@@ -173,7 +179,7 @@ Sub Trad_Campos
    C_Txt(13) = &quot;Fields Set&quot;
    C_Txt(14) = &quot;With Styles from Template : &quot;
    C_Txt(15) = &quot;  removed, use the appropriate one&quot;
-   C_Txt(16) =  &quot;You must save the document first.&quot;
+   C_Txt(16) =  &quot;Document type not supported.&quot; &amp; Chr(13) &amp; &quot;Use document properties&quot;
    C_Txt(17) = &quot;Select a month from the list&quot;
    C_Txt(18) = &quot;Subject&quot;
    C_Txt(19) = &quot;Allows you to set the necessary properties of the chapter in a single step&quot;&amp; Chr(13)  &amp; Chr(13) &amp;_ 
@@ -186,7 +192,6 @@ Sub Trad_Campos
    &quot;◘ These new document properties fields are filled in when edited with version 24.x.&quot;
    C_Txt(20) = &quot;Contributor&quot;
    C_Txt(21) = &quot;Publisher&quot; 
-   C_Txt(22) = &quot;Document type not supported.&quot; &amp; Chr(13) &amp; &quot;Use document properties&quot;
 
    Lista = Array (&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,&quot;July&quot;,&quot;August&quot;,&quot;September&quot;,&quot;October&quot;,&quot;November&quot;,&quot;December&quot;)
 
@@ -498,16 +503,18 @@ Sub Trad_Imagenes
    I_Txt(27) = &quot;Se han borrado o incorporado imágenes&quot; &amp; Chr(13) &amp; &quot;1) Guarde los cambios&quot; &amp; Chr(13) &amp; _
    &quot;2) Recargue el archivo&quot; &amp; Chr(13) &amp;   &quot;3) Renombre las imágenes otra vez.&quot;
    I_Txt(28) = &quot;Revisión de imágenes detenida&quot;
-   I_Txt(29) = &quot;&quot; &apos;NO usado
+   I_Txt(29) = &quot;Esta macro está diseñada para capítulos de las guías. &quot; &amp; Chr(13) &amp;_
+   &quot; Su uso en otros documentos puede causar resultados inesperados.&quot;
    I_Txt(30) = &quot;El nombre de la imagen no puede quedar vacío&quot;
    I_Txt(31) =  Chr(13) &amp; &quot;Err -1 ¿Nombre duplicado?&quot; &amp; Chr(13) &amp; &quot;Prueba con otro.&quot;
    I_Txt(32) =  &quot;Procesando ...&quot;
-   I_Txt(33) =  &quot;&quot;
-   I_Txt(34) =  &quot;Primero tienes que guardar el documento&quot;
+   I_Txt(33) =  &quot;Imagen recortada con Writer.&quot; &amp; Chr(13) &amp; &quot;- Usa otro programa para los recortes&quot;
+   I_Txt(34) =  &quot;Revisa la Escala:&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Diálogo «Imagen», pág. «Recortar»&quot; &amp; Chr(13) &amp; _
+   &quot;(% Anchura debe ser igual a % Altura)&quot;
    I_Txt(35) =  &quot;Se han borrado todas las imágenes&quot;
    I_Txt(36) =  &quot;  Marcos con problemas, revisa los comentarios &quot;
    I_Txt(37) =  &quot;  Imágenes con problemas, revisa los comentarios&quot;
-   I_Txt(38) =  &quot;&quot;
+   I_Txt(38) =  &quot;Recorrer Imágenes&quot;
    I_Txt(39) =  &quot;No hay imágenes en el documento&quot;
    I_Txt(40) =  &quot;- Imágenes ajustadas&quot;
    I_Txt(41) =  &quot;Ajuste de imágenes y marcos&quot;
@@ -517,13 +524,6 @@ Sub Trad_Imagenes
    I_Txt(45) =  &quot;Posible marco sin imagen o leyenda sobre la imagen&quot; &amp; Chr(13) &amp; &quot;Revisa  este marco y su contenido&quot;
    I_Txt(46) =  &quot;Texto de leyenda mal formado.&quot; &amp; Chr(13) &amp;  &quot;¿Figura X: y «espacio»?&quot; &amp; Chr(13) &amp; _
    &quot;- Revisa la leyenda y descripciones de marco e imagen&quot;
-   I_Txt(47) =  &quot;Imagen recortada con Writer.&quot; &amp; Chr(13) &amp; &quot;- Usa otro programa para los recortes&quot;
-   I_Txt(48) =  &quot;Revisa la Escala:&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Diálogo «Imagen», pág. «Recortar»&quot; &amp; Chr(13) &amp; _
-   &quot;(% Anchura debe ser igual a % Altura)&quot;
-   I_Txt(49) = &quot;Recorrer Imágenes&quot;
-   I_Txt(50) = &quot;Esta macro está diseñada para capítulos de las guías. &quot; &amp; Chr(13) &amp;_
-   &quot; Su uso en otros documentos puede causar resultados inesperados&quot;
-
 
    Case &quot;pt&quot;
    I_Txt(0) = &quot;Revisão de imagens&quot;
@@ -560,16 +560,18 @@ Sub Trad_Imagenes
    I_Txt(27) = &quot;As imagens foram excluídas ou adicionadas&quot; &amp; Chr(13) &amp; &quot;1) Salve alterações&quot; &amp; Chr(13) &amp; _
    &quot;2) Recarrege o arquivo&quot; &amp; Chr(13) &amp; &quot;3) Renomeie as imagens novamente.&quot;
    I_Txt(28) = &quot;Revisão de imagens interrompida&quot;
-   I_Txt(29) = &quot;&quot; &apos;Não usado
+   I_Txt(29) = &quot;Esta macro foi projetada para capítulos de guia.&quot; &amp; Chr(13) &amp;_
+   &quot;Seu uso em outros documentos pode causar resultados inesperados&quot;
    I_Txt(30) = &quot;O nome da imagem não pode estar em branco&quot;
    I_Txt(31) = Chr(13) &amp; &quot;Erro: -1 Nome duplicado?&quot; &amp; Chr(13) &amp; &quot;Tente outro&quot;
    I_Txt(32) = &quot;Em processamento ...&quot;
-   I_Txt(33) = &quot;&quot;
-   I_Txt(34) = &quot;Salve primeiro o documento&quot;
+   I_Txt(33) = &quot;A imagem foi cortada com o Writer.&quot; &amp; Chr(13) &amp; &quot;- Use outro programa para recorte&quot;
+   I_Txt(34) = &quot;Verifique a escala:&quot; &amp; Chr(13) &amp; &quot;Caixa de diálogo &quot;&quot;Imagem&quot;&quot;, guia &quot;&quot;Cortar&quot;&quot;&quot; &amp; Chr(13) &amp; _
+   &quot;(a % Largura deve ser igual a % Altura)&quot;
    I_Txt(35) = &quot;Todas as imagens foram excluídas&quot;
    I_Txt(36) = &quot;  Quadros com problemas, verifique as anotações&quot;
    I_Txt(37) = &quot;  Imagens com problemas, verifique as anotações&quot;
-   I_Txt(38) = &quot;&quot;
+   I_Txt(38) = &quot;Percorrer Imagens&quot;
    I_Txt(39) = &quot;Não há imagens no documento&quot;
    I_Txt(40) = &quot;- Imagens ajustadas&quot;
    I_Txt(41) = &quot;Ajustando imagens e quadros&quot;
@@ -579,13 +581,7 @@ Sub Trad_Imagenes
    I_Txt(45) = &quot;Possível quadro sem imagem ou legenda acima da imagem&quot; &amp; Chr(13) &amp; &quot;- Revise este quadro e seu conteúdo&quot;
    I_Txt(46) = &quot;Texto da legenda mal formado.&quot; &amp; Chr(13) &amp;  &quot;Figura X: e &quot;&quot;espaço&quot;&quot;?&quot; &amp; Chr(13) &amp; _
    &quot;- Verifique a legenda e as descrições dos quadros e das imagens&quot;
-   I_Txt(47) = &quot;A imagem foi cortada com o Writer.&quot; &amp; Chr(13) &amp; &quot;- Use outro programa para recorte&quot;
-   I_Txt(48) = &quot;Verifique a escala:&quot; &amp; Chr(13) &amp; &quot;Caixa de diálogo &quot;&quot;Imagem&quot;&quot;, guia &quot;&quot;Cortar&quot;&quot;&quot; &amp; Chr(13) &amp; _
-   &quot;(a % Largura deve ser igual a % Altura)&quot;
-   I_Txt(49) = &quot;Percorrer Imagens&quot;
-   I_Txt(50) = &quot;Esta macro foi projetada para capítulos de guia.&quot; &amp; Chr(13) &amp;_
-   &quot;Seu uso em outros documentos pode causar resultados inesperados&quot;
-  
+ 
    Case Else
    I_Txt(0) = &quot;Images Review&quot;
    I_Txt(1) = &quot;Change&quot;
@@ -621,16 +617,18 @@ Sub Trad_Imagenes
    I_Txt(27) = &quot;Images have been deleted or incorporated&quot; &amp; Chr(13) &amp; &quot;1) Save changes&quot; &amp; Chr(13) &amp; _
    &quot;2) Reload the  file.&quot; &amp; Chr(13) &amp; &quot;3) Rename the images again.&quot;
    I_Txt(28) = &quot;Images review halted&quot;
-   I_Txt(29) = &quot;&quot; &apos;Not used
+   I_Txt(29) = &quot;This macro is designed for guide chapters. &quot; &amp; Chr(13) &amp;_
+   &quot;Its use in other documents may cause unexpected results.&quot;
    I_Txt(30) = &quot;The image name cannot be empty&quot;
    I_Txt(31) = Chr(13) &amp; &quot;Err: -1 Duplicate name?&quot; &amp; Chr(13) &amp; &quot;Try another one&quot;
    I_Txt(32) = &quot;Working ...&quot;
-   I_Txt(33) = &quot;&quot;
-   I_Txt(34) = &quot;First of all you must to save the document&quot;
+   I_Txt(33) = &quot;Image was cropped with Writer.&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Use another program for cropping&quot;
+   I_Txt(34) = &quot;Check the Scale:&quot; &amp; Chr(13) &amp; Chr(13) &amp;  &quot;&quot;&quot;Image&quot;&quot; dialog, &quot;&quot;Crop&quot;&quot; Tab&quot; &amp; Chr(13) &amp; _
+   &quot;(% Width must be equal to % Height)&quot;
    I_Txt(35) = &quot;All images have been deleted&quot;
    I_Txt(36) = &quot;  Frames with problems, check comments&quot;
    I_Txt(37) = &quot;  Images with problems, check comments&quot;
-   I_Txt(38) = &quot;&quot;
+   I_Txt(38) = &quot;Browse images&quot;
    I_Txt(39) = &quot;There are no images in the document&quot;
    I_Txt(40) = &quot;- Images adjusted &quot;
    I_Txt(41) = &quot;Adjusting images and frames&quot;
@@ -641,12 +639,6 @@ Sub Trad_Imagenes
    &quot;- Review this frame and its contents&quot;
    I_Txt(46) = &quot;Badly formed caption text.&quot; &amp; Chr(13) &amp;  &quot;Figure X: and &apos;space&apos;?&quot; &amp; Chr(13) &amp; _
    &quot;- Check the caption, frame and image descriptions.&quot;
-   I_Txt(47) = &quot;Image was cropped with Writer.&quot; &amp; Chr(13) &amp; Chr(13) &amp; &quot;Use another program for cropping&quot;
-   I_Txt(48) = &quot;Check the Scale:&quot; &amp; Chr(13) &amp; Chr(13) &amp;  &quot;&quot;&quot;Image&quot;&quot; dialog, &quot;&quot;Crop&quot;&quot; Tab&quot; &amp; Chr(13) &amp; _
-   &quot;(% Width must be equal to % Height)&quot;
-   I_Txt(49) = &quot;Browse images&quot;
-   I_Txt(50) = &quot;This macro is designed for guide chapters. &quot; &amp; Chr(13) &amp;_
-   &quot;Its use in other documents may cause unexpected results&quot;
 
    End Select
 End Sub
@@ -672,7 +664,7 @@ Sub Trad_Plantilla
      &quot;necesarios para crear y exportar los capítulos a los formatos requeridos.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
      &quot;Las macros de SanityCheck para la revisión de los capítulos no funcionarán correctamente&quot; &amp;_
      &quot;si el documento no está asociado la plantilla adecuada.&quot;
-   P_Txt(9) = &quot;El documento tiene aplicada la plantilla correcta&quot;
+   P_Txt(9) = &quot;Tipo de documento no admitido.&quot;
    P_Txt(10) = &quot;Documento asociado con la plantilla:&quot;
    P_Txt(11) = &quot;Plantilla necesaria: &quot;
    P_Txt(12) = &quot;Asociar&quot;
@@ -680,14 +672,12 @@ Sub Trad_Plantilla
    P_Txt(14) = &quot;Aceptar&quot; &apos;o Cerrar
    P_Txt(15) = &quot;Ninguna&quot;
    P_Txt(16) = &quot;Cancelar&quot;
-   P_Txt(17) = &quot;Primero tienes que guardar el documento&quot;
+   P_Txt(17) = &quot;El documento parece una guía completa. &quot; &amp; Chr(13) &amp; _ 
+   &quot;la plantilla necesaria es la misma que la de documentos maestros.&quot;
    P_Txt(18) = &quot;Este documento es una plantilla,&quot; &amp; Chr(13) &amp; _ 
    &quot;no es conveniente asociarlo a otra plantilla&quot; 
    P_Txt(19) = &quot;El documento no parece ser de las guías&quot; &amp; Chr(13) &amp; _
    &quot;¿Quieres asociarlo a la plantilla de capítulos?&quot;
-   P_Txt(20) = &quot;El documento parece una guía completa. &quot; &amp; Chr(13) &amp; _ 
-   &quot;la plantilla necesaria es la misma que la de documentos maestros&quot;
-   P_Txt(21) = &quot;Tipo de documento no admitido&quot;
         
    Case &quot;pt&quot;
    P_Txt(0) = &quot;Vincular modelo&quot;
@@ -704,6 +694,7 @@ Sub Trad_Plantilla
    &quot;necessários para criar e exportar os capítulos para novas saídas.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;As macros de SanityCheck para revisão dos capítulos não funcionarão corretamente&quot; &amp;_
    &quot;se o documento não estiver associado ao modelo apropriado.&quot;
+   P_Txt(9) = &quot;Tipo de documento não aceito.&quot;
    P_Txt(10) = &quot;Documento associado ao modelo:&quot;
    P_Txt(11) = &quot;Modelo necessário:&quot;
    P_Txt(12) = &quot;Associado&quot;
@@ -711,14 +702,12 @@ Sub Trad_Plantilla
    P_Txt(14) = &quot;OK&quot; &apos;ou Fechar
    P_Txt(15) = &quot;Nenhum&quot;
    P_Txt(16) = &quot;Cancelar&quot;
-   P_Txt(17) = &quot;Salve primeiro o seu documento&quot;
+   P_Txt(17) = &quot;O documento parece um guia completo.&quot;  &amp; Chr(13) &amp; _
+   &quot;o modelo necessário é o mesmo dos documentos mestre.&quot;
    P_Txt(18) = &quot;Este documento é um modelo&quot; &amp; Chr(13) &amp;_ 
    &quot;não é conveniente associá-lo a outro modelo&quot;
    P_Txt(19) = &quot;O documento não parece ser dos guias&quot; &amp; Chr(13) &amp; _
    &quot;Deseja associá-lo ao modelo de capítulo?&quot;
-   P_Txt(20) = &quot;O documento parece um guia completo.&quot;  &amp; Chr(13) &amp; _
-   &quot;o modelo necessário é o mesmo dos documentos mestre&quot;
-   P_Txt(21) = &quot;Tipo de documento não aceito&quot;
    
    Case else
    P_Txt(0) = &quot;Link Template&quot;
@@ -735,6 +724,7 @@ Sub Trad_Plantilla
    &quot;necessary to create and export the chapters to the required formats.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;SanityCheck macros for chapter review will not work correctly &quot; &amp;_
    &quot;if the document is not linked with the appropriate template.&quot;
+   P_Txt(9) = &quot;Document type not accepted.&quot;
    P_Txt(10) = &quot;Document linked with the template:&quot;
    P_Txt(11) = &quot;Template required: &quot;
    P_Txt(12) = &quot;Link&quot;
@@ -742,13 +732,11 @@ Sub Trad_Plantilla
    P_Txt(14) = &quot;OK&quot; &apos;or Close
    P_Txt(15) = &quot;None&quot;
    P_Txt(16) = &quot;Cancel&quot;
-   P_Txt(17) = &quot;You must save the document first.&quot;
+   P_Txt(17) = &quot;The document looks like a complete guide.&quot; &amp; Chr(13) &amp; _ 
+   &quot;the necessary template is the same as for master documents&quot;
    P_Txt(18) = &quot;This document is a template&quot; &amp; Chr(13) &amp; &quot;it is not convenient to link it to another template&quot;
    P_Txt(19) = &quot;The document does not seem to be from the guides&quot; &amp; Chr(13) &amp; _
    &quot;Do you want to associate it with the Chapter template?&quot;
-   P_Txt(20) = &quot;The document looks like a complete guide.&quot; &amp; Chr(13) &amp; _ 
-   &quot;the necessary template is the same as for master documents&quot;
-   P_Txt(21) = &quot;Document type not accepted&quot;
 
    End select
 End Sub
@@ -961,7 +949,7 @@ Sub Trad_Tablas
    T_Txt(14) = &quot;No hay tablas en el documento&quot;
    T_Txt(15) = &quot;Selecciona un tipo de tabla o pulsa en Siguiente&quot;
    T_Txt(16) = &quot;Tabla  &quot;
-   T_Txt(17) = &quot;&quot;
+   T_Txt(17) = &quot;Se han borrado todas las tablas, imposible continuar.&quot;
    T_Txt(18) = &quot;Se han borrado o añadido tablas&quot; &amp; Chr(13) &amp; &quot; 1) Guarda los cambios&quot; &amp; Chr(13) &amp; _
    &quot; 2) Recarga el documento&quot; &amp; Chr(13) &amp;  &quot; 3) Renombra las tablas otra vez.&quot;
    T_Txt(19) = &quot;Revisión de tablas detenida&quot;&apos;
@@ -969,8 +957,6 @@ Sub Trad_Tablas
    T_Txt(21) = &quot;La tabla conservará su aspecto, pero se optimizará: &quot;
    T_Txt(22) = &quot; - Espaciado de la tabla con el cuerpo de texto, celdas con alineación vertical centrada y altúra mínima.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Única tabla&quot;
-   T_Txt(24) = &quot;Primero tienes que guardar el documento&quot;
-   T_Txt(25) = &quot;Se han borrado todas las tablas, imposible continuar&quot;
 
    Case &quot;pt&quot;
    T_Txt(0) = &quot;Revisão de tabelas&quot;
@@ -991,7 +977,7 @@ Sub Trad_Tablas
    T_Txt(14) = &quot;Não há tabelas no documento&quot;
    T_Txt(15) = &quot;Selecione um tipo de tabela ou clique Próxima&quot;
    T_Txt(16) = &quot;Tabela&quot;
-   T_Txt(17) = &quot;&quot;
+   T_Txt(17) = &quot;Todas as tabelas foram excluídas, impossível continuar.&quot;
    T_Txt(18) = &quot;Foram excluídas ou adicionadas tabelas&quot; &amp; Chr(13) &amp; &quot; 1) Salve as alterações&quot; &amp; Chr(13) &amp; _
    &quot; 2) Recarrege o documento&quot; &amp; Chr(13) &amp; &quot; 3) Renomeie as tabelas novamente.&quot;
    T_Txt(19) = &quot;Revisão da tabelas interrompida&quot;
@@ -999,8 +985,6 @@ Sub Trad_Tablas
    T_Txt(21) = &quot;A tabela manterá sua aparência, mas será otimizada: &quot;
    T_Txt(22) = &quot; - Espaçamento da tabela com o corpo do texto, células com alinhamento vertical centralizado e altura mínima.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Única tabela&quot;
-   T_Txt(24) = &quot;Salve primeiro seu documento&quot;
-   T_Txt(25) = &quot;Todas as tabelas foram excluídas, impossível continuar&quot;
     
    Case Else
    T_Txt(0) = &quot;Tables Review&quot;
@@ -1020,7 +1004,7 @@ Sub Trad_Tablas
    T_Txt(14) = &quot;There are no tables in the document&quot;
    T_Txt(15) = &quot;Select a table type or press Next&quot;
    T_Txt(16) = &quot;Table &quot;
-   T_Txt(17) = &quot;&quot;
+   T_Txt(17) = &quot;All tables have been deleted, impossible to continue.&quot;
    T_Txt(18) = &quot;Tables have been deleted or added&quot; &amp; Chr(13) &amp; &quot; 1) Save changes&quot; &amp; Chr(13) &amp; _
    &quot; 2) Reload the document&quot; &amp; Chr(13) &amp; &quot; 3) Rename the tables again.&quot;
    T_Txt(19) = &quot;Tables review halted&quot;
@@ -1028,8 +1012,6 @@ Sub Trad_Tablas
    T_Txt(21) = &quot;The table will retain its appearance, but will be optimized: &quot;
    T_Txt(22) = &quot; - Spacing of the table with the body of text, cells with centered vertical alignment and minimum height.&quot; &amp; Chr(13)
    T_Txt(23) = &quot;Table unique&quot;
-   T_Txt(24) = &quot;You must to save the document first.&quot;
-   T_Txt(25) = &quot;All tables have been deleted, impossible to continue&quot;
 
    End Select
 End Sub

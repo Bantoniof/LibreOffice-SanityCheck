@@ -7,7 +7,7 @@
   
  Option Explicit
  Public estiloPU(15) As String
- Public estiloCU(25) As String
+ Public estiloCU(4) As String
  Public P_Uso As String
  Dim oDlgEstilos As Object
  Dim C_Uso, a_P_SinUso As Variant, a_C_SinUso As Variant
@@ -31,19 +31,12 @@ Sub CargaEstilos_PU_Guias
    estiloPU(11) = &quot;Heading Note&quot;
    estiloPU(12) = &quot;Heading Tip&quot;
    estiloPU(13) = &quot;Legend Numbered&quot;
-   estiloPU(14) = &quot;Listing&quot;
-   estiloPU(15) = &quot;New Chapter&quot;
-   
-&apos;   estiloPU(16) = &quot;Listado&quot; &apos;es
-&apos;   estiloPU(17) = &quot;Listagem&quot; &apos;pt   
-
-Rem  Estilos html  ( desactivados )
-&apos;   estiloPU(16) = &quot;HLegend Numbered&quot;
-&apos;   estiloPU(17) = &quot;HList 2&quot;
-&apos;   estiloPU(18) = &quot;HNumbering 1&quot;
-&apos;   estiloPU(19) = &quot;HNumbering 2&quot;
-&apos;   estiloPU(20) = &quot;HNumbering 3&quot;
-&apos;   estiloPU(5) = &quot;Comment&quot; &apos; Nuevo estilo para comentarios 24x necesario???
+   estiloPU(14) = &quot;New Chapter&quot;
+   Select case L10n.F_getLang
+     Case &quot;en&quot; :  estiloPU(15) = &quot;Listing&quot;
+     Case &quot;es&quot; :   estiloPU(15) = &quot;Listado&quot;
+     Case &quot;pt&quot; :   estiloPU(15) = &quot;Listagem&quot;
+  End Select
 End Sub
 
  Rem ############
@@ -51,31 +44,10 @@ Sub CargaEstilos_CU_Guias
  Rem Estilos usuario de caracter de la plantilla 24x
  Rem ======================================================
    estiloCU(0) = &quot;Bullet Symbols&quot;
-   estiloCU(1) = &quot;ch2_Libreoffice&quot;
-   estiloCU(2) = &quot;ch2_libreoffice.Comment&quot;
-   estiloCU(3) = &quot;ch2_libreoffice.Error&quot;
-   estiloCU(4) = &quot;ch2_libreoffice.Comment.Single&quot;
-   estiloCU(5) = &quot;ch2_libreoffice.Keyword&quot;
-   estiloCU(6) = &quot;ch2_libreoffice.Keyword.Declaration&quot;
-   estiloCU(7) = &quot;ch2_libreoffice.Keyword.Type&quot;
-   estiloCU(8) = &quot;ch2_libreoffice.Literal&quot;
-   estiloCU(9) = &quot;ch2_libreoffice.Literal.Number&quot;
-   estiloCU(10) = &quot;ch2_libreoffice.Literal.Number.Integer&quot;
-   estiloCU(11) = &quot;ch2_libreoffice.Literal.Number.Float&quot;
-   estiloCU(12) = &quot;ch2_libreoffice.Literal.String&quot;
-   estiloCU(13) = &quot;ch2_libreoffice.Literal.String.Double&quot;
-   estiloCU(14) = &quot;ch2_libreoffice.Name&quot;
-   estiloCU(15) = &quot;ch2_libreoffice.Name.Function&quot;
-   estiloCU(16) = &quot;ch2_libreoffice.Name.Variable&quot;
-   estiloCU(17) = &quot;ch2_libreoffice.Operator&quot;
-   estiloCU(18) = &quot;ch2_libreoffice.Operator.Word&quot;
-   estiloCU(19) = &quot;ch2_libreoffice.Punctuation&quot;
-   estiloCU(20) = &quot;ch2_libreoffice.Text&quot;
-   estiloCU(21) = &quot;ch2_libreoffice.Text.Whitespace&quot;
-   estiloCU(22) = &quot;Code&quot;
-   estiloCU(23) = &quot;Keystroke&quot;
-   estiloCU(24) = &quot;Superscript&quot;
-   estiloCU(25) = &quot;Subscript&quot;
+   estiloCU(1) = &quot;Code&quot;
+   estiloCU(2) = &quot;Keystroke&quot;
+   estiloCU(3) = &quot;Superscript&quot;
+   estiloCU(4) = &quot;Subscript&quot; 
 End Sub
 
  Rem ### MENU #########
@@ -116,11 +88,13 @@ Function  Avisos_Estilos_Ajenos(Familia As String)
    For i = 0 To oEstilos.getCount -1
      oEstilo = oEstilos.getByIndex(i)
      If oEstilo.isUserDefined Then
-       If oEstilo.isInUse Then
+ &apos;      If oEstilo.isInUse Then
+If oEstilo.isInUse And left(oEstilo.DisplayName,4) &lt;&gt; &quot;ch2_&quot; Then
          ReDim Preserve enUso(0 To u+1)
          enUso(u+1) = oEstilo.Name
          u = UBound(enUso)
-       ElseIf Not oEstilo.isInUse Then
+&apos;       ElseIf Not oEstilo.isInUse Then
+ElseIf Not oEstilo.isInUse And left(oEstilo.DisplayName,4) &lt;&gt; &quot;ch2_&quot; Then
          ReDim Preserve sinUso(0 To s+1)
          sinUso(s+1) = oEstilo.Name
          s = UBound(sinUso)
@@ -146,8 +120,6 @@ Function  Avisos_Estilos_Ajenos(Familia As String)
    ElseIf UBound(enUso) &lt;&gt; -1 Then
      If Familia = &quot;P&quot; Then
        P_Uso = _Aux.F_MatrizCuadroTexto(enUso) &apos;Convierte la matriz en texto (cuadro de texto estilos párrafo)
-       Dim Listados() : Listados = Array(&quot;Listado&quot;, &quot;Listagem&quot;)
-       enUso = _Aux.F_RestaMatrices(enUso,Listados)
        Call F_Comentar_Parrafos(enUso) &apos;Comenta los párrafos
      ElseIf Familia = &quot;C&quot; Then
        C_Uso = _Aux.F_MatrizCuadroTexto(enUso) &apos;Convierte la matriz en texto (cuadro de texto estilos caracter)

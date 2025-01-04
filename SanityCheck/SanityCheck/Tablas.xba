@@ -18,7 +18,7 @@
  Rem ### MENU #########
 Sub Dlg_Tablas&apos;(oTabla)
    Call L10n.Trad_Tablas
- If  ThisComponent.HasLocation = False Then : MsgBox (T_Txt(24), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If &apos; Primero tienes que guardar el archivo
+ If _Aux.F_Guardado = 0 Then : Exit Sub : End If   
  If _Aux.F_Prueba_Sel = 0 Then :Exit Sub : End If
    Dlg_Mostrado = False
    DLg_Activo = False
@@ -61,9 +61,9 @@ End Sub
 
  Rem ############
 Sub Parametros_Tablas
-   If  ThisComponent.HasLocation = False Then : MsgBox (T_Txt(24), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If &apos;Primero guarda el documento.
+   If _Aux.F_Guardado = 0 Then : Exit Sub : End If
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
-   If Ultima_Tbl &lt; 0 Then : Dlg_Mostrado = False : MsgBox (T_Txt(25), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If   &apos;si se borran todas las tablas
+   If Ultima_Tbl &lt; 0 Then : Dlg_Mostrado = False : MsgBox (T_Txt(17), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If   &apos;si se borran todas las tablas
    Ultima_Tbl = oTablas.getCount -1
    oTabla = oTablas.getbyIndex(Indice_Tbl)
    vCursor.gotoRange(oTabla.Anchor,False)
@@ -165,6 +165,11 @@ End Sub
 
  Rem ############
 Sub Optimizar(oTabla As Object ,Tipo As String)
+   If ThisComponent.TextTables.getCount = 0 then
+     Msgbox (T_Txt(17),0+64+0, Extension)
+     Dlg_Mostrado = False
+     Exit sub
+   End If
  Rem Tabla de datos
    With oTabla
  Dim nRow As Integer, nCol As Integer, oCell As Object

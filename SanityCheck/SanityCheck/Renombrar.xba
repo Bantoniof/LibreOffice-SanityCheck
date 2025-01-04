@@ -11,11 +11,12 @@
  Rem #### MENU ########
 Sub Dlg_Renombrar
    Call L10n.Trad_Renombrar
+   If _Aux.F_Guardado = 0 Then : Exit Sub : End If   
    If _Aux.F_TipoDoc &lt;&gt; &quot;Capitulo&quot; Then 
      Msgbox (Ren_Txt(20), 0+16+0, Ren_Txt(0) &amp; Extension)
      Exit Sub
    End If
-   If  ThisComponent.HasLocation = False OR ThisComponent.IsModified = True Then
+   If  ThisComponent.IsModified = True Then
      If  Msgbox (Ren_Txt(16), 4+32+256, Ren_Txt(0) &amp; Extension) = 6 then
        Call _Aux.GuardaRecarga
      Else 
