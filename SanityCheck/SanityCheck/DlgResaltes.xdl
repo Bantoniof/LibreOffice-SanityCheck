@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="DlgResaltes" dlg:tab-index="0" dlg:left="200" dlg:top="120" dlg:width="242" dlg:height="56" dlg:page="1" dlg:closeable="true" dlg:moveable="true" dlg:title="Resaltado de estilos">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="DlgResaltes" dlg:tab-index="0" dlg:left="200" dlg:top="120" dlg:width="247" dlg:height="233" dlg:page="1" dlg:closeable="true" dlg:moveable="true" dlg:title="Resaltado de estilos">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:text-color="0xc9211e" dlg:font-height="10" dlg:font-weight="150"/>
   <dlg:style dlg:style-id="1" dlg:font-height="24" dlg:font-weight="150"/>
@@ -18,7 +18,7 @@
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Resaltes.OnBtErrores?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:text dlg:style-id="2" dlg:id="Lbl_Sintaxis" dlg:tab-index="8" dlg:left="18" dlg:top="32" dlg:width="91" dlg:height="10" dlg:page="2" dlg:value="Errores de sintáxis:"/>
-  <dlg:button dlg:style-id="3" dlg:id="Btn_Detalles" dlg:tab-index="1" dlg:left="195" dlg:top="9" dlg:width="30" dlg:height="12" dlg:page="1" dlg:tabstop="true" dlg:value="Detalles" dlg:valign="top" dlg:grab-focus="false">
+  <dlg:button dlg:style-id="3" dlg:id="Btn_Detalles" dlg:tab-index="1" dlg:disabled="true" dlg:visible="false" dlg:left="195" dlg:top="9" dlg:width="30" dlg:height="12" dlg:page="1" dlg:tabstop="true" dlg:value="Detalles" dlg:valign="top" dlg:grab-focus="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Resaltes.OnBtDetalles?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:text dlg:style-id="3" dlg:id="Lbl_NoPresentes" dlg:tab-index="3" dlg:left="124" dlg:top="144" dlg:width="104" dlg:height="16" dlg:page="1" dlg:value="Lbl_NoPresentes" dlg:align="center" dlg:multiline="true"/>

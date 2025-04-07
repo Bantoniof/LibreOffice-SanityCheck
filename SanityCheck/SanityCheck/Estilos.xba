@@ -7,7 +7,7 @@
   
  Option Explicit
  Public estiloPU(15) As String
- Public estiloCU(4) As String
+ Public estiloCU(5) As String
  Public P_Uso As String
  Dim oDlgEstilos As Object
  Dim C_Uso, a_P_SinUso As Variant, a_C_SinUso As Variant
@@ -48,12 +48,13 @@ Sub CargaEstilos_CU_Guias
    estiloCU(2) = &quot;Keystroke&quot;
    estiloCU(3) = &quot;Superscript&quot;
    estiloCU(4) = &quot;Subscript&quot; 
+   estiloCU(5) = &quot;Bullet Symbols (user)&quot;
 End Sub
 
  Rem ### MENU #########
 Sub CompEstilos
    Call L10n.Trad_Estilos
-   If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub
+   If _Aux.F_EstilosPlantilla &lt;&gt; 0  then exit Sub
    Call _Aux.EliminaComentarios(E_Txt(0))&apos; Evito que se dupliquen comentarios
    Avisos_Estilos_Ajenos(&quot;P&quot;)
    Avisos_Estilos_Ajenos(&quot;C&quot;)

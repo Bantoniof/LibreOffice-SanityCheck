@@ -12,12 +12,12 @@
 Sub Dlg_Campos
    If _Aux.F_Guardado = 0 Then : Exit Sub : End If   
    Call L10n.Trad_Campos &apos; la biblioteca Tools se carga al cargar la traducción  
-   Call _Aux.DirectorioPlantillas
    Select Case _Aux.F_TipoDoc
      Case &quot;Plantilla&quot;, &quot;Documento&quot;,&quot;Otro&quot;
        Msgbox (C_Txt(16), 0+16+0, Extension)
        Exit Sub
    End Select   
+   Call _Aux.DirectorioPlantillas
 
   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgCampos = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgCampos&quot;))
@@ -45,7 +45,7 @@ Sub Cargar_Parametros
      .getbyname(&quot;Btn_Corregir&quot;).label = C_Txt(9)
      .getbyname(&quot;Btn_Cambia&quot;).label = C_Txt(10)
      .getbyname(&quot;Lbl_Establecidas&quot;).label = C_Txt(13)
-     .getbyname(&quot;List_Mes&quot;).StringItemList = Lista
+     .getbyname(&quot;List_Mes&quot;).StringItemList = Meses
 
      .getbyname(&quot;Lbl_DocTitle&quot;).label = oDocprops.Title
      .getbyname(&quot;Lbl_AsuntoT&quot;).label = oDocProps.Subject     

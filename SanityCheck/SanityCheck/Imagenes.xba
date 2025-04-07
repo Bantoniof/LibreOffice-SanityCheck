@@ -26,6 +26,8 @@ Sub AjusteFiguras
      Msgbox (I_Txt(29),0+16+0, I_Txt(0) &amp; Extension)
      Exit sub
    End If
+   If _Aux.F_Control_Cambios = True then exit Sub
+   
    oImgs = ThisComponent.GraphicObjects()
    If oImgs.getCount = 0 Then : MsgBox (I_Txt(39), 0+48+0, I_Txt(0) &amp; Extension) : Exit Sub  : End If
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If

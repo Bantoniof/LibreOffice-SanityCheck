@@ -33,7 +33,7 @@
 Sub AlternarResalte
    Call _Aux.Carga_Tools
    Call L10n.Trad_Resaltes
-   If IsNull(oDlgResaltes) Then Call Resaltar
+   Call Resaltar
 End Sub
 
  Rem #### MENU ########
@@ -86,23 +86,23 @@ Sub Resaltar
    CambiaCaracter(&quot;Code&quot;,&quot;S&quot;,&quot;Auto&quot;,1) &apos;Subrayado de Color Auto
    CambiaCaracter(&quot;Subscript&quot;,&quot;S&quot;,F_Conv(Azul),12)
    CambiaCaracter(&quot;Superscript&quot;,&quot;S&quot;,F_Conv(Azul),12)
-&apos;== Para Comprobar Errores en definición
+&apos;== Para Comprobar Errores en definiciones de resaltes
 &apos;   CambiaParrafo (&quot;Code&quot;,&quot;J&quot;,&quot;Auto&quot;,Linea)
 &apos;   CambiaCaracter (&quot;J&quot;,&quot;Auto&quot;,Linea)
-      Call DialogoResaltes
+      Call DialogoResalta
 End Sub
 
  Rem ############
 Sub CambiaParrafo (Nombre  As String, Resalte As String,_
-        Color , Optional Linea As String, Optional Color2 )
+        Color As Variant, Optional Linea As String, Optional Color2 As Variant)
 &apos; =========================================================================
  Dim oEstilos As Object,  oEstilo As Object, Resalta As String, Tipo As Integer
    On Local Error GoTo CONTROL_ERRORES
      &apos;por si no se olvida definir el color y se define Linea
    If Not IsMissing (Color) AND (Color = 1 XOR Color = 2 XOR Color = 12) Then
      i_errores = i_errores + 1
-     Enum_Errores =  Enum_Errores &amp; Nombre &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13)_
-        &amp; Chr(9) &amp; R_Txt(13) &amp; Chr(13) &amp; Chr(13)
+     Enum_Errores =  Enum_Errores &amp; Nombre &amp; &quot; (&quot; &amp; R_Txt(10) &amp; &quot;): - &quot;  &amp; R_Txt(12) &amp; Chr(13) &amp;_
+        Chr(9) &amp; R_Txt(13) &amp; Chr(13) &amp; Chr(13)
      Exit Sub
    End If
    oEstilos = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;)
@@ -111,7 +111,7 @@ Sub CambiaParrafo (Nombre  As String, Resalte As String,_
      Exit Sub
    End If
    oEstilo = oEstilos.getByName(Nombre)
- Dim Nombre2 : Nombre2 = oEstilo.DisplayName
+ Dim Nombre2 :  Nombre2 = oEstilo.DisplayName
    If Not IsMissing (Linea) Then
      Select Case Linea
        Case 1, 2, 12 : Tipo = Linea
@@ -406,15 +406,47 @@ CONTROL_ERRORES:
 End Sub
 
  Rem ############
+Sub DialogoResalta
+   Call _Aux.Carga_Tools
+ Dim oDlgResalta
+   DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+   oDlgResalta = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgResalta&quot;))
+   If getGUIType &gt; 1 then oDlgResalta.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
+   With oDlgResalta.getModel
+     .TiTle = R_Txt(0) &amp; Extension
+     .getByName(&quot;Lbl_NCambios&quot;).label = i_encontrados
+     .getByName(&quot;Btn_Salir&quot;).label = R_Txt(22)
+     .getByName(&quot;Btn_Detalles&quot;).label = R_Txt(2)
+       If Colorea = False Then
+         .getByName(&quot;Lbl_Info&quot;).Label = R_Txt(7)
+         .getByName(&quot;Lbl_Recuerda&quot;).Label = &quot;&quot;
+       Else
+         .getByName(&quot;Lbl_Info&quot;).Label = R_Txt(8)
+         .getByName(&quot;Lbl_Recuerda&quot;).Label = R_Txt(9)
+       End If
+   End With
+   If oDlgResalta.execute = 1 Then
+     oDlgResalta.EndExecute
+     Call DialogoResaltes
+   End If
+   If Colorea = False then 
+     If ThisComponent.hasLocation AND Not ThisComponent.isReadOnly Then
+       ThisComponent.store &apos; Cambio de estilos no se considera documento modificado.
+     End If
+   End If
+End Sub
+
+ Rem ############
 Sub DialogoResaltes
    Call _Aux.Carga_Tools
+   Call L10n.Trad_Resaltes
    DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgResaltes = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgResaltes&quot;))
    If getGUIType &gt; 1 then oDlgResaltes.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    oDlgResaltes.Model.Step = 1
 Call ParametrosResaltes
    oDlgResaltes.execute()
-   If Colorea = True Then MsgBox (Chr(13) &amp; R_Txt(9), 0+48+0, R_Txt(0) &amp; Extension)
+&apos;   If Colorea = True Then MsgBox (Chr(13) &amp; R_Txt(9), 0+48+0, R_Txt(0) &amp; Extension)
 End Sub
 
  Rem ############
@@ -438,12 +470,12 @@ Sub ParametrosResaltes
        .getByName(&quot;Lbl_Info&quot;).Label = R_Txt(8)
      End If
      If Enum_Errores = &quot;&quot; Then
-       .Height = 25
+ &apos;      .Height = 25
        .getByName(&quot;Lbl_Errores&quot;).Enablevisible = False
        .getByName(&quot;Btn_Errores&quot;).Enablevisible = False
        .getByName(&quot;Lbl_Nota&quot;).label = &quot;&quot;
      Else
-       .Height = 50
+&apos;       .Height = 50
        .getByName(&quot;Lbl_Errores&quot;).Enablevisible = True
        .getByName(&quot;Btn_Errores&quot;).Enablevisible = True
        .getByName(&quot;Tx_ListaErrores&quot;).Text = Enum_Errores
@@ -465,25 +497,25 @@ Sub OnBtErrores(oEv)
      ElseIf oDlgResaltes.Model.Step = 2 Then
        oDlgResaltes.Model.Step = 1
        .getByName(&quot;Btn_Errores&quot;).label = &quot;𓂀&quot;&apos; model().ImageURL = F_GetResourceUrl(&quot;InfoPNG&quot;)
-       .getByName(&quot;Btn_Detalles&quot;).label = &quot;^&quot;
+ &apos;      .getByName(&quot;Btn_Detalles&quot;).label = &quot;^&quot;
      End If
    End With
 End Sub
 
  Rem ############
-Sub OnBtDetalles(oEv)
+Sub OnBtDetalles(oEv) &apos;Desactivado mejora Usabilidad
    oDlgResaltes = oEv.Source.Context
  Dim Altura As Integer : Altura = oDlgResaltes.getModel.Height()
    With oDlgResaltes.Model
-     If Altura &lt; 55 Then
-       .Height = 242
-       .getByName(&quot;Btn_Detalles&quot;).label = &quot;^&quot;
-       .getByName(&quot;Lbl_Nota&quot;).label = R_Txt(20)
-    ElseIf Altura &gt; 55 Then
-       .getByName(&quot;Btn_Detalles&quot;).label = R_Txt(2)
-       .getByName(&quot;Lbl_Nota&quot;).label = &quot;&quot;
-       If Enum_Errores = &quot;&quot; Then : .Height = 25 : ElseIf Enum_Errores &lt;&gt; &quot;&quot; Then :.Height = 50: End If
-     End If
+&apos;     If Altura &lt; 55 Then
+ &apos;      .Height = 242
+ &apos;      .getByName(&quot;Btn_Detalles&quot;).label = &quot;^&quot;
+&apos;       .getByName(&quot;Lbl_Nota&quot;).label = R_Txt(20)
+&apos;    ElseIf Altura &gt; 55 Then
+&apos;       .getByName(&quot;Btn_Detalles&quot;).label = R_Txt(2)
+&apos;       .getByName(&quot;Lbl_Nota&quot;).label = &quot;&quot;
+&apos;       If Enum_Errores = &quot;&quot; Then : .Height = 25 : ElseIf Enum_Errores &lt;&gt; &quot;&quot; Then :.Height = 50: End If
+&apos;     End If
    End With
 End Sub
 
@@ -496,22 +528,22 @@ Sub OnBtAyuda(oEv)
      If p_Anterior &lt;&gt; 3 Then
        .Step = 3
        .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;↫&quot;
-       .getByName(&quot;Btn_Detalles&quot;).EnableVisible = False
+&apos;       .getByName(&quot;Btn_Detalles&quot;).EnableVisible = False
        .getByName(&quot;Btn_Errores&quot;).Enablevisible = False
         If P_Anterior =1 Then : .Height = 242 : End If
      ElseIf P_Anterior = 3 then
        .Step = 1
-       .getByName(&quot;Btn_Detalles&quot;).EnableVisible = True
+&apos;       .getByName(&quot;Btn_Detalles&quot;).EnableVisible = True
        .getByName(&quot;Btn_Errores&quot;).label = &quot;𓂀&quot;
        .getByName(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
-       .getByName(&quot;Btn_Detalles&quot;).label = R_Txt(2)
+&apos;       .getByName(&quot;Btn_Detalles&quot;).label = R_Txt(2)
        .getByName(&quot;Lbl_Nota&quot;).label = &quot;&quot;
        If Enum_Errores = &quot;&quot; Then
-         .Height = 25
+&apos;         .Height = 25
          .getByName(&quot;Lbl_Errores&quot;).Enablevisible = False
          .getByName(&quot;Btn_Errores&quot;).Enablevisible = False
        Else
-         .Height = 50
+&apos;         .Height = 50
          .getByName(&quot;Lbl_Errores&quot;).Enablevisible = True
          .getByName(&quot;Btn_Errores&quot;).Enablevisible = True
          .getByName(&quot;Tx_ListaErrores&quot;).Text = Enum_Errores

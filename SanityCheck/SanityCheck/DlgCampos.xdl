@@ -18,7 +18,7 @@
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:SanityCheck.Campos.Onbtn_Establecer?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:text dlg:id="Lbl_Plantilla" dlg:tab-index="16" dlg:left="71" dlg:top="78" dlg:width="150" dlg:height="8" dlg:page="1" dlg:value="Lbl_Plantilla" dlg:valign="center"/>
-  <dlg:numericfield dlg:id="Num_Ano" dlg:tab-index="8" dlg:left="163" dlg:top="59" dlg:width="42" dlg:height="12" dlg:page="1" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value-min="2024" dlg:value-max="2050" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="Num_Ano" dlg:tab-index="8" dlg:left="163" dlg:top="59" dlg:width="42" dlg:height="12" dlg:page="1" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value-min="2020" dlg:value-max="2050" dlg:spin="true"/>
   <dlg:numericfield dlg:id="Num_Version" dlg:tab-index="5" dlg:left="180" dlg:top="9" dlg:width="19" dlg:height="10" dlg:page="1" dlg:align="right" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value-min="6" dlg:value-max="44"/>
   <dlg:numericfield dlg:id="Num_Sub" dlg:tab-index="6" dlg:left="202" dlg:top="9" dlg:width="15" dlg:height="10" dlg:page="1" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value-min="0" dlg:value-max="12"/>
   <dlg:text dlg:id="Label5" dlg:tab-index="20" dlg:left="27" dlg:top="77" dlg:width="0" dlg:height="8" dlg:page="1" dlg:value="Label5" dlg:valign="center"/>

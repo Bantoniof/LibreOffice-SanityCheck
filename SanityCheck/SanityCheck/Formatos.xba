@@ -18,7 +18,11 @@ Sub E_Numerados
  E_Num(4) = &quot;Numbering 2 Cont.&quot;
  E_Num(5) = &quot;Numbering 3&quot;
  E_Num(6) = &quot;Numbering 3 Cont.&quot;
-End Sub
+&apos; E_Num(7) = &quot;Heading 1&quot;
+&apos; E_Num(8) = &quot;Heading 2&quot;
+&apos; E_Num(9) = &quot;Heading 3&quot;
+&apos; E_Num(10) = &quot;Heading 4&quot;
+ End Sub
 
  Rem #### MENU ########
 Sub Dlg_Formatos
@@ -28,7 +32,9 @@ Sub Dlg_Formatos
    Msgbox (F_Txt(30), 0+16+0, F_Txt(0) &amp;  Extension )
      exit Sub
    End If
-   If _Aux.F_CompPlantilla &lt;&gt; 0  then exit Sub
+   If _Aux.F_EstilosPlantilla &lt;&gt; 0  then exit Sub
+   If _Aux.F_Control_Cambios = True then exit Sub
+ 
    DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgFmt = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFormatos&quot;))
    If getGUIType &gt; 1 then oDlgFmt.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
@@ -171,6 +177,7 @@ Rem Texto en general (incluidas tablas)
    oCursor.gotoStart(True)
    oCursor.gotoEnd(True)
    oCursor.setAllPropertiesToDefault
+   
 Rem Texto en Marcos de texto (empleado también para leyendas)
    On Error Resume Next
  Dim oFrameEnum As Object, oFrame As Object, oFCursor As Object
@@ -219,15 +226,17 @@ Function F_LimpiaParrafos
        oCursor.gotoendOfparagraph(True)
 
        If oPar.ParaStyleName = &quot;Standard&quot; Then
-         oCursor.ParaStyleName = _Aux.F_NtoDN(&quot;Text body&quot;) &apos;Cambia Predeterminado por C. Texto
-         Call _Aux.InsertAnnotation (oPar, oCursor, F_NtoDN(&quot;Standard&quot;) &amp; _
+         oCursor.ParaStyleName = &quot;Text body&quot; &apos; Cambia Predeterminado por C. Texto
+       Call _Aux.InsertAnnotation (oPar, oCursor, F_NtoDN(&quot;Standard&quot;) &amp; _
              F_Txt(23) &amp; Chr(13) &amp; _Aux.F_NtoDN(&quot;Text body&quot;), F_Txt(0))
        End If
+
        If _Aux.F_BuscarEnMatriz(E_Num, oPar.Parastylename) = 0 Then
          oPar.NumberingLevel = 0 &apos;no sé si es necesario
          oPar.NumberingStyleName = &quot;&quot; &apos;Elimina numeraciones
          oCursor.setAllPropertiesToDefault Rem Resetea TODOS los Párrafos
        End If
+
      End If
    Loop
    Call _Aux.ActualizarTodo
@@ -300,7 +309,7 @@ Function F_LimpiaNumerados
    E_Validos = Array(&quot;Numbering 1&quot;,&quot;Numbering 2&quot;,&quot;Numbering 3&quot;,&quot;Legend Numbered&quot;,&quot;Heading 1&quot;,&quot;Heading 2&quot;,&quot;Heading 3&quot;,&quot;Heading 4&quot;,&quot;Definition Term&quot;, &quot;List 2&quot;) &apos;,&quot;Figure&quot;
  Dim oEstilos As Object: oEstilos = ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;)
  Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
-   oProgressbar.start( F_Txt(13), ThisComponent.ParagraphCount ) &apos; x2 si se unen
+   oProgressbar.start(F_Txt(13), ThisComponent.ParagraphCount ) &apos; x2 si se unen
    oProgressbar.setValue(1) : PBcounter = 0
  Dim contarMarcados As Integer : contarMarcados= 0
  Dim oParEnum As Object, oPar As Object

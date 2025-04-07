@@ -7,8 +7,27 @@
  
  Option Explicit
  
+ Rem ############
+Function F_Guardado() As boolean
+   Call L10n.Trad_Aux
+   If  ThisComponent.HasLocation = False Then 
+     MsgBox (A_Txt(10), 0+48+0, Extension)
+    F_Guardado = 0
+   Else 
+     F_Guardado = 1
+   End If
+End Function
+
  Rem ########
 Sub DirectorioPlantillas
+   If F_DirPlantillas = 0 then
+     Trad_Aux
+     Msgbox (A_Txt(9), 0+64+0, Extension)
+     Call Plantilla.Dlg_Plantillas
+   end If
+End Sub
+
+Function F_DirPlantillas() As Boolean
  Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
  Dim Asociada() : Asociada = split (oDocprops.TemplateURL,&quot;/&quot;)
  Dim Ext() : Ext = Split(F_Pathextension,&quot;/&quot;)
@@ -18,14 +37,14 @@ Sub DirectorioPlantillas
    elementos = Ubound(Ext())
    Redim Preserve Ext(elementos - 1)
    If Asociada(Ubound(Asociada)) &lt;&gt; Ext(Ubound(Ext)) then
-     Trad_Aux
-     Msgbox (A_Txt(9), 0+64+0, Extension)
-     Call Plantilla.Dlg_Plantillas
+     F_DirPlantillas = False
+   Else 
+     F_DirPlantillas = True  
    end If
-End Sub
- 
+End Function
+
  Rem ############
-Function F_CompPlantilla &apos;comprueba Estilos, si no están devuelve un número y presenta las faltas
+Function F_EstilosPlantilla() As Integer &apos;comprueba Estilos, si no están devuelve un número y presenta las faltas
  Dim  oEstilos As Object, oEstilo As Variant, i As Integer, contador as integer
  Dim sEnumera As String, s As String
  Dim oDocprops As Object : oDocprops = ThisComponent.getDocumentProperties
@@ -47,19 +66,8 @@ Function F_CompPlantilla &apos;comprueba Estilos, si no están devuelve un núme
      End If
      Msgbox (A_Txt(7) &amp; s &amp; Chr(13) &amp; sEnumera &amp; Chr(13) &amp; A_Txt(8),0+16+0, A_Txt(4) &amp; Extension)
    End If  
-   F_CompPlantilla = Contador
+   F_EstilosPlantilla = Contador
 End Function 
-
- Rem ############
-Function F_Guardado() As boolean
-   Call L10n.Trad_Aux
-   If  ThisComponent.HasLocation = False Then 
-     MsgBox (A_Txt(10), 0+48+0, Extension)
-    F_Guardado = 0
-   Else 
-     F_Guardado = 1
-   End If
-End Function
 
  Rem ############
 Function F_TipoDoc
@@ -92,6 +100,37 @@ Function F_TipoDoc
      Case else 
        F_TipoDoc =&quot;Otro&quot;
    End select
+End Function
+
+ Rem ############
+Function F_Control_Cambios As boolean &apos;lst346
+Rem Comprueba Control de cambios y cambios pendientes aceptar/rechazar
+   Call L10n.Trad_Aux
+   If ThisComponent.RecordChanges Then
+    Msgbox (A_Txt(11) &amp; A_Txt(13), 0+48+0,Extension)
+    F_Control_Cambios = 1
+     Exit Function
+   End If 
+ Dim oParEnum As Object, oSecEnum As Object
+ Dim oPar As Object, oParSection As Object
+ Dim Salir As Boolean :  Salir = 0
+   oParEnum = ThisComponent.Text.createEnumeration()
+   Do While oParEnum.hasMoreElements()
+     oPar = oParEnum.nextElement()
+     If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
+       oSecEnum = oPar.createEnumeration()
+       Do While oSecEnum.hasMoreElements()
+         oParSection = oSecEnum.nextElement()
+         If oparsection.Textportiontype = &quot;Redline&quot; then 
+           MsgBox (A_Txt(12) &amp; A_Txt(13), 0+48+0, Extension) 
+           Salir = 1
+           Exit Do
+         End If
+       Loop
+    End If
+      If Salir = 1 then exit Do
+   Loop
+      F_Control_Cambios = Salir
 End Function
 
  Rem ############
@@ -283,7 +322,7 @@ End Sub
 Function F_BuscarEnMatriz(Matriz(), Texto As String) As Boolean
  Rem busca texto en matriz,
  Rem Devuelve True o 1 si encuentra el texto en la matriz
- Rem Devuelve False o O si no lo encuentra
+ Rem Devuelve False o 0 si no lo encuentra
  Rem ======================================================
  Dim i As Integer
    For i = LBound(Matriz) To UBound(Matriz())
@@ -353,6 +392,22 @@ Sub ActualizarTodo
    dispatcher = CreateUNOService(&quot;com.sun.star.frame.DispatchHelper&quot;)
    dispatcher.executeDispatch(document, &quot;.uno:UpdateAll&quot;, &quot;&quot;, 0, Array())
 End Sub
+
+ Rem ############
+Function Prot_Indice (protege As Boolean)
+Dim oIndexes As Object, oIndex As Object, i As integer 
+   oIndexes = ThisComponent.getDocumentIndexes()
+   For i = 0 To oIndexes.getCount() - 1
+     oIndex = oIndexes.getByIndex(i)
+     If oIndex.supportsService(&quot;com.sun.star.text.ContentIndex&quot;) Then
+       If oIndex.IsProtected = 1 And Protege = 0 then 
+         oIndex.protect = 0
+       ElseIf oIndex.IsProtected = 0 and Protege = 1 then
+         oIndex.protected = 1
+       End If
+     End If 
+   Next
+End Function
 
  Rem ############
 Sub GuardaRecarga

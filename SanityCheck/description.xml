@@ -7,7 +7,7 @@
 
 	<identifier value="vnd.bantoniof.sanitycheck"/>
 
-	<version value="1.1.0"/>
+	<version value="1.1.1"/>
 
 	<update-information>
 		<src xlink:href="https://githubraw.com/Bantoniof/LibreOffice-SanityCheck/master/SanityCheck.update.xml"/> 
@@ -18,7 +18,7 @@
 	</dependencies>
 
 	<publisher>
-		<name lang="en" xlink:href="http://">B. Antonio Fernández</name>
+		<name lang="en" xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck">B. Antonio Fernández</name>
 	</publisher>
 
     <extension-description>

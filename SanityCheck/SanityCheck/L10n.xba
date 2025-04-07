@@ -12,16 +12,16 @@
  Rem to apply the correct template of the new language
   
  Option Explicit
- Dim A_Txt(10) As String
+ Dim A_Txt(13) As String
  Dim C_Txt(21) As String
  Dim E_Txt(23) As String
  Dim F_Txt(30) As String
  Dim I_Txt(46) As String
- Dim P_Txt(19) As String
- Dim R_Txt(21) As String
+ Dim P_Txt(23) As String
+ Dim R_Txt(22) As String
  Dim Ren_Txt(20) As String
  Dim T_Txt(23) As String
- Dim Lista() As String
+ Dim Meses() As String
  Global Extension
 
  Rem ############
@@ -29,7 +29,7 @@ Function F_getLang As String
    Call _Aux.Carga_Tools
    Extension = _Aux.F_Extension
    F_getLang = GetStarOfficeLocale.language
-&apos;F_getLang = &quot;pt&quot; &apos;Cambia el idioma para pruebas.
+&apos;F_getLang = &quot;es&quot; &apos;Cambia el idioma para pruebas.
 End Function
 
  Rem ############
@@ -37,7 +37,7 @@ Sub Trad_Aux
    Select Case F_getLang   
 
    Case &quot;es&quot;
-   A_Txt(0) = &quot;Recorrer objetos&quot;
+   A_Txt(0) = &quot;&quot;
    A_Txt(1) =  &quot;Err: 1 - Es posible que esté seleccionado un objeto: imagen, marco, etc.&quot; &amp; Chr(13) &amp; _
    &quot; Coloca el cursor en un fragmento de texto y prueba de nuevo&quot;
    A_Txt(2) =  &quot;Err: 91 - Es posible que estés en un comentario&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
@@ -50,12 +50,15 @@ Sub Trad_Aux
    A_Txt(7) = &quot;Los siguientes estilos de párrafo no existen en el documento:&quot; &amp;  Chr(13)
    A_Txt(8) = &quot;◘ Aplica la plantilla correcta o importa los estilos&quot; &amp; Chr(13) &amp; _
    &quot;para usar estas macros&quot;
-   A_Txt(9) = &quot;Al actualizar SanityCheck se cambia el directorio de las plantillas de la documentación.&quot; &amp; Chr(13) &amp;_
-     &quot;Es necesario asociar el documento con la plantilla en su nueva ubicación&quot;
+   A_Txt(9) = &quot; ◘ Al actualizar SanityCheck se cambia el directorio de las macros y plantillas.&quot; &amp; Chr(13) &amp;_
+     &quot; ◘ Es necesario asociar el documento con la plantilla en su nueva ubicación&quot;
    A_Txt(10) = &quot;Primero tienes que guardar el documento&quot;
+   A_Txt(11) = &quot;El registro de cambios esta activo en el documento.&quot; &amp; Chr(13) &amp; Chr(9)
+   A_Txt(12) = &quot;El documento tiene cambios pendientes de aceptar o rechazar.&quot; &amp; Chr(13) &amp; Chr(9)
+   A_Txt(13) = &quot;Desactive la grabación de cambios y acepte o rechaze los cambios pendientes.&quot; 
 
    Case &quot;pt&quot;
-   A_Txt(0) = &quot;Percorrer objetos&quot;
+   A_Txt(0) = &quot;&quot;
    A_Txt(1) = &quot;Erro: 1 - Um objeto pode estar selecionado: imagem, quadro, etc.&quot; &amp; Chr(13) &amp; _
    &quot;Coloque o cursor em um trecho de texto e tente novamente.&quot;
    A_Txt(2) = &quot;Erro: 91 - Você pode estar em um comentário&quot; &amp; Chr(13) &amp; _
@@ -71,9 +74,12 @@ Sub Trad_Aux
    A_Txt(9) = &quot;Atualizar o SanityCheck altera o diretório de modelos de documentação.&quot; &amp; Chr(13) &amp;_
      &quot;Você precisa associar o documento ao modelo em seu novo local&quot;
    A_Txt(10) = &quot;Salve primeiro o seu documento&quot;   
-
+   A_txt (11) = &quot;O registro de alterações está ativo no documento.&quot; &amp; Chr(13) &amp; Chr(9)
+   A_txt (12) = &quot;O documento tem alterações pendentes de aceitar ou rejeitar.&quot; &amp; Chr(13) &amp; Chr(9)
+   A_txt (13) = &quot;Desative o registro de alterações e aceite ou rejeite as alterações pendentes.&quot;
+   
    Case else
-   A_Txt(0) = &quot;Browse objects&quot;
+   A_Txt(0) = &quot;&quot;
    A_Txt(1) = &quot;Err: 1 - An object may be selected: image, frame, etc.&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
    &quot;Place the cursor on a piece of text and try again.&quot;
    A_Txt(2) = &quot;Err: 91 - You may be in a comment&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
@@ -88,7 +94,11 @@ Sub Trad_Aux
    &quot;to use these macros.&quot;
   A_Txt(9) = &quot;Updating SanityCheck changes the documentation templates directory.&quot; &amp; Chr(13) &amp;_
      &quot;You need to associate the document with the template in its new location&quot;
-   A_Txt(10) =  &quot;You must save the document first.&quot;          
+   A_Txt(10) =  &quot;You must save the document first.&quot;
+   A_Txt (11) = &quot;The Tracking changes is active in the document&quot; &amp; Chr(13) &amp; Chr(9)
+   A_Txt (12) = &quot;The document has changes pending accept or reject.&quot; &amp; Chr(13) &amp; Chr(9)
+   A_Txt (13) = &quot;Disable the record changes and accept or reject pending changes&quot;      
+
    End Select
 End Sub
 
@@ -127,7 +137,7 @@ Sub Trad_Campos
    C_Txt(20) = &quot;Colaborador&quot;
    C_Txt(21) = &quot;Editor&quot;
 
-   Lista = Array (&quot;enero&quot;,&quot;febrero&quot;,&quot;marzo&quot;,&quot;abril&quot;,&quot;mayo&quot;,&quot;junio&quot;,&quot;julio&quot;,&quot;agosto&quot;,&quot;septiembre&quot;,&quot;octubre&quot;,&quot;noviembre&quot;,&quot;diciembre&quot;)
+   Meses = Array (&quot;enero&quot;,&quot;febrero&quot;,&quot;marzo&quot;,&quot;abril&quot;,&quot;mayo&quot;,&quot;junio&quot;,&quot;julio&quot;,&quot;agosto&quot;,&quot;septiembre&quot;,&quot;octubre&quot;,&quot;noviembre&quot;,&quot;diciembre&quot;)
 
    Case &quot;pt&quot;
    C_Txt(0) = &quot;Campos do documento&quot;
@@ -160,7 +170,7 @@ Sub Trad_Campos
    C_Txt(20) = &quot;Contributor&quot;
    C_Txt(21) = &quot;Editor&quot; 
 
-   Lista = Array (&quot;janeiro&quot;,&quot;fevereiro&quot;,&quot;março&quot;,&quot;abril&quot;,&quot;maio&quot;,&quot;junho&quot;,&quot;julho&quot;,&quot;agosto&quot;,&quot;setembro&quot;,&quot;outubro&quot;,&quot;novembro&quot;,&quot;dezembro&quot;)
+   Meses = Array (&quot;janeiro&quot;,&quot;fevereiro&quot;,&quot;março&quot;,&quot;abril&quot;,&quot;maio&quot;,&quot;junho&quot;,&quot;julho&quot;,&quot;agosto&quot;,&quot;setembro&quot;,&quot;outubro&quot;,&quot;novembro&quot;,&quot;dezembro&quot;)
  
    Case Else
    C_Txt(0) = &quot;Document Fields&quot;
@@ -193,7 +203,7 @@ Sub Trad_Campos
    C_Txt(20) = &quot;Contributor&quot;
    C_Txt(21) = &quot;Publisher&quot; 
 
-   Lista = Array (&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,&quot;July&quot;,&quot;August&quot;,&quot;September&quot;,&quot;October&quot;,&quot;November&quot;,&quot;December&quot;)
+   Meses = Array (&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;,&quot;July&quot;,&quot;August&quot;,&quot;September&quot;,&quot;October&quot;,&quot;November&quot;,&quot;December&quot;)
 
    End Select
 End Sub
@@ -658,12 +668,11 @@ Sub Trad_Plantilla
    P_Txt(5) = &quot;El documento está conectado con la plantilla: &quot; &amp; Chr(13) &amp; Chr(9)
    P_Txt(6) = Chr(13) &amp; &quot;los cambios en plantilla se reflejan en el documento.&quot;
    P_Txt(7) = &quot;Plantilla desactivada, los cambios en la plantilla no se reflejarán en el documento.&quot;
-   P_Txt(8) = &quot;Para unificar el formato y los estilos de las guías de LibreOffice &quot; &amp;_
-     &quot;es necesario usar una misma plantilla en todos los capítulos.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
-     &quot;Esta macro asocia el documento actual con la plantilla que contiene los estilos &quot; &amp;_
-     &quot;necesarios para crear y exportar los capítulos a los formatos requeridos.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
-     &quot;Las macros de SanityCheck para la revisión de los capítulos no funcionarán correctamente&quot; &amp;_
-     &quot;si el documento no está asociado la plantilla adecuada.&quot;
+   P_Txt(8) = &quot; - Para unificar el formato y los estilos de las guías de LibreOffice &quot; &amp;_
+     &quot;es necesario usar una misma plantilla en todos los capítulos.&quot; &amp; Chr(13) &amp;_
+     &quot; - Esta macro asocia el documento con la plantilla que contiene los estilos &quot; &amp;_
+     &quot;necesarios para crear y exportar los capítulos a los formatos requeridos.&quot; &amp; Chr(13) &amp;_
+     &quot; - Las macros de SanityCheck no funcionarán correctamente si el documento no está asociado a la plantilla adecuada.&quot;
    P_Txt(9) = &quot;Tipo de documento no admitido.&quot;
    P_Txt(10) = &quot;Documento asociado con la plantilla:&quot;
    P_Txt(11) = &quot;Plantilla necesaria: &quot;
@@ -678,6 +687,11 @@ Sub Trad_Plantilla
    &quot;no es conveniente asociarlo a otra plantilla&quot; 
    P_Txt(19) = &quot;El documento no parece ser de las guías&quot; &amp; Chr(13) &amp; _
    &quot;¿Quieres asociarlo a la plantilla de capítulos?&quot;
+   P_Txt(20) = &quot;Actualizar&quot;
+   P_Txt(21) = &quot;SanityCheck se ha actualizado&quot;
+   P_Txt(22) = &quot; ◘ Actualizar directorio de plantilla&quot;
+   P_Txt(23) = &quot; ◘ Al actualizar SanityCheck se cambia el directorio de macros y las plantillas.&quot; &amp; Chr(13) &amp;_
+   &quot; ◘ Es necesario asociar el documento con la plantilla en su nueva ubicación&quot; &amp; Chr(13) &amp; Chr(13) &amp;  P_Txt(8)
         
    Case &quot;pt&quot;
    P_Txt(0) = &quot;Vincular modelo&quot;
@@ -688,11 +702,11 @@ Sub Trad_Plantilla
    P_Txt(5) = &quot;O documento está vinculado ao modelo &quot; &amp; Chr(13) &amp; Chr(9)
    P_Txt(6) = Chr(13) &amp; &quot;as alterações no modelo são refletidas no documento.&quot;
    P_Txt(7) = &quot;Modelo desativado, as alterações no modelo não serão refletidas no documento.&quot;
-   P_Txt(8) = &quot;Para unificar a formatação e os estilos dos guias do LibreOffice&quot; &amp;_
-   &quot;é necessário usar o mesmo modelo em todos os capítulos.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
-   &quot;Esta macro associa o documento atual ao modelo que contém os estilos &quot; &amp;_
-   &quot;necessários para criar e exportar os capítulos para novas saídas.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
-   &quot;As macros de SanityCheck para revisão dos capítulos não funcionarão corretamente&quot; &amp;_
+   P_Txt(8) = &quot; - Para unificar a formatação e os estilos dos guias do LibreOffice&quot; &amp;_
+   &quot;é necessário usar o mesmo modelo em todos os capítulos.&quot; &amp; Chr(13) &amp;_
+   &quot; - Esta macro associa o documento atual ao modelo que contém os estilos &quot; &amp;_
+   &quot;necessários para criar e exportar os capítulos para novas saídas.&quot; &amp; Chr(13) &amp;_
+   &quot;- As macros de SanityCheck não funcionarão corretamente&quot; &amp;_
    &quot;se o documento não estiver associado ao modelo apropriado.&quot;
    P_Txt(9) = &quot;Tipo de documento não aceito.&quot;
    P_Txt(10) = &quot;Documento associado ao modelo:&quot;
@@ -708,7 +722,12 @@ Sub Trad_Plantilla
    &quot;não é conveniente associá-lo a outro modelo&quot;
    P_Txt(19) = &quot;O documento não parece ser dos guias&quot; &amp; Chr(13) &amp; _
    &quot;Deseja associá-lo ao modelo de capítulo?&quot;
-   
+   P_Txt(20) = &quot;Atualizar&quot;
+   P_Txt(21) = &quot;SanityCheck foi atualizado&quot;
+   P_Txt(22) = &quot; ◘ Atualizar diretório de modelos&quot; 
+   P_Txt(23) = &quot; ◘ A atualização do SanityCheck altera o diretório da macro e os modelos.&quot; &amp; Chr(13) &amp;_
+   &quot; ◘ Você precisa associar o documento ao modelo em seu novo local&quot; &amp; Chr(13) &amp; Chr(13) &amp; P_Txt(8)   
+
    Case else
    P_Txt(0) = &quot;Link Template&quot;
    P_Txt(1) = &quot;Document linked to the template&quot; &amp; Chr(13) &amp; Chr(9)
@@ -718,11 +737,11 @@ Sub Trad_Plantilla
    P_Txt(5) = &quot;The document is linked to the template: &quot; &amp; Chr(13) &amp; Chr(9)
    P_Txt(6) = Chr(13) &amp; &quot;Changes of the template are propagated to this document.&quot;
    P_Txt(7) = &quot;Changes in the template will no longer be propagated to this document.&quot;    
-   P_Txt(8) = &quot;To set homogeneous formatting and styles of LibreOffice guides &quot; &amp;_
-   &quot;you must use the same template in all chapters.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
-   &quot;This macro links the current document with the template that contains the styles &quot; &amp;_
-   &quot;necessary to create and export the chapters to the required formats.&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
-   &quot;SanityCheck macros for chapter review will not work correctly &quot; &amp;_
+   P_Txt(8) = &quot; - To set homogeneous formatting and styles of LibreOffice guides &quot; &amp;_
+   &quot;you must use the same template in all chapters.&quot; &amp; Chr(13) &amp;_
+   &quot; - This macro links the current document with the template that contains the styles &quot; &amp;_
+   &quot;necessary to create and export the chapters to the required formats.&quot; &amp; Chr(13) &amp;_
+   &quot; - SanityCheck macros will not work correctly &quot; &amp;_
    &quot;if the document is not linked with the appropriate template.&quot;
    P_Txt(9) = &quot;Document type not accepted.&quot;
    P_Txt(10) = &quot;Document linked with the template:&quot;
@@ -737,15 +756,19 @@ Sub Trad_Plantilla
    P_Txt(18) = &quot;This document is a template&quot; &amp; Chr(13) &amp; &quot;it is not convenient to link it to another template&quot;
    P_Txt(19) = &quot;The document does not seem to be from the guides&quot; &amp; Chr(13) &amp; _
    &quot;Do you want to associate it with the Chapter template?&quot;
-
+   P_Txt(20) = &quot;Update&quot;
+   P_Txt(21) = &quot;SanityCheck has been updated&quot;
+   P_Txt(22) = &quot; ◘ Update template directory&quot;
+   P_Txt(23) = &quot; ◘ Updating SanityCheck changes the macro directory and templates.&quot; &amp; Chr(13) &amp;_
+   &quot; ◘ You need to link  the document with the template in its new location&quot; &amp; Chr(13) &amp; Chr(13) &amp; P_Txt(8)
    End select
 End Sub
 
  Rem ############
 Sub Trad_Resaltes
-   Select Case F_getLang
+ Select Case F_getLang
 
-   Case &quot;es&quot;
+  Case &quot;es&quot;
    R_Txt(0) = &quot;Resaltado de estilos&quot;
    R_Txt(1) = &quot;La definición de estilos contiene errores&quot;
    R_Txt(2) = &quot;Detalles&quot;
@@ -772,8 +795,9 @@ Sub Trad_Resaltes
    &quot;Caracteres:&quot;  &amp; Chr(13) &amp; &quot;Un formato cursiva, negrita etc. no resaltado es formato directo&quot; &amp; Chr(13) &amp;  Chr(13) &amp; _
    &quot;Los colores identifican distintos estilos de párrafo o de carácter para identificar si el estilo aplicado es el correcto&quot; &amp; Chr(13) &amp; _
    &quot;con el uso irás descubriendo a qué estilo pertenece cada color.&quot;
+   R_Txt(22) = &quot;Aceptar&quot;
 
-   Case &quot;pt&quot;
+  Case &quot;pt&quot;
    R_Txt(0) = &quot;Destaque de estilos&quot;
    R_Txt(1) = &quot;A definição do estilos contém erros&quot;
    R_Txt(2) = &quot;Detalhes&quot;
@@ -800,8 +824,9 @@ Sub Trad_Resaltes
    &quot;Caracteres:&quot; &amp; Chr(13) &amp; &quot;um formato em itálico, negrito etc.. sem destaque possui formatação direta &quot; &amp; Chr(13) &amp; Chr(13) &amp; _
    &quot;Cores identificam diferentes estilos de parágrafo ou caractere para sinalizar se o estilo aplicado está correto &quot; &amp; Chr(13) &amp; _
    &quot;conforme seu uso, você descobrirá a qual estilo cada cor pertence.&quot;
-   
-   Case Else
+    R_Txt(22) = &quot;OK&quot;
+      
+  Case Else
    R_Txt(0) = &quot;Style highlighting&quot;
    R_Txt(1) = &quot;The styles definition contains errors.&quot;
    R_Txt(2) = &quot;Detail&quot;
@@ -828,6 +853,7 @@ Sub Trad_Resaltes
    &quot;An italic, bold etc. format that is not highlighted is direct formatting&quot; &amp; Chr(13) &amp; Chr(13) &amp; _
    &quot;Diferens colors identify different paragraph or character styles to identify if the style applied is correct&quot; &amp; Chr(13) &amp; _
    &quot;with use you will discover which style each color belongs to.&quot;
+   R_Txt(22) = &quot;OK&quot;
 
    End Select
 End Sub

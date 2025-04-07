@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
-<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Plantilla" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo Plantilla *****
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Plantilla" script:language="StarBasic" script:moduleType="normal"> 
+ Rem  *****  BASIC  Módulo Plantilla *****
  Rem Este módulo forma parte de la extensión SanityCheck
  Rem Autor: bantoniof@libreoffice.org
  Rem Fragmentos de código de la extensión TemplateChanger
@@ -80,31 +81,44 @@ Sub Dlg_Plantillas
    With oDlgPlantillas.getModel
      .Title = P_Txt(0) &amp; Extension
      .getByName(&quot;Txt_Plantilla&quot;).Text = P_Txt(8)
-     .getByName(&quot;Lbl_Plant&quot;).Label = P_Txt(10)
      .getByName(&quot;Lbl_Necesaria&quot;).label = P_Txt(11)
-     .getByName(&quot;Lbl_Correcta&quot;).label = nplant       
+     .getByName(&quot;Lbl_Correcta&quot;).label = nplant   &apos;Necesaria
      .getByName(&quot;Btn_Asociar&quot;).label = P_Txt(12)
      .getByName(&quot;Btn_Cancelar&quot;).Label = P_Txt(16)
-     If oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
-       .getByName(&quot;Lbl_Plantilla&quot;).label = oDocprops.TemplateName
-       If oDocprops.TemplateName =  nplant Then
-         .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(30,130,80)
-         .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☑&quot;
-         .getByName(&quot;Btn_Asociar&quot;).Label = P_Txt(14)&apos;Aceptar&quot;
-         .getByName(&quot;Btn_Cancelar&quot;).EnableVisible = False
-       Else
+     .getByName(&quot;Lbl_Plant&quot;).Label = P_Txt(10)
+     If oDocprops.TemplateName = &quot;&quot; Then
+       .getByName(&quot;Lbl_Plantilla&quot;).label = P_Txt(15) &apos;Ninguna
+       .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(255,0,0)
+       .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☒&quot;     
+     ElseIf oDocprops.TemplateName &lt;&gt; &quot;&quot; Then
+       .getByName(&quot;Lbl_Plantilla&quot;).label = oDocprops.TemplateName &apos;Documento 
+       If oDocprops.TemplateName &lt;&gt;  nplant Then
          .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(255,0,0)
          .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☒&quot;
          .getByName(&quot;Btn_Asociar&quot;).Label = P_Txt(13)
-         .getByName(&quot;Btn_Cancelar&quot;).EnableVisible = True         
+         .getByName(&quot;Btn_Cancelar&quot;).EnableVisible = True 
+       ElseIf oDocprops.TemplateName =  nplant Then
+         If _Aux.F_DirPlantillas &lt;&gt; 0 Then       
+           .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(30,130,80)
+           .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☑&quot;
+           .getByName(&quot;Btn_Asociar&quot;).Label = P_Txt(14)&apos;Aceptar&quot;
+           .getByName(&quot;Btn_Cancelar&quot;).EnableVisible = False
+         Else
+           &apos;.getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(255,0,0)
+           &apos;.getByName(&quot;Lbl_Marca&quot;).Label= &quot;☒&quot;
+           .getByName(&quot;Lbl_Marca&quot;).EnableVisible = False
+           .getByName(&quot;Btn_Asociar&quot;).Label = P_Txt(20)
+           .getByName(&quot;Btn_Cancelar&quot;).EnableVisible = False 
+           .getByName(&quot;Lbl_Plant&quot;).TextColor = RGB(255,0,0)
+           .getByName(&quot;Lbl_Plant&quot;).Label = P_Txt(21)
+           .getByName(&quot;Lbl_Plantilla&quot;).label = P_Txt(22)
+           .getByName(&quot;Txt_Plantilla&quot;).Text = P_Txt(23)
+         End If
        End If  
-     Else &apos;oDocprops.TemplateName = &quot;&quot; Then
-       .getByName(&quot;Lbl_Plantilla&quot;).label = P_Txt(15)
-       .getByName(&quot;Lbl_Marca&quot;).TextColor = RGB(255,0,0)
-       .getByName(&quot;Lbl_Marca&quot;).Label= &quot;☒&quot;
      End If
    End With
-  oDlgPlantillas.Execute
+   oDlgPlantillas.Execute
+&apos;   If oDlgPlantillas.Execute = 0 Then Call _Aux.DirectorioPlantillas
 End sub
 
  Rem ########
@@ -141,7 +155,7 @@ Sub onBtn_Asociar&apos;(oev)
 End Sub
 
  Rem ########
-Sub CortarEnlace
+Sub CortarEnlace&apos;no usado
 
    Call L10n.Trad_Plantilla
    DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
@@ -151,7 +165,7 @@ Sub CortarEnlace
 end sub
 
  Rem ########
-Sub ActivarPlantilla
+Sub ActivarPlantilla&apos; no usado
    Call L10n.Trad_Plantilla
    Docprops = ThisComponent.DocumentProperties
    If ThisComponent.getDocumentProperties.TemplateName = &quot;&quot;  Then
@@ -168,7 +182,7 @@ Sub ActivarPlantilla
 End Sub
 
  Rem ########
-Sub DesactivarPlantilla
+Sub DesactivarPlantilla&apos; no usado
    Call L10n.Trad_Plantilla
    DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; ) 
    DocSettings.UpdateFromTemplate = False

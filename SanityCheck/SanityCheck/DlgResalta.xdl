@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="DlgResalta" dlg:left="257" dlg:top="119" dlg:width="226" dlg:height="55" dlg:closeable="true" dlg:moveable="true">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:font-height="11" dlg:font-weight="150"/>
+  <dlg:style dlg:style-id="1" dlg:text-color="0x468a1a" dlg:font-height="11" dlg:font-weight="150"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Info" dlg:tab-index="0" dlg:left="56" dlg:top="10" dlg:width="128" dlg:height="10" dlg:page="1" dlg:value="Lbl_Info" dlg:valign="center"/>
+  <dlg:text dlg:style-id="1" dlg:id="Lbl_NCambios" dlg:tab-index="1" dlg:left="37" dlg:top="10" dlg:width="12" dlg:height="10" dlg:page="1" dlg:value="Lbl_NCambios" dlg:align="right" dlg:valign="center"/>
+  <dlg:text dlg:style-id="0" dlg:id="Lbl_Recuerda" dlg:tab-index="2" dlg:left="10" dlg:top="23" dlg:width="214" dlg:height="10" dlg:page="1" dlg:value="Lbl_Recuerda" dlg:valign="center"/>
+  <dlg:button dlg:id="Btn_Salir" dlg:tab-index="3" dlg:left="167" dlg:top="38" dlg:width="34" dlg:height="12" dlg:value="Btn_Salir" dlg:button-type="cancel"/>
+  <dlg:button dlg:id="Btn_Detalles" dlg:tab-index="4" dlg:left="98" dlg:top="38" dlg:width="34" dlg:height="12" dlg:value="Btn_Detalles" dlg:button-type="ok"/>
+ </dlg:bulletinboard>
+</dlg:window>

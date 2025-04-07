@@ -218,20 +218,27 @@ End Function
  Rem ############
 Sub ProgressBar()
 &apos;https://ask.libreoffice.org/t/basic-calc-progress-bar/46444/2
-	Dim oProgressBar as Object, oProgressBarModel As Object, oDialog as Object
+	Dim oProgressBar as Object, oProgressBarModel As Object, oDlg_Barra as Object
 	Dim ProgressValue As Long, ProgressValueMin as Integer, ProgressValueMax as Integer
 	DialogLibraries.loadLibrary(&quot;Standard&quot;)
-	oDialog = CreateUnoDialog(DialogLibraries.Standard.Barra)
+	oDlg_Barra = CreateUnoDialog(DialogLibraries.Standard.Barra)
 	REM progress bar settings
     ProgressValueMin = 1
     ProgressValueMax = F_ParrafosEnDoc
 	Const ProgressStep = 1
 	REM set minimum and maximum progress value
-	oProgressBarModel = oDialog.getModel().getByName( &quot;ProgressBar1&quot; )
+&apos;    oDlg_Barra.Model.setPropertyValue(&quot;Decoration&quot;, False)&apos; no tiene efecto, 
+	oProgressBarModel = oDlg_Barra.getModel().getByName( &quot;ProgressBar1&quot; )
 	oProgressBarModel.setPropertyValue( &quot;ProgressValueMin&quot;, ProgressValueMin)
 	oProgressBarModel.setPropertyValue( &quot;ProgressValueMax&quot;, ProgressValueMax)
+&apos;With oDlg_Barra.Model
+&apos;.setPropertyValue(&quot;Decoration&quot;, False)&apos; no tiene efecto, 
+&apos;.getByName( &quot;ProgressBar1&quot;).setPropertyValue( &quot;ProgressValueMin&quot;, ProgressValueMin)
+&apos;.getByName( &quot;ProgressBar1&quot;).setPropertyValue( &quot;ProgressValueMax&quot;, ProgressValueMax)
+&apos;End With
+
 	REM show progress bar
-	oDialog.setVisible( True )
+	oDlg_Barra.setVisible( True )
 	REM increase progress value every second
     REM This is where you perform whatever action you are wanting 
    DIm oCursor
