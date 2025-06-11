@@ -384,17 +384,18 @@ End Sub
 
  Rem ############
 Function F_ResaltaCarAjenos(Matriz As Variant)
- Rem Devuelve True si  N_Estilo es un estilo ajeno
- Rem (No está en la matriz de estilos de carácter de usuario) 
+ Rem Resalta caracteres ajenos distintos de ch2_ (evita problemas con estilos de macros)
  Rem ==================================================
  Dim s As string, oEstilos As Object, oEstilo As Object, i As Integer
    oEstilos = ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;)
    For i = LBound(Matriz) to UBound(Matriz)
      oEstilo = oEstilos.getByName(Matriz(i))
-     If left(oEstilo.DisplayName,4) &lt;&gt; &quot;ch2_&quot; then
+     If left(oEstilo.Name,4) &lt;&gt; &quot;ch2_&quot; then
        If oEstilo.CharBackColor &lt;&gt; 0 then
          oEstilo.CharBackColor = 0
-         oEstilo.CharColor = RGB(255,255,100)&apos; Evitar Problema con macros
+         oEstilo.CharColor = RGB(255,255,100)
+         
+         
        End If
      End If    
    Next i
@@ -415,7 +416,7 @@ Call L10n.Trad_Estilos
        s = s &amp; F_Sust_E_P (Antiguos(i), (Nuevos(i))) &amp; Chr(13)
      End If
    Next
-
+&apos; Errores en transición de cambio de estilos (se indicaron sin comas)
  Dim SinComas(): SinComas = Array (&quot;Body Text List Intro&quot;,&quot;Body Text Indented 2&quot;,&quot;Body Text Note&quot;)
  Dim ConComas(): ConComas = Array (&quot;Body Text, List Intro&quot;,&quot;Body Text, Indented 2&quot;,&quot;Body Text, Note&quot;)
    For i = 0 to UBound(SinComas)
@@ -469,7 +470,7 @@ Function F_Sust_E_P (E_Buscado As String, E_Remplazo As String ) As String
 End Function
 
  Rem ############
- Rem Sustituye estilos de carácter
+ Rem Sustituye estilos de carácter en negrita
  Rem ===============================
 Function F_Cambia_E_Car(E_Buscado as String, E_Remplazo as String)
  Dim oSearch  As Variant, oFound As Variant  

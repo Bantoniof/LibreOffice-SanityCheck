@@ -29,6 +29,7 @@ End Sub
 
 Function F_DirPlantillas() As Boolean
  Dim oDocprops : oDocprops = ThisComponent.getDocumentProperties
+   If oDocprops.TemplateName = &quot;&quot; Then : F_DirPlantillas = False : exit Function : End If
  Dim Asociada() : Asociada = split (oDocprops.TemplateURL,&quot;/&quot;)
  Dim Ext() : Ext = Split(F_Pathextension,&quot;/&quot;)
  Dim elementos

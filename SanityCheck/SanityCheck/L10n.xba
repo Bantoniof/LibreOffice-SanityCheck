@@ -179,7 +179,7 @@ Sub Trad_Campos
    C_Txt(3) = &quot;Guide&quot;
    C_Txt(4) = &quot;LO. Version&quot;
    C_Txt(5) = &quot;Comments&quot;
-   C_Txt(6) = &quot;         Chapter             &amp;      Title&quot;
+   C_Txt(6) = &quot;         Chapter X            &amp;      Title&quot;
    C_Txt(7) = &quot;Published&quot;
    C_Txt(8) = &quot;None&quot;
    C_Txt(9) = &quot;Correct&quot;
