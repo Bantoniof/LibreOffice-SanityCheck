@@ -27,6 +27,7 @@ then
     echo 
     echo "### updating " $Ext".update.xml"
 	sed -i s'/<version value.*/<version value="'$1'"\/>/' $Ext.update.xml
-	#sed -i s'/raw.*/raw\/'$1'\/'$Ext'.oxt"\/>/' $Ext.update.xml
+	#La  siguiente linea es para las releases. si se usa directamente de main dará problemas
+	sed -i s'/raw.*/raw\/'$1'\/'$Ext'.oxt"\/>/' $Ext.update.xml
     echo "### Done"
 fi
