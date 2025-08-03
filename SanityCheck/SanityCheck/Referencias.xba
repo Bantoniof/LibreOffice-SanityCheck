@@ -12,6 +12,7 @@
 
  Rem ############
 Sub Dlg_Refs
+   If _Aux.F_Prueba_Sel = 0 then exit sub
    Call L10n.Trad_Referencias
    DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
    oDlgRefs = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgRefs&quot;))
@@ -29,6 +30,7 @@ End Sub
  Rem ############ 
 Sub OnBtn_Buscar(oEv)
    oDlgRefs = oEv.Source.Context
+
  Dim Vcursor As Object, oEnum as Object, oField As Object
  Dim s As String, Loc as String, i as Integer
    VCursor = ThisComponent.CurrentController.getViewCursor
