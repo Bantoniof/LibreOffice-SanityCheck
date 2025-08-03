@@ -2,14 +2,15 @@
 <!DOCTYPE library:library PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "library.dtd">
 <library:library xmlns:library="http://openoffice.org/2000/library" library:name="SanityCheck" library:readonly="false" library:passwordprotected="false">
  <library:element library:name="DlgCampos"/>
+ <library:element library:name="DlgRenombrar"/>
  <library:element library:name="DlgEstilos"/>
  <library:element library:name="DlgImagenes"/>
- <library:element library:name="DlgResaltes"/>
  <library:element library:name="DlgTablas"/>
- <library:element library:name="DlgRenombrar"/>
+ <library:element library:name="DlgResaltes"/>
  <library:element library:name="DlgFormatos"/>
  <library:element library:name="DlgFiguras"/>
  <library:element library:name="DlgPlantillas"/>
  <library:element library:name="DlgInfo"/>
  <library:element library:name="DlgResalta"/>
+ <library:element library:name="DlgRefs"/>
 </library:library>

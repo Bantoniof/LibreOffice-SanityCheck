@@ -403,7 +403,7 @@ End sub
 
  Rem ############
 Function F_ReiniciarLeyendasNum
-&apos;   Call L10n.Trad_Formatos
+   Call L10n.Trad_Formatos
  Dim oProgressbar As Object: oProgressbar = ThisComponent.CurrentController.getStatusIndicator()
    If not isnull(oDlgFmt) Then
    oDlgFmt.getmodel.getbyName(&quot;Tx_Registro&quot;).Text = F_Txt(26)

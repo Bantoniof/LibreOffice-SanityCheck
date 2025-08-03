@@ -19,6 +19,7 @@
  Dim I_Txt(46) As String
  Dim P_Txt(23) As String
  Dim R_Txt(22) As String
+ Dim Ref_Txt(7) As String
  Dim Ren_Txt(20) As String
  Dim T_Txt(23) As String
  Dim Meses() As String
@@ -763,6 +764,43 @@ Sub Trad_Plantilla
    &quot; ◘ You need to link  the document with the template in its new location&quot; &amp; Chr(13) &amp; Chr(13) &amp; P_Txt(8)
    End select
 End Sub
+
+
+ Rem ############
+Sub Trad_Referencias
+ Select Case F_getLang
+
+  Case &quot;es&quot;
+   Ref_txt(0) = &quot;Errores en referencias&quot;
+   Ref_txt(1) = &quot;Error: &quot; &apos;Localización
+   Ref_txt(2) = &quot;Se encontraron referencias con errores en: &quot; &amp; Chr(13) &amp; Chr(13)
+   Ref_txt(3) = &quot;No hay errores en referencias&quot;
+   Ref_txt(4) = &quot;Esta macro busca referencias con errores y enumera las páginas donde se encuentran.&quot;  
+   Ref_txt(5) = &quot;Buscar&quot;
+   Ref_txt(6) = &quot;Salir&quot;
+   Ref_txt(7) = &quot;Página &quot;
+ 
+  Case &quot;pt&quot;
+   Ref_txt(0) = &quot;Errors em referencias&quot;
+   Ref_txt(1) = &quot;Erro: &quot; &apos;Localización
+   Ref_txt(2) = &quot;As referências com erros foram encontradas em:&quot; &amp; Chr(13) &amp; Chr(13)
+   Ref_Txt(3) = &quot;Não há referências com erros&quot;
+   Ref_Txt(4) = &quot;Esta macro localiza as referências com erros e lista as páginas onde estão&quot;  
+   Ref_txt(5) = &quot;Pesquisa&quot;
+   Ref_txt(6) = &quot;Sair&quot;
+   Ref_txt(7) = &quot;Página &quot;
+
+  Case &quot;en&quot;
+   Ref_txt(0) = &quot;Errors in references&quot;
+   Ref_txt(1) = &quot;Error: &quot; &apos;Localización
+   Ref_txt(2) = &quot;References with errors were found in:&quot; &amp; Chr(13) &amp; Chr(13)
+   Ref_txt(3) = &quot;No errors were found in references&quot;
+   Ref_txt(4) = &quot;This macro looks for references with errors and list the pages where they are.&quot;
+   Ref_txt(5) = &quot;Find&quot;
+   Ref_txt(6) = &quot;Exit&quot;
+   Ref_txt(7) = &quot;Page &quot;
+  end Select
+end sub
 
  Rem ############
 Sub Trad_Resaltes

@@ -5,29 +5,37 @@
 # and build (compress) the extension
 
 Ext="SanityCheck"
-RotExt="SanityCheck"
+RootExt="SanityCheck"
 
-if [[ ! $1 ]]
-then
-	echo "Usage:"
-	echo "./build.sh [version]"
-	echo "example: ./build.sh 12.2.3"
-	exit
-	else
+ZIP_CMD='7z -tzip a '
+
+# I use 7zip, but you can use zip:
+#ZIP_CMD='zip -ru ' 
+
+
+SubstVersion() {
 	echo
-    echo "### updating " $RotExt"/description.xml"
-   cd $RotExt
-	sed -i s'/<version value.*/<version value="'$1'"\/>/' description.xml
+	echo "### updating  $2"
+	sed -i 's#<version value.*#<version value="'$1'"/>#' $2
+}
+
+if [[ ! $1 =~ ^[0-9]+(\.[0-9]+)+$ ]]
+then
+	cat <<__USAGE
+  Usage:
+  $0 Version.Subversions...   (using dot separated digits)
+  example: $0 12.2.3
+__USAGE
+
+else
+    SubstVersion $1 $RootExt/description.xml
+
+    cd $RootExt
     echo "### Compiling " $Ext
-    # I use 7zip but you can use zip:
-    # zip -r SanityCheck.oxt .
-     7z a ./$Ext.oxt . -tzip
-     cd ..
-    mv $RotExt/$Ext.oxt ./
-    echo 
-    echo "### updating " $Ext".update.xml"
-	sed -i s'/<version value.*/<version value="'$1'"\/>/' $Ext.update.xml
-	#La  siguiente linea es para las releases. si se usa directamente de main dará problemas
-	sed -i s'/raw.*/raw\/v'$1'\/'$Ext'.oxt"\/>/' $Ext.update.xml
-    echo "### Done"
+    ${ZIP_CMD} ../$Ext.oxt .
+    cd ..
+    SubstVersion $1 $Ext.update.xml
+    #The next line is if the .OXT is in releases, if is in root dir will break the updates.
+    sed -i s'/raw.*/raw\/v'$1'\/'$Ext'.oxt"\/>/' $Ext.update.xml
+    echo "### Done, Version " $1 " of " $Ext 
 fi

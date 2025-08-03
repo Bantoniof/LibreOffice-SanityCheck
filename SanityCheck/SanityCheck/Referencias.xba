@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Referencias" script:language="StarBasic" script:moduleType="normal"> Rem  *****  BASIC  Módulo Referencias *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Fragmentos de código de la extensión TemplateChanger
+ Rem original de André Schnabel
+ Rem Licencia GNU v3 o posterior
+
+ Option Explicit
+ Dim oDlgRefs As object
+
+ Rem ############
+Sub Dlg_Refs
+   Call L10n.Trad_Referencias
+   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   oDlgRefs = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgRefs&quot;))
+    With oDlgRefs.Model
+     .Title = Ref_Txt(0) &amp; Extension
+     .getbyname(&quot;Tx_Registro&quot;).text = Ref_txt(4)
+     .getByName(&quot;Btn_Buscar&quot;).Label = Ref_Txt(5)     
+     .getbyname(&quot;Btn_Buscar&quot;).enableVisible= True 
+     .getbyname(&quot;Btn_Salir&quot;).Label = Ref_Txt(6)
+     .getbyname(&quot;Btn_Salir&quot;).enableVisible= False 
+   End With
+   oDlgRefs.execute
+End Sub
+
+ Rem ############ 
+Sub OnBtn_Buscar(oEv)
+   oDlgRefs = oEv.Source.Context
+ Dim Vcursor As Object, oEnum as Object, oField As Object
+ Dim s As String, Loc as String, i as Integer
+   VCursor = ThisComponent.CurrentController.getViewCursor
+   oEnum = ThisComponent.getTextFields().createEnumeration()
+   ThisComponent.getTextFields().Refresh
+   Do While oEnum.hasMoreElements()
+     oField = oEnum.nextElement()
+     oField.update 
+     s = ofield.getPresentation(False)
+     If inStr(s,Ref_txt(1)) then 
+       VCursor.gotoRange(oField.Anchor.Start,False)
+       VCursor.goRight(1, true)
+       i = i+1
+       Loc = Chr(9) &amp; Ref_txt(7) &amp; VCursor.getPage &amp; &quot;, &quot; &amp; VCursor.string &amp; Chr(13) &amp; Loc
+     End If
+   Loop
+
+   If i = 0 Then
+      s = Ref_Txt(3)
+   else
+     s = Ref_Txt(2) &amp; Loc
+   End If
+
+   With oDlgRefs.Model
+     .getbyname(&quot;Tx_Registro&quot;).text = s
+     .getbyname(&quot;Btn_Buscar&quot;).enableVisible= False 
+     .getbyname(&quot;Btn_Salir&quot;).enableVisible= True 
+   End With
+End Sub
+
+ Rem ================= Fin Referencias =======================================================*
+</script:module>

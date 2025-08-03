@@ -2,7 +2,7 @@
 <oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" oor:name="Addons" oor:package="org.openoffice.Office">
 
 	<node oor:name="AddonUI">
-		<node oor:name="OfficeToolBar"><!-- Inicio Herramientas -->
+		<node oor:name="OfficeToolBar"><!-- Inicio Barra Herramientas -->
 			<node oor:name="SanityCheck.OfficeToolBar" oor:op="replace">
 
 				<node oor:name="m001" oor:op="replace">
@@ -110,7 +110,28 @@
 					</prop>
 				</node>
 
+
+																											
 				<node oor:name="m008" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Referencias.Dlg_Refs?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Errors in references</value>
+						<value xml:lang="pt-BR">Erros em referências</value>
+						<value xml:lang="es-ES">Errores en referencias</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+																													
+
+
+				<node oor:name="m009" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -127,7 +148,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m009" oor:op="replace">
+				<node oor:name="m010" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -144,7 +165,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m010" oor:op="replace">
+				<node oor:name="m011" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -161,7 +182,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m011" oor:op="replace">
+				<node oor:name="m012" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -178,7 +199,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="m012" oor:op="replace">
+				<node oor:name="m013" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -335,7 +356,26 @@
 						</prop>
 					</node>
 
-					<node oor:name="m002" oor:op="replace">
+																											
+				<node oor:name="m002" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Referencias.Dlg_Refs?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Errors in references</value>
+						<value xml:lang="pt-BR">Erros em referências</value>
+						<value xml:lang="es-ES">Errores en referencias</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+																													
+
+					<node oor:name="m003" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
 							<value>com.sun.star.text.TextDocument</value>
 						</prop>
@@ -352,7 +392,7 @@
 						</prop>
 					</node>
 
-					<node oor:name="m003" oor:op="replace">
+					<node oor:name="m004" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
 							<value>com.sun.star.text.TextDocument</value>
 						</prop>
@@ -369,7 +409,7 @@
 						</prop>
 					</node>
 
-					<node oor:name="m004" oor:op="replace">
+					<node oor:name="m005" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
 							<value>com.sun.star.text.TextDocument</value>
 						</prop>
@@ -386,7 +426,7 @@
 						</prop>
 					</node>
 
-					<node oor:name="m005" oor:op="replace">
+					<node oor:name="m006" oor:op="replace">
 						<prop oor:name="Context" oor:type="xs:string">
 							<value>com.sun.star.text.TextDocument</value>
 						</prop>
@@ -434,7 +474,7 @@
 
 				</node><!-- Submenu 1 -->
 			</node><!-- Sanity Menu Bar -->
-		</node><!-- Office MenuBar 2 -->
+		</node><!-- Office MenuBar -->
 
 
 		<node oor:name="OfficeNotebookBar"><!-- Inicio Omnibarra -->
@@ -536,7 +576,26 @@
 					</prop>
 				</node>
 
+																											
 				<node oor:name="omb07" oor:op="replace">
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument,com.sun.star.text.GlobalDocument</value>
+					</prop>
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>vnd.sun.star.script:SanityCheck.Referencias.Dlg_Refs?language=Basic&amp;location=application</value>
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value>Errors in references</value>
+						<value xml:lang="pt-BR">Erros em referências</value>
+						<value xml:lang="es-ES">Errores en referencias</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+				</node>
+																													
+
+				<node oor:name="omb08" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -553,7 +612,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb08" oor:op="replace">
+				<node oor:name="omb09" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -570,7 +629,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb09" oor:op="replace">
+				<node oor:name="omb10" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -587,7 +646,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb10" oor:op="replace">
+				<node oor:name="omb11" oor:op="replace">
 					<prop oor:name="Title" oor:type="xs:string">
 							<value>Browse images</value>
 							<value xml:lang="pt-BR">Percorrer imagems</value>
@@ -605,7 +664,7 @@
 					</prop>
 				</node>
 
-				<node oor:name="omb11" oor:op="replace">
+				<node oor:name="omb12" oor:op="replace">
 					<prop oor:name="Title" oor:type="xs:string">
 							<value>Info</value>
 							<value xml:lang="pt-BR">Info</value>
@@ -625,7 +684,7 @@
 
 
 
-				<node oor:name="omb12" oor:op="replace">
+				<node oor:name="omb13" oor:op="replace">
 					<prop oor:name="Context" oor:type="xs:string">
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
@@ -712,6 +771,24 @@
 					</prop>
 				</node>
 			</node>
+
+																											
+			<node oor:name="vnd.bantoniof.sanitycheck.Referencias.Dlg_Refs" oor:op="replace">
+				<prop oor:name="URL" oor:type="xs:string">
+					<value>vnd.sun.star.script:SanityCheck.Referencias.Dlg_Refs?language=Basic&amp;location=application</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL">
+						<value>%origin%/icons/Referencias.svg</value>
+					</prop>
+					<prop oor:name="ImageBigURL">
+						<value>%origin%/icons/Referencias.svg</value>
+					</prop>
+				</node>
+			</node>
+																												
+
+
 
 			<node oor:name="vnd.bantoniof.sanitycheck.Formatos.Dlg_Formatos" oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
