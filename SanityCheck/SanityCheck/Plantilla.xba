@@ -33,39 +33,44 @@ end sub
 
  Rem ### MENU #####
 Sub Dlg_Plantillas
+   If _Aux.F_Prueba_Sel = 0 then exit sub
    Call L10n.Trad_Plantilla
    If _Aux.F_Guardado = 0 Then : Exit Sub : End If
  Dim oDocprops as Object : oDocprops = ThisComponent.getDocumentProperties
- Dim nplant As String
+ Dim nplant As String, vplant As String
+   If _Aux.F_VersGuia &gt;= 26 then: vplant = &quot;26&quot; 
+   else vplant = &quot;2Xx&quot;
+   End If
+
    Select case _Aux.F_TipoDoc
      Case &quot;Plantilla&quot;
        MsgBox (P_Txt(18), 0+48+0, P_Txt(0) &amp; Extension)
        Exit Sub
      Case &quot;Maestro&quot;
        Select case  L10n.F_getLang
-         Case &quot;es&quot;: nplant = &quot;LO_UG_Patron_2Xx_ES&quot;
-         Case &quot;pt&quot;: nplant = &quot;LO_UG_Mestre_2Xx_PT&quot;
-         Case else : nplant = &quot;LO_UG_Master_2Xx_EN&quot;
+         Case &quot;es&quot;: nplant = &quot;LO_UG_Patron_&quot; &amp; vplant &amp; &quot;_ES&quot;
+         Case &quot;pt&quot;: nplant = &quot;LO_UG_Mestre_&quot; &amp; vplant &amp; &quot;_PT&quot;
+         Case else : nplant = &quot;LO_UG_Master_&quot; &amp; vplant &amp; &quot;_EN&quot;
        End Select
      Case &quot;Guia&quot;
        Msgbox (P_Txt(17),0+64+0, P_Txt(0) &amp; Extension)
        Select case  L10n.F_getLang
-         Case &quot;es&quot;: nplant = &quot;LO_UG_Patron_2Xx_ES&quot;
-         Case &quot;pt&quot;: nplant = &quot;LO_UG_Mestre_2Xx_PT&quot;
-         Case else : nplant = &quot;LO_UG_Master_2Xx_EN&quot;
+         Case &quot;es&quot;: nplant = &quot;LO_UG_Patron_&quot; &amp; vplant &amp; &quot;_ES&quot;
+         Case &quot;pt&quot;: nplant = &quot;LO_UG_Mestre_&quot; &amp; vplant &amp; &quot;_PT&quot;
+         Case else : nplant = &quot;LO_UG_Master_&quot; &amp; vplant &amp; &quot;_EN&quot;
        End Select
      Case &quot;Capitulo&quot;
        Select case  L10n.F_getLang
-         Case &quot;es&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_ES&quot;
-         Case &quot;pt&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_PT&quot;
-         Case else : nplant = &quot;LO_UG_Chapters_2Xx_EN&quot;
+         Case &quot;es&quot;: nplant = &quot;LO_UG_Capitulos_&quot; &amp; vplant &amp; &quot;_ES&quot;
+         Case &quot;pt&quot;: nplant = &quot;LO_UG_Capitulos_&quot; &amp; vplant &amp; &quot;_PT&quot;
+         Case else : nplant = &quot;LO_UG_Chapters_&quot; &amp; vplant &amp; &quot;_EN&quot;
        End Select
      Case &quot;Documento&quot;
        If Msgbox(P_Txt(19),4+64+0,P_Txt(0) &amp; Extension) = 6 then
          Select case  L10n.F_getLang
-           Case &quot;es&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_ES&quot;
-           Case &quot;pt&quot;: nplant = &quot;LO_UG_Capitulos_2Xx_PT&quot;
-           Case else : nplant = &quot;LO_UG_Chapters_2Xx_EN&quot;
+           Case &quot;es&quot;: nplant = &quot;LO_UG_Capitulos_26_ES&quot;
+           Case &quot;pt&quot;: nplant = &quot;LO_UG_Capitulos_26_PT&quot;
+           Case else : nplant = &quot;LO_UG_Chapters_26_EN&quot;
          End Select
        Else 
          Exit sub
@@ -123,22 +128,37 @@ End sub
 
  Rem ########
 Sub onBtn_Asociar&apos;(oev)
-
+  
 &apos;   oDlgPlantillas = oEv.Source.Context
+ Dim vplant
+   If _Aux.F_VersGuia &gt;= 26 then: vplant = &quot;26&quot; : else : vplant = &quot;2Xx&quot;  : End If
+
    Select Case _Aux.F_TipoDoc
      Case &quot;Guia&quot;,&quot;Maestro&quot;
        Select case L10n.F_getLang
-         Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Patron_2Xx_ES.otm&quot;
-         Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Mestre_2Xx_PT.otm&quot;
-         Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Master_2Xx_EN.otm&quot;
+         Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Patron_&quot; &amp; vplant &amp; &quot;_ES.otm&quot;
+         Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Mestre_&quot; &amp; vplant &amp; &quot;_PT.otm&quot;
+         Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Master_&quot; &amp; vplant &amp; &quot;_EN.otm&quot;
        End Select
-     Case &quot;Capitulo&quot;,&quot;Documento&quot;
+     Case &quot;Capitulo&quot;
        Select case L10n.F_getLang
-         Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Capitulos_2Xx_ES.ott&quot;
-         Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Capitulos_2Xx_PT.ott&quot;
-         Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Chapters_2Xx_EN.ott&quot;
+         Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Capitulos_&quot; &amp; vplant &amp; &quot;_ES.ott&quot;
+         Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Capitulos_&quot; &amp; vplant &amp; &quot;_PT.ott&quot;
+         Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Chapters_&quot; &amp; vplant &amp; &quot;_EN.ott&quot;
+       End Select 
+     Case &quot;Documento&quot;
+       Select case L10n.F_getLang
+         Case &quot;es&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/es/LO_Doc/LO_UG_Capitulos_26_ES.ott&quot;
+         Case &quot;pt&quot;: TemplateURL = F_PathExtension &amp; &quot;/template/pt-BR/LO_Doc/LO_UG_Capitulos_26_PT.ott&quot;
+         Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Chapters_26_EN.ott&quot;
        End Select 
    End Select   
+
+  If  Not FileExists(TemplateURL) then
+   Msgbox (&quot;Error, template not found&quot;,0+64+0,&quot;Error&quot;)
+   exit sub
+   end if
+
    DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
    Docprops = ThisComponent.DocumentProperties  &apos;(meta.xml)
    S_loadTemplate (templateURL, oTemplate, templateName)
@@ -147,10 +167,74 @@ Sub onBtn_Asociar&apos;(oev)
    if oTemplate.supportsService(&quot;com.sun.star.text.TextDocument&quot;) _ 
         OR oTemplate.supportsService(&quot;com.sun.star.text.GlobalDocument&quot;) then &apos;Plantilla ott u otm
      S_setTemplateAndDate (ThisComponent, templateName, templateURL, oTemplate.DocumentProperties.ModificationDate)
-     S_applyTemplate(ThisComponent, templateUrl)
+     S_applyTemplate(ThisComponent,templateUrl)
      S_activateWriterHeadings(ThisComponent)
+
+     If _Aux.F_TipoDoc = &quot;Capitulo&quot; then Call CambiaLogo
+     If _Aux.F_VersGuia &gt;= 26 Then Call CharChapNum 
+         
      If not isnull(oDlgPlantillas) then oDlgPlantillas.EndExecute
      msgbox (P_Txt(1) &amp; templateName, 0+64+0, P_Txt(0) &amp; Extension)       
+   End If
+    
+End Sub
+
+ Rem ########
+Sub CambiaLogo
+
+   If ThisComponent.GraphicObjects.Count = 0 then Exit Sub
+ Dim oImg : oImg = ThisComponent.GraphicObjects.getbyIndex(0)
+   With oImg
+       .VertOrient = 2
+       .AnchorType = 1
+       .Name = &quot; LibreOffice Logo&quot;
+       .Title = &quot;LibreOffice Logo&quot;
+       .Description = &quot;LibreOffice Logo&quot;   
+       If _Aux.F_LOVersion &gt;= 7.5 Then  oImg.Decorative = True           
+       If _Aux.F_VersGuia &lt; 26 then
+         .TopMargin = 2500 
+       Else
+       .TopMargin = 0                          
+       .GraphicURL = F_PathExtension &amp; &quot;/icons/logo26.svg&quot;  &apos;no documentado pero cambia la imagen
+       .Width = 8420
+       .Height = 2120        
+       End If
+       If ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).hasbyName(&quot;New Chapter&quot;) Then
+        .getAnchor.ParaStyleName = &quot;New Chapter&quot;
+       End If
+     End With
+End Sub
+
+ Rem ########
+ Rem &quot;LOCALIZADO &gt; Aplica estilo caracter en Capítulo X o Apéndice X
+ Rem e introduce un salto de línea antes de Prefacio
+Sub CharChapNum
+   If Not ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;)_
+      .HasbyName(&quot;Chapter Number&quot;) then
+     exit sub
+   End if
+  Dim oCursor As Object, vCursor As Object
+ vCursor= ThisComponent.CurrentController.getViewCursor
+ Dim Secs As Object , oSec As Object
+   Secs = ThisComponent.TextSections
+   If Not Secs.HasbyName(&quot;SEC_TITLE&quot;) then
+     Exit Sub
+   Else    
+     oSec = Secs.getbyName(&quot;SEC_TITLE&quot;)
+     vCursor.gotorange(oSec.getAnchor.Start,False)
+     vCursor.gotoEndOfLIne(True)
+     If InStr(vCursor.String,&quot;chapter&quot;)_ 
+        OR InStr(vCursor.String,&quot;capítulo&quot;)_
+        OR InStr(vCursor.String,&quot;Appendix&quot;)_
+        OR InStr(vCursor.String,&quot;Apéndice&quot;)_
+        OR InStr(vCursor.String,&quot;Apêndice&quot;) Then
+       Dim oSel : oSel = ThisComponent.CurrentSelection
+       oSel(0).CharStyleName = &quot;Chapter Number&quot;
+     ElseIf InStr(vCursor.String,&quot;Preface&quot;)_ 
+         OR InStr(vCursor.String,&quot;Prefácio&quot;)_
+         OR InStr(vCursor.String,&quot;Prefacio&quot;) Then
+     vCursor.String = Chr(10) &amp; vCursor.String
+     End If
    End If
 End Sub
 

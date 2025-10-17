@@ -27,7 +27,6 @@ Sub AjusteFiguras
      Exit sub
    End If
    If _Aux.F_Control_Cambios = True then exit Sub
-   
    oImgs = ThisComponent.GraphicObjects()
    If oImgs.getCount = 0 Then : MsgBox (I_Txt(39), 0+48+0, I_Txt(0) &amp; Extension) : Exit Sub  : End If
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
@@ -48,20 +47,22 @@ Function F_Ajuste_Imagenes_Marcos
    oProgressBar.start( I_Txt(32), oImgs.Count * 2 )
    oProgressBar.setValue( 1 )
    PBcounter = 0
-
    oImg = oImgs.getbyIndex(0)
-     With oImg
+
+   With oImg
        .VertOrient = 2
        .AnchorType = 1
-       .TopMargin = 2500
        .Name = &quot; LibreOffice Logo&quot;
        .Title = &quot;LibreOffice Logo&quot;
-       .Description = &quot;LibreOffice Logo&quot;       
-       If _Aux.F_LOVersion &gt;= 7.5 Then 
-         oImg.Decorative = True
+       .Description = &quot;LibreOffice Logo&quot;   
+       If _Aux.F_LOVersion &gt;= 7.5 Then  oImg.Decorative = True           
+       If _Aux.F_VersGuia &lt; 26 then
+         .TopMargin = 2500 
+       Else
+         .TopMargin = 0                          
        End If
        If ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).hasbyName(&quot;New Chapter&quot;) Then
-        .getAnchor.ParaStyleName = &quot;New Chapter&quot;
+         .getAnchor.ParaStyleName = &quot;New Chapter&quot;
        End If
      End With
 

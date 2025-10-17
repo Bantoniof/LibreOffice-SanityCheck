@@ -104,17 +104,34 @@ Function F_TipoDoc
 End Function
 
  Rem ############
-Function F_Control_Cambios As boolean &apos;lst346
+Function F_VersGuia As integer
+ &apos;Devuelve la versión de la guía en que se trabaja
+ &apos;en función del nombre de archivo
+   Call L10n.Trad_Plantilla
+ Dim Archivo : Archivo = ThisComponent.getUrl 
+ Dim Nombre : Nombre = Filenameoutofpath(Archivo)
+ Dim cuenta
+   cuenta = left(Nombre,4) : cuenta = right(cuenta,2)
+   cuenta = Cint(cuenta)
+   If cuenta &gt; 30 then 
+     F_VersGuia = cuenta / 10
+   else
+     F_VersGuia = cuenta
+   End If  
+End Function
+
+ Rem ############
+Function F_Control_Cambios As boolean &apos;lst346 
 Rem Comprueba Control de cambios y cambios pendientes aceptar/rechazar
    Call L10n.Trad_Aux
    If ThisComponent.RecordChanges Then
-    Msgbox (A_Txt(11) &amp; A_Txt(13), 0+48+0,Extension)
-    F_Control_Cambios = 1
+     Msgbox (A_Txt(11) &amp; A_Txt(13), 0+48+0,Extension)
+     F_Control_Cambios =1
      Exit Function
    End If 
+ Dim i As Integer 
  Dim oParEnum As Object, oSecEnum As Object
  Dim oPar As Object, oParSection As Object
- Dim Salir As Boolean :  Salir = 0
    oParEnum = ThisComponent.Text.createEnumeration()
    Do While oParEnum.hasMoreElements()
      oPar = oParEnum.nextElement()
@@ -123,15 +140,15 @@ Rem Comprueba Control de cambios y cambios pendientes aceptar/rechazar
        Do While oSecEnum.hasMoreElements()
          oParSection = oSecEnum.nextElement()
          If oparsection.Textportiontype = &quot;Redline&quot; then 
-           MsgBox (A_Txt(12) &amp; A_Txt(13), 0+48+0, Extension) 
-           Salir = 1
-           Exit Do
+         i = i +1
          End If
        Loop
     End If
-      If Salir = 1 then exit Do
    Loop
-      F_Control_Cambios = Salir
+   If i &gt; 0 then 
+     MsgBox (A_Txt(12) &amp; A_Txt(13), 0+48+0, Extension) 
+     F_Control_Cambios = 1
+   End if
 End Function
 
  Rem ############
@@ -139,13 +156,17 @@ Function F_Prueba_Sel()As Boolean &apos;pasar prueba selección
  Rem Devuelve 1 si estamos en texto y podemos continuar (correcto)
  Rem Devuelve 0 si estamos en un objeto o sucede otro error (mal)
  Call L10n.Trad_Aux
- Dim oSel : oSel= ThisComponent.getCurrentSelection
+ Dim dispatcher As Object, oSel As Object
+   oSel= ThisComponent.getCurrentSelection
    On Error GoTo ERRORES
-   If Not oSel.supportsService(&quot;com.sun.star.text.TextRanges&quot;) Then 
+   If Not oSel.supportsService(&quot;com.sun.star.text.TextRanges&quot;) Then &apos;salgo de selección con escape.
+     dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;) 
+     dispatcher.executeDispatch(ThisComponent.CurrentController.frame, &quot;.uno:Escape&quot;, &quot;&quot;, 0, Array())
      MsgBox (A_Txt(1) &amp; Chr(13) &amp; Chr(13) &amp; A_Txt(3), 0+0+64, Extension)&apos;Cursor en un objeto
      F_Prueba_Sel = 0
      Exit Function
    End If
+
 ERRORES:
    If Err = 0 Then : F_Prueba_Sel = 1 : Exit Function
    ElseIf Err = 91 Then : MsgBox  (A_Txt(2) &amp; Chr(13) &amp; Chr(13) &amp; A_Txt(3), 0+64+0, Extension)&apos; Cursor en comentario

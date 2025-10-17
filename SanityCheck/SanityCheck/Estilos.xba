@@ -7,7 +7,7 @@
   
  Option Explicit
  Public estiloPU(15) As String
- Public estiloCU(5) As String
+ Public estiloCU(6) As String
  Public P_Uso As String
  Dim oDlgEstilos As Object
  Dim C_Uso, a_P_SinUso As Variant, a_C_SinUso As Variant
@@ -49,6 +49,7 @@ Sub CargaEstilos_CU_Guias
    estiloCU(3) = &quot;Superscript&quot;
    estiloCU(4) = &quot;Subscript&quot; 
    estiloCU(5) = &quot;Bullet Symbols (user)&quot;
+   estiloCU(6) = &quot;Chapter Number&quot;
 End Sub
 
  Rem ### MENU #########

@@ -20,6 +20,7 @@ Sub Dlg_Tablas&apos;(oTabla)
    Call L10n.Trad_Tablas
  If _Aux.F_Guardado = 0 Then : Exit Sub : End If   
  If _Aux.F_Prueba_Sel = 0 Then :Exit Sub : End If
+   Call _Aux.DirectorioPlantillas &apos;comprueba actualización de plantilla
    Dlg_Mostrado = False
    DLg_Activo = False
    oTablas = ThisComponent.TextTables
@@ -63,8 +64,11 @@ End Sub
 Sub Parametros_Tablas
    If _Aux.F_Guardado = 0 Then : Exit Sub : End If
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
-   If Ultima_Tbl &lt; 0 Then : Dlg_Mostrado = False : MsgBox (T_Txt(17), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If   &apos;si se borran todas las tablas
+
    Ultima_Tbl = oTablas.getCount -1
+
+   If Ultima_Tbl &lt; 0 Then : Dlg_Mostrado = False : MsgBox (T_Txt(17), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If   &apos;si se borran todas las tablas
+
    oTabla = oTablas.getbyIndex(Indice_Tbl)
    vCursor.gotoRange(oTabla.Anchor,False)
    With oDlgTablas.getModel
@@ -85,19 +89,30 @@ Sub Parametros_Tablas
      .getbyName(&quot;Lbl_Optimizada&quot;).EnableVisible= False
      .getbyName(&quot;Opt_Datos&quot;).State= 0
      .getbyName(&quot;Opt_Posicion&quot;).State= 0
+
+
      If Indice_Tbl = 0 Then
        .getByName(&quot;Btn_Anterior&quot;).EnableVisible = False
        .getByName(&quot;Btn_Siguiente&quot;).EnableVisible = True
        With .getByName(&quot;Lbl_Ultima&quot;)
-         .EnableVisible = True : .label = T_Txt(13) : .PositionX = 10 : .PositionY = 96
+         .EnableVisible = True : .label = T_Txt(13)
+         .PositionX = 10 : .PositionY = 96
        End With
+       If ultima_Tbl = 0 then .getByName(&quot;Btn_Siguiente&quot;).EnableVisible = False
+       
+&apos;print ultima_Tbl &amp; &quot;   &quot;  &amp; indice_Tbl
+
      ElseIf Indice_Tbl = Ultima_Tbl Then
+  
        .getByName(&quot;Btn_Siguiente&quot;).EnableVisible = False
        .getByName(&quot;Btn_Anterior&quot;).EnableVisible = True
        .getByName(&quot;Btn_Salir&quot;).state = 1
+ 
        With .getByName(&quot;Lbl_Ultima&quot;)
-         .EnableVisible = True : .label = T_Txt(12) : .PositionX = 60 : .PositionY = 96
+         .EnableVisible = True : .label = T_Txt(12)
+         .PositionX = 60 : .PositionY = 96
        End With
+
      Else
        .getByName(&quot;Lbl_Ultima&quot;).EnableVisible = False
        .getByName(&quot;Btn_Siguiente&quot;).EnableVisible = True
@@ -143,9 +158,9 @@ End Sub
 Sub OnRadioButtons(oEv)
    oDlgTablas = oEv.Source.Context
    If oDlgTablas.getModel.getByName(&quot;Opt_Datos&quot;).state = 1 Then
-     oDlgTablas.getModel.getByName(&quot;Lbl_Info&quot;).label = T_Txt(20)
+     oDlgTablas.getModel.getByName(&quot;Lbl_Info&quot;).label = T_Txt(20) &amp; T_Txt(22)
    Else
-     oDlgTablas.getModel.getByName(&quot;Lbl_Info&quot;).label = T_Txt(21) &amp; Chr(13) &amp; T_Txt(22)
+     oDlgTablas.getModel.getByName(&quot;Lbl_Info&quot;).label = T_Txt(21) &amp; T_Txt(22)
    End If
 End Sub
 
@@ -160,91 +175,163 @@ Sub OnBtn_Optimizar(oEv)
     MsgBox (T_Txt(15), 0+64+0, T_Txt(0) &amp; Extension)
    End If
    oDlgTablas.getModel.getByName(&quot;Lbl_Optimizada&quot;).label = T_Txt(9)
+   oDlgTablas.getModel.getbyName(&quot;Lbl_Estilo&quot;).Label = oTabla.TableTemplateName  
 End Sub
 
 
  Rem ############
 Sub Optimizar(oTabla As Object ,Tipo As String)
+
    If ThisComponent.TextTables.getCount = 0 then
      Msgbox (T_Txt(17),0+64+0, Extension)
      Dlg_Mostrado = False
      Exit sub
    End If
- Rem Tabla de datos
+
+ Rem Propiedades comunes
    With oTabla
- Dim nRow As Integer, nCol As Integer, oCell As Object
-   If Tipo = &quot;Datos&quot; Then
-     .TableTemplateName = &quot;LO User Guides&quot;
-     .RelativeWidth = 90
-     .HoriOrient = 2 &apos;centrada
-     .RepeatHeadline = True
-     .HeaderRowCount = 1
-&apos;     .TableBorderDistances.TopDistance = 500
+     .TableTemplateName = &quot;&quot;
+     .CollapsingBorders = True &apos;fusionar lineas bordes
+     .BreakType = 0&apos; No saltos de página
+     .Split = True &apos;Quebrar tabla
+     .TopMargin = 0
+     .BottomMargin = 210
+   End With
+
+ Rem Necesario para cada fila
+ Dim i As Integer, oRows As Object, oRow As Object
+   For i= 0 To oTabla.Rows().count -1
+     oRow = oTabla.getRows().getbyIndex(i)
+     oRow.IsSplitAllowed = false
+     oRow.IsAutoHeight= True
+     oRow.Height = 0
+   Next
+
+ Rem Tabla Contenido
+ &apos;La tabla debe estar centrada. Para evitar prob calculo su ancho en %. 
+   If Tipo = &quot;Contenido&quot; Then  
+     If otabla.HoriOrient &lt;&gt; 2 then
+       Dim ancho : ancho = oTabla.width
+       if ancho &gt; 16600 then&apos; la tabla se ha creado sin  indicar anchura, (devuelve una anchura mayor que el espacio)
+         ancho = 100
+       else 
+         ancho = ancho / 166 &apos; *100 /16600 anchura pag sin margenes
+       end If
+       oTabla.HoriOrient = 2
+       otabla.RelativeWidth = ancho
+     End If 
+
+ Rem Tabla de datos
+   ElseIf Tipo = &quot;Datos&quot; Then
+
+   Dim nRow As Integer, nCol As Integer, oCell As Object
+     With oTabla
+       .HoriOrient = 2  &apos;centrada horizontal  
+       .RelativeWidth = 90
+       .RepeatHeadline = True
+       .HeaderRowCount = 1
+     End With&apos; 
+
+&apos; Estilos de párrafo y limpieza color celdas
      For nRow = 0 To oTabla.getRows().getCount() - 1
        For nCol = 0 To oTabla.getColumns().getCount() - 1
          oCell = oTabla.getCellByPosition(nCol, nRow)
+         oCell.BackColor = -1 &apos; limpio color celdas
          If nRow = 0 Then
-           oCell.BackColor = RGB(204,204,204)
            Formato_Par(oCell.getText(), &quot;Table Heading&quot;)
          Else
            Formato_Par(oCell.getText(), &quot;Table Contents&quot;)
          End If
        Next
      Next 
-   oDlgTablas.getModel.getbyName(&quot;Lbl_Estilo&quot;).Label = oTabla.TableTemplateName
- Rem Tabla de contenido
-   ElseIf Tipo = &quot;Contenido&quot; Then
-     .TableTemplateName = &quot;&quot;
-     For nRow = 0 To oTabla.getRows().getCount() - 1
-       For nCol = 0 To oTabla.getColumns().getCount() - 1
-         oCell = oTabla.getCellByPosition(nCol, nRow)
-&apos;           Formato_Par(oCell.getText(), &quot;Table Contents&quot;)
-       Next
+
+&apos; Color filas
+     For i= 0 To oTabla.Rows().count -1
+       oRow = oTabla.getRows().getbyIndex(i)
+       If i = 0 then
+         oRow.backColor = RGB(208,208,208) &apos;Aplico color a fila
+       Else
+         oRow.backColor = -1
+       End If  
      Next
- Dim oBorderDistances As New com.sun.star.table.TableBorderDistances
-     With oBorderDistances
-       .BottomDistance = 0   
-       .IsBottomDistanceValid = True 
-       .IsLeftDistanceValid = True   
-       .IsRightDistanceValid = True   
-       .IsTopDistanceValid =True   
-       .LeftDistance = 0   
-       .RightDistance = 0   
-       .TopDistance = 0   
-     End With
-     oTabla.TableBorderDistances = oBorderDistances
-   End If
- Rem Propiedades Comunes
-   .CollapsingBorders = True &apos;fusionar lineas bordes
-   .BreakType = 0&apos; Quebrar saltos de página etc
-   .Split = True
-   .BottomMargin =210
-   .TopMargin = 0
- Dim i As Integer, oRows As Object, oRow As Object
-   For i= 0 To oTabla.Rows().count -1
-     oRow = oTabla.getRows().getbyIndex(i)
-     oRow.IsAutoHeight= True
-     oRow.Height = 0
-   Next
- End With
-   oDlgTablas.getModel.getbyname(&quot;Btn_Optimizar&quot;).enableVisible = False
-   oDlgTablas.getModel.getbyName(&quot;Lbl_Optimizada&quot;).EnableVisible= True
-   oDlgTablas.getModel.getbyName(&quot;Opt_Datos&quot;).State= 0
-   oDlgTablas.getModel.getbyName(&quot;Opt_Posicion&quot;).State= 0
+
+     Lineas (oTabla,2) &apos;lineas para los bordes
+     Distancias (oTabla, 100) &apos;distancias al borde (celdas)&apos;antes común
+     BorraEstiloTabla (&quot;LO User Guides&quot;) 
+     BorraEstiloTabla (&quot;LO_USERGUIDES&quot;) 
+   End If     
+
+   With oDlgTablas.getModel
+    .getbyname(&quot;Btn_Optimizar&quot;).enableVisible = False
+    .getbyName(&quot;Lbl_Optimizada&quot;).EnableVisible= True
+    .getbyName(&quot;Opt_Datos&quot;).State= 0
+    .getbyName(&quot;Opt_Posicion&quot;).State= 0
+   End With
 End Sub
 
  Rem ############
+ &apos; Alineacion vertical centrada, aplica estilo de párrafo y limpia formato directo.
 Sub Formato_Par(oText, sParStyle As String)
- Dim oEnum, oPar
+ Dim oEnum, oPar, tCursor
    oEnum = oText.createEnumeration()
    Do While oEnum.hasMoreElements()
      oPar = oEnum.nextElement()
      If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
-       oPar.ParaStyleName = sParStyle
        oPar.ParaVertAlignment = 3
+       oPar.ParaStyleName = sParStyle
+       tCursor = oPar.Text.CreateTextCursor&apos; limpiar formato directo
+       tCursor.gotoStart(false) : tCursor.gotoEnd(True)
+       tcursor.setAllPropertiestodefault
      End If
    Loop
 End Sub
+
+ Rem ############
+Sub Distancias (oTabla As Object, dist as integer, Optional Top as Integer) 
+&apos; Notas. primero dato, despues validar
+&apos; Aumento el top porque no se centra vertical bien. posible bug?
+ 
+ If isMissing(Top) then Top = dist
+ Dim oBorderDistances As New com.sun.star.table.TableBorderDistances
+   With oBorderDistances
+     .TopDistance = Top 
+     .IsTopDistanceValid = True
+     .BottomDistance = dist     
+     .IsBottomDistanceValid = True
+     .LeftDistance = dist 
+     .IsLeftDistanceValid = True
+     .RightDistance = dist  
+     .IsRightDistanceValid = True
+   End With
+     oTabla.TableBorderDistances = oBorderDistances
+End Sub
+
+
+ Rem ############
+Sub Lineas (oTabla As Object, lin As Integer)
+
+ Dim x &apos;represents each BorderLine
+ Dim v &apos;represents the TableBorder Object as a whole
+   v = oTabla.TableBorder
+   x = v.HorizontalLine : x.OuterLineWidth = lin : v.HorizontalLine = x
+   x = v.TopLine : x.OuterLineWidth = lin : v.TopLine = x
+   x = v.BottomLine : x.OuterLineWidth = lin : v.BottomLine = x
+   x = v.VerticalLine : x.OuterLineWidth = lin : v.VerticalLine = x
+   x = v.RightLine : x.OuterLineWidth = lin : v.RightLine = x
+   x = v.LeftLine : x.OuterLineWidth = lin : v.LeftLine = x
+   oTabla.TableBorder = v
+End Sub
+
+ Rem ############
+Sub BorraEstiloTabla(sEstilo as String)
+
+   If ThisComponent.StyleFamilies.TableStyles.HasbyName(sEstilo) Then
+     Dim oEstilo : oEstilo = ThisComponent.StyleFamilies.TableStyles.getbyName(sEstilo)
+     If oEstilo.isUserDefined And Not oEstilo.isInUse Then
+       ThisComponent.StyleFamilies.TableStyles.removeByName(sEstilo) &apos;&quot;Estilo borrado&quot;
+     End If
+   End If
+End sub 
 
  Rem ================= Fin Tablas ===========================================================
 </script:module>

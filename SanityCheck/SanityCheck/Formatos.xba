@@ -319,6 +319,7 @@ Function F_LimpiaNumerados
    If not isnull(oDlgFmt) Then
      oDlgFmt.getmodel.getbyName(&quot;Tx_Registro&quot;).Text = F_Txt(24)
    End If
+
    Do While oParEnum.hasMoreElements()
      oPar = oParEnum.nextElement()
      Wait 2 : PBcounter = PBcounter + 1 : oProgressbar.setValue(PBcounter)
