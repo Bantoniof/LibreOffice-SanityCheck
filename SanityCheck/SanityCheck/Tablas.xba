@@ -238,7 +238,7 @@ Sub Optimizar(oTabla As Object ,Tipo As String)
          oCell = oTabla.getCellByPosition(nCol, nRow)
          oCell.BackColor = -1 &apos; limpio color celdas
          If nRow = 0 Then
-           Formato_Par(oCell.getText(), &quot;Table Heading&quot;)
+           Formato_Par(oCell.getText(), &quot;Table Heading&quot;) &apos;limpia formato directo y aplica estilo
          Else
            Formato_Par(oCell.getText(), &quot;Table Contents&quot;)
          End If

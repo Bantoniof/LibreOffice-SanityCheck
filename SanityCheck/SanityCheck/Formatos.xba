@@ -232,7 +232,7 @@ Function F_LimpiaParrafos
        End If
 
        If _Aux.F_BuscarEnMatriz(E_Num, oPar.Parastylename) = 0 Then
-         oPar.NumberingLevel = 0 &apos;no sé si es necesario
+         oPar.NumberingLevel = 0 &apos; Primer Nivel de esquema 
          oPar.NumberingStyleName = &quot;&quot; &apos;Elimina numeraciones
          oCursor.setAllPropertiesToDefault Rem Resetea TODOS los Párrafos
        End If
@@ -337,7 +337,7 @@ Function F_LimpiaNumerados
          cursor_Num = oPar.getText().createTextCursorByRange(oPar)
          cursor_Num.gotoEndOfParagraph(false) &apos; -para el comentario
          oPar.NumberingStyleName = &quot;&quot;
-         oPar.NumberingLevel = 0
+         oPar.NumberingLevel = 0 &apos; Primer Nivel de esquema
          cursor_Num.setAllPropertiesToDefault
  Rem comparo estilo en cursor Anterior con párrafo Matriz P_Anterior
          cursor_Ant = oPar.getText().createTextCursorByRange(oPar)
@@ -436,7 +436,7 @@ Function F_ReiniciarLeyendasNum
              oCursor = oPar.getText().createTextCursorByRange(oPar)   
              oCursor.gotoEndOfParagraph(false) &apos; -para el comentario
              oCursor.setAllPropertiesToDefault 
-             oPar.NumberingLevel = 0
+             oPar.NumberingLevel = 0 &apos; Primer Nivel de esquema
              oPar.NumberingStyleName = &quot;&quot;
              oPar.NumberingStyleName = &quot;Legend Numbered&quot;
              If Reinicio = 0 then

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <description xmlns="http://openoffice.org/extensions/update/2006" xmlns:xlink="http://www.w3.org/1999/xlink">
     <identifier value="vnd.bantoniof.sanitycheck"/>
-    <version value="25.10"/>
+    <version value="25.12"/>
     <update-download> 
-      <src xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck/raw/v25.10/SanityCheck.oxt"/>
+      <src xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck/raw/v25.12/SanityCheck.oxt"/>
     </update-download>
     <release-notes>
       <src xlink:href="https://github.com/Bantoniof/LibreOffice-SanityCheck/releases/latest" lang ="en" />

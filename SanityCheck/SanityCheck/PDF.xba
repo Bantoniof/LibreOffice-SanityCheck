@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
-<script:module xmlns:script="http://openoffice.org/2000/script" script:name="PDF" script:language="StarBasic" script:moduleType="normal">REM  *****  BASIC  *****
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="PDF" script:language="StarBasic" script:moduleType="normal">REM  *****  BASIC   Módulo PDF *****
+ Rem Este módulo forma parte de la extensión SanityCheck
+ Rem Autor: bantoniof@libreoffice.org
+ Rem Licencia GNU v3 o posterior
+
  Option Explicit
 
- 
- Rem ############
+Rem ############
 Sub PreparaPDF
  Dim  oFrame As Object,  oFCursor As Object, vCursor as Object
    If ThisComponent.TextFrames.count = 0 then :  F_Exporta : Exit Sub : End If
-
    vCursor= ThisComponent.CurrentController.getViewCursor
    oFrame = ThisComponent.TextFrames.getByIndex(0)
    oFCursor = oFrame.Text.CreateTextCursor
@@ -27,7 +29,6 @@ Sub PreparaPDF
        F_AlternarLeyenda()
      End If 
    End If
-
 Exportando:   
     F_Exporta
 End Sub
@@ -59,32 +60,34 @@ Function F_AlternarLeyenda()
    F_AlternarLeyenda = Chr(13) &amp; &quot;Txt(19) Situación Cambiada&quot;
 End Function
 
-sub TOC_Update
-Dim oIndexes as Object, i as Integer
-
-if ((ThisComponent.supportsService(&quot;com.sun.star.text.TextDocument&quot;)) OR (ThisComponent.supportsService(&quot;com.sun.star.text.WebDocument&quot;))) Then
-	oIndexes = ThisComponent.getDocumentIndexes()
-	
-	for i = 0 to oIndexes.getCount() - 1
-	oIndexes (i).update
-	next i
-    msgBox (&quot;Índices actualizados &quot;)&apos;&amp;  oIndexes.getByIndex (i).getServiceName ())
-end if
-
+Rem ############
+Sub TOC_Update
+ Dim oIndexes as Object, i as Integer
+   if (ThisComponent.supportsService(&quot;com.sun.star.text.TextDocument&quot;)) OR _
+       (ThisComponent.supportsService(&quot;com.sun.star.text.WebDocument&quot;)) Then
+     oIndexes = ThisComponent.getDocumentIndexes()
+     If oIndexes.getCount = 0 then
+       exit sub
+     Else 
+       For i = 0 to oIndexes.getCount() - 1
+         oIndexes (i).update
+       Next i
+      MsgBox (&quot;Índices actualizados &quot;)&apos;&amp;  oIndexes.getByIndex (i).getServiceName ())
+     end if
+   end if
 end sub
-
 
  Rem ############
 Sub F_Exporta&apos; https://bugs.documentfoundation.org/show_bug.cgi?id=150600
  Rem IsAddStream,True = PDF híbrido
- Rem ViewPDFAfterExport No disponible
- Rem AllowDuplicateFieldNames Debe estar en true por si se repiten las llamadas a figuras etc.
- Rem IsSkipEmptyPages debe ser false para exportar guía (asegura portada en p Izq e Inicio cap. en p derecha.
+ Rem ViewPDFAfterExport - No disponible
+ Rem AllowDuplicateFieldNames - Debe estar en true por si se repiten las llamadas a figuras etc.
+ Rem IsSkipEmptyPages - Debe ser false para exportar guía (asegura portada en p Izq e Inicio cap. en p derecha.
+ Rem UseLosslessCompression - True sobreescribe la compresión jpg, quality etc... 
 &apos;   Call _Aux.ActualizarTodo
    Call TOC_Update
-
  Dim FilterArgs()
-   FilterArgs = Array(PropertyValue(&quot;UseLosslessCompression&quot;,true),_
+   FilterArgs = Array(PropertyValue(&quot;UseLosslessCompression&quot;,false),_
    PropertyValue(&quot;Quality&quot;,90),_
    PropertyValue(&quot;ReduceImageResolution&quot;,true),_
    PropertyValue(&quot;MaxImageResolution&quot;,300),_
@@ -102,7 +105,7 @@ Sub F_Exporta&apos; https://bugs.documentfoundation.org/show_bug.cgi?id=150600
    PropertyValue(&quot;ExportNotesInMargin&quot;,false),_
    PropertyValue(&quot;IsSkipEmptyPages&quot;,false),_
    PropertyValue(&quot;UseReferenceXObject&quot;,false),_
-  PropertyValue(&quot;InitialView&quot;,1),_
+   PropertyValue(&quot;InitialView&quot;,1),_
    PropertyValue(&quot;InitialPage&quot;,1),_
    PropertyValue(&quot;Magnification&quot;,0),_
    PropertyValue(&quot;Zoom&quot;,100),_
@@ -145,20 +148,13 @@ Sub F_Exporta&apos; https://bugs.documentfoundation.org/show_bug.cgi?id=150600
    cmdArgs(1).Name = &quot;FilterData&quot;
    cmdArgs(1).Value = filterArgs()
 On error goto ERRORES
-
    If Archivo &lt;&gt; &quot;&quot; Then
      ThisComponent.storeToURL(Archivo, cmdArgs())
      Progressbar
-  &apos;      If  Not isnull (oDlg_Barra) then oDlg_Barra.Dispose&apos; setVisible(False)
-     
      If Msgbox (&quot;Exportación completa. &quot; &amp; Chr(13) &amp; &quot;¿Quieres abrir el PDF ? &quot;,4+32+0,&quot;Abrir PDF&quot; &amp; Extension)= 6 then
        Info.AbreURL(ConvertFromUrl(Archivo))
      End If
-&apos;     If msgbox(&quot;leyendas encima de imágenes. &quot; &amp; Chr(13) &amp; &quot;¿Cambiar situación? &quot;,4+32+0,&quot;Situación&quot;) = 6 Then
-&apos;       F_AlternarLeyenda()
-&apos;     End If
    End If
-   
 ERRORES:
    If Err = 0 Then
      Exit Sub 
@@ -167,7 +163,6 @@ ERRORES:
    Else
      Msgbox (&quot;Error=  &quot;&amp; Err &amp; &quot;  Linea = &quot; &amp;  Erl &amp;  Chr(13) &amp; &quot;  Msg = &quot; &amp;  Error )
    End If   
-   
 End sub
 
  Rem ############
@@ -181,7 +176,6 @@ End function
  Rem ############
 Function F_Dlg_PDF()
  Dim oDlgExportar as Object, Opciones() As Variant, Archivos()
-
    If Not BasicLibraries.IsLibraryLoaded(&quot;Tools&quot;) Then  BasicLibraries.LoadLibrary(&quot;Tools&quot;)
  Dim aFile() As Variant, Nombre As String
    aFile = Split (ThisComponent.getURL, &quot;/&quot;)
@@ -222,38 +216,23 @@ End Function
  Rem ############
 Sub ProgressBar()
 &apos;https://ask.libreoffice.org/t/basic-calc-progress-bar/46444/2
-	Dim oProgressBar as Object, oProgressBarModel As Object, oDlg_Barra as Object
-	Dim ProgressValue As Long, ProgressValueMin as Integer, ProgressValueMax as Integer
-	DialogLibraries.loadLibrary(&quot;Standard&quot;)
-	oDlg_Barra = CreateUnoDialog(DialogLibraries.Standard.Barra)
-	REM progress bar settings
-    ProgressValueMin = 1
-    ProgressValueMax = F_ParrafosEnDoc
-	Const ProgressStep = 1
-	REM set minimum and maximum progress value
-&apos;    oDlg_Barra.Model.setPropertyValue(&quot;Decoration&quot;, False)&apos; no tiene efecto, 
-	oProgressBarModel = oDlg_Barra.getModel().getByName( &quot;ProgressBar1&quot; )
-	oProgressBarModel.setPropertyValue( &quot;ProgressValueMin&quot;, ProgressValueMin)
-	oProgressBarModel.setPropertyValue( &quot;ProgressValueMax&quot;, ProgressValueMax)
-&apos;With oDlg_Barra.Model
-&apos;.setPropertyValue(&quot;Decoration&quot;, False)&apos; no tiene efecto, 
-&apos;.getByName( &quot;ProgressBar1&quot;).setPropertyValue( &quot;ProgressValueMin&quot;, ProgressValueMin)
-&apos;.getByName( &quot;ProgressBar1&quot;).setPropertyValue( &quot;ProgressValueMax&quot;, ProgressValueMax)
-&apos;End With
-
-	REM show progress bar
-	oDlg_Barra.setVisible( True )
-	REM increase progress value every second
-    REM This is where you perform whatever action you are wanting 
-   DIm oCursor
-   oCursor = ThisComponent.Text.createTextCursor
-   oCursor.gotoStart(False)
-&apos;Print ProgressValueMax
-	For ProgressValue = ProgressValueMin To ProgressValueMax Step ProgressStep
-		oProgressBarModel.setPropertyValue( &quot;ProgressValue&quot;, ProgressValue )
-&apos;       oCursor.gotoNextParagraph(false) 
-&apos;		Wait 5
-	Next ProgressValue
-&apos;    oCell.SetString(&quot;Done&quot;)
+ Dim oProgressBar as Object, oProgressBarModel As Object, oDlg_Barra as Object
+ Dim ProgressValue As Long, ProgressValueMin as Integer, ProgressValueMax as Integer
+   oDlg_Barra = CreateUnoDialog(DialogLibraries.SanityCheck.DlgBarra)
+     REM progress bar settings
+   ProgressValueMin = 1
+   ProgressValueMax = F_ParrafosEnDoc
+   Const ProgressStep = 1
+     REM set minimum and maximum progress value
+   oProgressBarModel = oDlg_Barra.getModel().getByName( &quot;ProgressBar1&quot; )
+   oProgressBarModel.setPropertyValue( &quot;ProgressValueMin&quot;, ProgressValueMin)
+   oProgressBarModel.setPropertyValue( &quot;ProgressValueMax&quot;, ProgressValueMax)
+     REM show progress bar
+   oDlg_Barra.setVisible( True )
+   For ProgressValue = ProgressValueMin To ProgressValueMax Step ProgressStep
+     oProgressBarModel.setPropertyValue( &quot;ProgressValue&quot;, ProgressValue )
+   Next ProgressValue
 End Sub
+
+ Rem ###########  Fin  Módulo PDF ##############################
 </script:module>

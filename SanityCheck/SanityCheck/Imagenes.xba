@@ -73,8 +73,8 @@ Function F_Ajuste_Imagenes_Marcos
    oImg = oImgs.getByIndex(i)
     With oImg
       .AnchorType = 1
-      .VertOrient = 1
-      .VertOrientRelation = 0
+      .VertOrient = 5 &apos; 5 centro carácter &apos; antes 1 arriba 
+      .VertOrientRelation = 2 &apos; 2 carácter &apos; antes 0 parrafo 
       .RelativeHeight = 0
       .RelativeHeightRelation = 0
       .RelativeWidth = 0
