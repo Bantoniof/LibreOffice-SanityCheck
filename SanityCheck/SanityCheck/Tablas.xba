@@ -32,7 +32,7 @@ Sub Dlg_Tablas&apos;(oTabla)
    vcursor.jumptoFirstPage(False)
    vcursor.gotoRange(oTabla.getAnchor,False)
    If Dlg_Activo = False Then
-     DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+     If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
      oDlgTablas = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgTablas&quot;))
      If getGUIType &gt; 1 then oDlgTablas.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
      Dlg_Activo = True

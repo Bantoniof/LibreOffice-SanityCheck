@@ -9,6 +9,8 @@
 
 Rem ############
 Sub PreparaPDF
+If _Aux.F_Prueba_Sel= 0 Then Exit sub  &apos;Comprobar selección 
+
  Dim  oFrame As Object,  oFCursor As Object, vCursor as Object
    If ThisComponent.TextFrames.count = 0 then :  F_Exporta : Exit Sub : End If
    vCursor= ThisComponent.CurrentController.getViewCursor
@@ -141,7 +143,8 @@ Sub F_Exporta&apos; https://bugs.documentfoundation.org/show_bug.cgi?id=150600
    PropertyValue(&quot;SignatureReason&quot;,&quot;&quot;),_
    PropertyValue(&quot;SignatureTSA&quot;,&quot;&quot;)))
 
- Dim Archivo As String, cmdArgs(1) as New com.sun.star.beans.PropertyValue
+ Dim Archivo As String 
+ Dim cmdArgs(1) as New com.sun.star.beans.PropertyValue
    Archivo = F_Dlg_PDF
    cmdArgs(0).Name = &quot;FilterName&quot;
    cmdArgs(0).Value = &quot;writer_pdf_Export&quot;
@@ -175,8 +178,8 @@ End function
 
  Rem ############
 Function F_Dlg_PDF()
+   Call _Aux.Carga_Tools
  Dim oDlgExportar as Object, Opciones() As Variant, Archivos()
-   If Not BasicLibraries.IsLibraryLoaded(&quot;Tools&quot;) Then  BasicLibraries.LoadLibrary(&quot;Tools&quot;)
  Dim aFile() As Variant, Nombre As String
    aFile = Split (ThisComponent.getURL, &quot;/&quot;)
    Nombre = aFile(Ubound(aFile))
@@ -218,6 +221,7 @@ Sub ProgressBar()
 &apos;https://ask.libreoffice.org/t/basic-calc-progress-bar/46444/2
  Dim oProgressBar as Object, oProgressBarModel As Object, oDlg_Barra as Object
  Dim ProgressValue As Long, ProgressValueMin as Integer, ProgressValueMax as Integer
+ If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlg_Barra = CreateUnoDialog(DialogLibraries.SanityCheck.DlgBarra)
      REM progress bar settings
    ProgressValueMin = 1

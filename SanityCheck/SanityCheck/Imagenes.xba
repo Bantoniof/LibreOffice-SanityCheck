@@ -243,8 +243,8 @@ End Function
  Rem ############ ================ Diálogo figuras =========
 Sub Dlg_Figuras(Registro as String)
    Call L10n.Trad_Imagenes
-     DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
-     oDlgFiguras = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFiguras&quot;))
+   If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+   oDlgFiguras = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFiguras&quot;))
    With oDlgFiguras.Model
      .Title = I_Txt(0) &amp; Extension
      .getbyname(&quot;Btn_Img&quot;).Label = I_Txt(38)
@@ -278,7 +278,7 @@ End Sub
    If  Dlg_Activo = False Then
      Dlg_Activo = True
      Dlg_Mostrado = True
-     DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+     If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
      oDlgImgs = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgImagenes&quot;))
      If getGUIType &gt; 1 then oDlgImgs.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
      With oDlgImgs.Model()

@@ -35,7 +35,7 @@ Sub Dlg_Formatos
    If _Aux.F_EstilosPlantilla &lt;&gt; 0  then exit Sub
    If _Aux.F_Control_Cambios = True then exit Sub
  
-   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgFmt = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgFormatos&quot;))
    If getGUIType &gt; 1 then oDlgFmt.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    With oDlgFmt.getModel

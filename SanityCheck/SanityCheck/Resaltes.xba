@@ -409,7 +409,7 @@ End Sub
 Sub DialogoResalta
    Call _Aux.Carga_Tools
  Dim oDlgResalta
-   DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+   If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgResalta = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgResalta&quot;))
    If getGUIType &gt; 1 then oDlgResalta.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    With oDlgResalta.getModel
@@ -440,7 +440,7 @@ End Sub
 Sub DialogoResaltes
    Call _Aux.Carga_Tools
    Call L10n.Trad_Resaltes
-   DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+   If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgResaltes = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgResaltes&quot;))
    If getGUIType &gt; 1 then oDlgResaltes.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    oDlgResaltes.Model.Step = 1

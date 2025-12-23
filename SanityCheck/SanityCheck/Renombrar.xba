@@ -23,7 +23,7 @@ Sub Dlg_Renombrar
        Exit sub
      End If
    End If
-   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgRenombrar = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgRenombrar&quot;))
    If getGUIType &gt; 1 then oDlgRenombrar.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    With oDlgRenombrar.Model

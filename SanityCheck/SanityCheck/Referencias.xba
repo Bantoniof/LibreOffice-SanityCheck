@@ -14,7 +14,7 @@
 Sub Dlg_Refs
    If _Aux.F_Prueba_Sel = 0 then exit sub
    Call L10n.Trad_Referencias
-   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgRefs = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgRefs&quot;))
     With oDlgRefs.Model
      .Title = Ref_Txt(0) &amp; Extension

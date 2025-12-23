@@ -9,7 +9,7 @@
 Sub Dlg_Info
 
  Dim sv As Variant, icono as Variant, Inf_Txt(2) As String
-   DialogLibraries.loadLibrary(&quot;SanityCheck&quot;)
+   If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgInfo = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgInfo&quot;))
    If getGUIType &gt; 1 then oDlgInfo.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    sv = GetDefaultContext.getByName(&quot;/singletons/com.sun.star.deployment.PackageInformationProvider&quot;)

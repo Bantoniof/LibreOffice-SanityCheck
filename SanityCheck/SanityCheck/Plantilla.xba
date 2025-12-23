@@ -80,7 +80,7 @@ Sub Dlg_Plantillas
        Exit Sub
    End Select
 
-   DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
+   If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
    oDlgPlantillas = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getbyName(&quot;DlgPlantillas&quot;))
    If getGUIType &gt; 1 then oDlgPlantillas.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
    With oDlgPlantillas.getModel
