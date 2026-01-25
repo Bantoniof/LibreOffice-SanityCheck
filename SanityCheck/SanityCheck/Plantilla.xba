@@ -18,6 +18,7 @@ Option explicit
  Rem ############
 Sub IdiomaDoc
  Rem Cambia el idioma global del documento
+ Rem la macro CharChapNum también está localizada
  Dim pais as string, idioma as String
  Dim Locales As New com.sun.star.lang.Locale
    Select case F_getLang
@@ -41,7 +42,6 @@ Sub Dlg_Plantillas
    If _Aux.F_VersGuia &gt;= 26 then: vplant = &quot;26&quot; 
    else vplant = &quot;2Xx&quot;
    End If
-
    Select case _Aux.F_TipoDoc
      Case &quot;Plantilla&quot;
        MsgBox (P_Txt(18), 0+48+0, P_Txt(0) &amp; Extension)
@@ -127,9 +127,15 @@ Sub Dlg_Plantillas
 End sub
 
  Rem ########
-Sub onBtn_Asociar&apos;(oev)
-  
-&apos;   oDlgPlantillas = oEv.Source.Context
+Sub onBtn_Asociar(oEv)
+
+   oDlgPlantillas = oEv.Source.Context
+     If  Msgbox (P_Txt(24), 4+32+256, P_Txt(0) &amp; Extension) = 6 then
+       Call _Aux.GuardaRecarga
+     Else 
+       If not isnull(oDlgPlantillas) then oDlgPlantillas.EndExecute
+       Exit sub
+     End If
  Dim vplant
    If _Aux.F_VersGuia &gt;= 26 then: vplant = &quot;26&quot; : else : vplant = &quot;2Xx&quot;  : End If
 
@@ -163,56 +169,87 @@ Sub onBtn_Asociar&apos;(oev)
    Docprops = ThisComponent.DocumentProperties  &apos;(meta.xml)
    S_loadTemplate (templateURL, oTemplate, templateName)
    DocSettings.UpdateFromTemplate = TRUE &apos;(settings.xml)
-   
-   if oTemplate.supportsService(&quot;com.sun.star.text.TextDocument&quot;) _ 
+    if oTemplate.supportsService(&quot;com.sun.star.text.TextDocument&quot;) _ 
         OR oTemplate.supportsService(&quot;com.sun.star.text.GlobalDocument&quot;) then &apos;Plantilla ott u otm
      S_setTemplateAndDate (ThisComponent, templateName, templateURL, oTemplate.DocumentProperties.ModificationDate)
      S_applyTemplate(ThisComponent,templateUrl)
      S_activateWriterHeadings(ThisComponent)
-
-     If _Aux.F_TipoDoc = &quot;Capitulo&quot; then Call CambiaLogo
-     If _Aux.F_VersGuia &gt;= 26 Then Call CharChapNum 
-         
-     If not isnull(oDlgPlantillas) then oDlgPlantillas.EndExecute
-     msgbox (P_Txt(1) &amp; templateName, 0+64+0, P_Txt(0) &amp; Extension)       
-   End If
-    
+      If _Aux.F_TipoDoc = &quot;Capitulo&quot; then 
+        Call CharChapNum &apos;Aplica estilo Caracter 
+        Call CambiaLogo
+      End If     
+      If not isnull(oDlgPlantillas) then oDlgPlantillas.EndExecute
+      Msgbox (P_Txt(1) &amp; templateName, 0+64+0, P_Txt(0) &amp; Extension)       
+    End If
 End Sub
 
  Rem ########
 Sub CambiaLogo
-
+    If NOT ThisComponent.TextSections.HasbyName(&quot;SEC_LOGO&quot;) Then 
+    Msgbox (P_Txt(25),0+64+0, P_Txt(0) &amp; extension)
+    exit sub
+    end if
    If ThisComponent.GraphicObjects.Count = 0 then Exit Sub
- Dim oImg : oImg = ThisComponent.GraphicObjects.getbyIndex(0)
-   With oImg
-       .VertOrient = 2
-       .AnchorType = 1
-       .Name = &quot; LibreOffice Logo&quot;
-       .Title = &quot;LibreOffice Logo&quot;
-       .Description = &quot;LibreOffice Logo&quot;   
-       If _Aux.F_LOVersion &gt;= 7.5 Then  oImg.Decorative = True           
-       If _Aux.F_VersGuia &lt; 26 then
-         .TopMargin = 2500 
-       Else
-       .TopMargin = 0                          
-       .GraphicURL = F_PathExtension &amp; &quot;/icons/logo26.svg&quot;  &apos;no documentado pero cambia la imagen
-       .Width = 8420
-       .Height = 2120        
-       End If
-       If ThisComponent.StyleFamilies.getByName(&quot;ParagraphStyles&quot;).hasbyName(&quot;New Chapter&quot;) Then
-        .getAnchor.ParaStyleName = &quot;New Chapter&quot;
-       End If
-     End With
+ Dim oCursor As Object, oImg As Object 
+   oCursor = ThisComponent.Text.CreateTextCursor
+   oCursor.gotoStart(false)
+   oImg = ThisComponent.GraphicObjects.getbyIndex(0)
+   If not isEmpty(oImg.Anchor.TextSection) Then
+     If oImg.Anchor.TextSection.Name = &quot;SEC_LOGO&quot; Then 
+        With oImg
+         If _Aux.F_VersGuia &lt; 26 then
+           .GraphicURL = F_PathExtension &amp; &quot;/icons/logo7x.png&quot;&apos;no documentado pero cambia la imagen
+           .TopMargin = 2500 
+           .Width = 13230
+           .Height = 3700             
+         ElseIf  _Aux.F_VersGuia &gt;= 26 then
+           .GraphicURL = F_PathExtension &amp; &quot;/icons/logo26.svg&quot; 
+           .TopMargin = 0
+           .Width = 8420
+           .Height = 2120        
+         End If
+         If _Aux.F_LOVersion &gt;= 7.5 Then oImg.Decorative = True           
+         .VertOrient = 2
+         .AnchorType = 1
+         .Title = &quot;LibreOffice Logo&quot; 
+         .Description = &quot;LibreOffice Logo&quot;
+         .getAnchor.ParaStyleName = &quot;New Chapter&quot;
+       End With
+     End If
+
+   ElseIf isEmpty (oImg.Anchor.TextSection) Then
+  Dim oGraph
+  oGraph = ThisComponent.createInstance(&quot;com.sun.star.text.GraphicObject&quot;)&apos; oGraph
+    With oGraph
+      If _Aux.F_VersGuia &lt; 26 then 
+        .GraphicURL = F_PathExtension &amp; &quot;/icons/logo7x.png&quot;
+        .TopMargin = 2500 
+        .Width = 13230
+        .Height = 3700  
+      ElseIf _Aux.F_VersGuia &gt;= 26 then 
+        .GraphicURL = F_PathExtension &amp; &quot;/icons/logo26.svg&quot;
+        .TopMargin = 0
+        .Width = 8420
+        .Height = 2120  
+      EndIf
+      If _Aux.F_LOVersion &gt;= 7.5 Then  oGraph.Decorative = True           
+      .VertOrient = 2
+      .AnchorType = 1
+      .Title = &quot;LibreOffice Logo&quot; 
+      .Description = &quot;LibreOffice Logo&quot;
+    End With  
+     ThisComponent.Text.insertTextContent( oCursor, oGraph, False )&apos;oGraph
+     oGraph.getAnchor.ParaStyleName = &quot;New Chapter&quot;
+   End If
+   Call _Aux.GuardaRecarga
+   Call Renombrar.F_Renombra(&quot;Imagenes&quot;)
+   
 End Sub
 
  Rem ########
- Rem &quot;LOCALIZADO &gt; Aplica estilo caracter en Capítulo X o Apéndice X
- Rem e introduce un salto de línea antes de Prefacio
+ Rem &quot;LOCALIZADO &gt; Aplica estilo caracter en Capítulo X o Apéndice X y salto de línea antes de Prefacio
 Sub CharChapNum
-   If Not ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;)_
-      .HasbyName(&quot;Chapter Number&quot;) then
-     exit sub
-   End if
+&apos;  If Not ThisComponent.StyleFamilies.getByName(&quot;CharacterStyles&quot;).HasbyName(&quot;Chapter Number&quot;) then exit sub
   Dim oCursor As Object, vCursor As Object
  vCursor= ThisComponent.CurrentController.getViewCursor
  Dim Secs As Object , oSec As Object
@@ -223,13 +260,17 @@ Sub CharChapNum
      oSec = Secs.getbyName(&quot;SEC_TITLE&quot;)
      vCursor.gotorange(oSec.getAnchor.Start,False)
      vCursor.gotoEndOfLIne(True)
-     If InStr(vCursor.String,&quot;chapter&quot;)_ 
-        OR InStr(vCursor.String,&quot;capítulo&quot;)_
+     If InStr(vCursor.String,&quot;Chapter&quot;)_ 
+        OR InStr(vCursor.String,&quot;Capítulo&quot;)_
         OR InStr(vCursor.String,&quot;Appendix&quot;)_
         OR InStr(vCursor.String,&quot;Apéndice&quot;)_
         OR InStr(vCursor.String,&quot;Apêndice&quot;) Then
        Dim oSel : oSel = ThisComponent.CurrentSelection
-       oSel(0).CharStyleName = &quot;Chapter Number&quot;
+       If _Aux.F_VersGuia &lt; 26 then
+         oSel(0).CharStyleName = &quot;Standard&quot;
+       ElseIf  _Aux.F_VersGuia &gt;= 26 then
+         oSel(0).CharStyleName = &quot;Chapter Number&quot;
+       End If
      ElseIf InStr(vCursor.String,&quot;Preface&quot;)_ 
          OR InStr(vCursor.String,&quot;Prefácio&quot;)_
          OR InStr(vCursor.String,&quot;Prefacio&quot;) Then
@@ -237,41 +278,6 @@ Sub CharChapNum
      End If
    End If
 End Sub
-
- Rem ########
-Sub CortarEnlace&apos;no usado
-
-   Call L10n.Trad_Plantilla
-   DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
-   DocSettings.UpdateFromTemplate = FALSE
-   S_setTemplateAndDate (ThisComponent, &quot;&quot;, &quot;&quot;)
-   Msgbox (P_Txt(2),0+64+0, P_Txt(0) &amp; Extension)
-end sub
-
- Rem ########
-Sub ActivarPlantilla&apos; no usado
-   Call L10n.Trad_Plantilla
-   Docprops = ThisComponent.DocumentProperties
-   If ThisComponent.getDocumentProperties.TemplateName = &quot;&quot;  Then
-     Msgbox (P_Txt(3),0+64+0, P_Txt(0) &amp; Extension)   
-   Else
-     DocSettings = ThisComponent.createInstance(&quot;com.sun.star.document.Settings&quot; ) 
-     If DocSettings.UpdateFromTemplate = FALSE Then 
-       DocSettings.UpdateFromTemplate = TRUE
-       Msgbox (P_Txt(4),0+64+0, P_Txt(0) &amp; Extension)
-     Else
-       Msgbox (P_Txt(5) &amp; Docprops.TemplateName &amp; P_Txt(6),0+64+0, P_Txt(0) &amp; Extension)
-     End If
-   End If
-End Sub
-
- Rem ########
-Sub DesactivarPlantilla&apos; no usado
-   Call L10n.Trad_Plantilla
-   DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; ) 
-   DocSettings.UpdateFromTemplate = False
-   Msgbox (P_Txt(7),0+64+0, P_Txt(0) &amp; Extension)
-end sub
 
 
  Rem ########
@@ -407,5 +413,42 @@ Function F_hasProperty(elem as object, propName as string) as boolean
      end if
    next
 end Function
+
  Rem ================= Fin Plantilla ===========================================================
+ 
+ Rem ########
+Sub ActivarPlantilla&apos; no usado
+   Call L10n.Trad_Plantilla
+   Docprops = ThisComponent.DocumentProperties
+   If ThisComponent.getDocumentProperties.TemplateName = &quot;&quot;  Then
+     Msgbox (P_Txt(3),0+64+0, P_Txt(0) &amp; Extension)   
+   Else
+     DocSettings = ThisComponent.createInstance(&quot;com.sun.star.document.Settings&quot; ) 
+     If DocSettings.UpdateFromTemplate = FALSE Then 
+       DocSettings.UpdateFromTemplate = TRUE
+       Msgbox (P_Txt(4),0+64+0, P_Txt(0) &amp; Extension)
+     Else
+       Msgbox (P_Txt(5) &amp; Docprops.TemplateName &amp; P_Txt(6),0+64+0, P_Txt(0) &amp; Extension)
+     End If
+   End If
+End Sub
+
+ Rem ########
+Sub DesactivarPlantilla&apos; no usado
+   Call L10n.Trad_Plantilla
+   DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; ) 
+   DocSettings.UpdateFromTemplate = False
+   Msgbox (P_Txt(7),0+64+0, P_Txt(0) &amp; Extension)
+end sub
+
+  Rem ########
+Sub CortarEnlace&apos;no usado
+
+   Call L10n.Trad_Plantilla
+   DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
+   DocSettings.UpdateFromTemplate = FALSE
+   S_setTemplateAndDate (ThisComponent, &quot;&quot;, &quot;&quot;)
+   Msgbox (P_Txt(2),0+64+0, P_Txt(0) &amp; Extension)
+end sub
+
 </script:module>

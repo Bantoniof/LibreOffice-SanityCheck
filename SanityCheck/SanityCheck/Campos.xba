@@ -71,7 +71,7 @@ Sub Cargar_Parametros
      End If
  Dim version()
      If Not oUDP.getPropertySetInfo().hasPropertyByName(&quot;LibreOffice Version&quot;) Then
-       .getbyname(&quot;Num_Version&quot;).Value = 24
+       .getbyname(&quot;Num_Version&quot;).Value = _Aux.F_VersGuia
        &apos;.getbyname(&quot;Num_Sub&quot;).Value = 
      Else
        version = Split(_Aux.F_Consulta_UDP(&quot;LibreOffice Version&quot;),&quot;.&quot;)

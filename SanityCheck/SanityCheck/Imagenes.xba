@@ -266,6 +266,7 @@ End Sub
    Call L10n.Trad_Imagenes
    If _Aux.F_Guardado = 0 Then : Exit Sub : End If   
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
+   
    Dlg_Mostrado = False
    DLg_Activo = False
    oImgs = ThisComponent.GraphicObjects()
@@ -313,6 +314,14 @@ Sub Cargar_Parametros
    If Ultima_Img &lt; 0 Then : Dlg_Mostrado = False : MsgBox (I_Txt(35), 0+48+0, I_Txt(0) &amp; Extension) : Exit Sub : End If   &apos;si se borran todas las imágenes
    Ultima_Img = oImgs.getCount -1
    oImg = oImgs.getbyIndex(Indice_Img)
+
+   If oImg.AnchorType = 2 then &apos; Esto puede suceder en guías completas
+&apos; xray oImg
+     Msgbox I_Txt(47) &amp; oImg.Name &amp; I_Txt(48)
+     Dlg_Mostrado = False
+     exit sub
+   end If
+
    vCursor.gotoRange(oImg.Anchor,False)
    With oDlgImgs.getModel
  Dim Img_ancla As String , Recorte As String
@@ -406,8 +415,6 @@ Sub Cargar_Parametros
    End With
 End Sub
 
-
-
  Rem ############
 Sub OnBtn_Anterior(oEv)
    oDlgImgs = oEv.Source.Context
@@ -417,7 +424,11 @@ Sub OnBtn_Anterior(oEv)
      Indice_Img = 0
    ElseIf Not Indice_Img &lt; 0 Then
      Indice_Img = Indice_Img -1
+
+   ElseIf Indice_Img = 0 Then
+      oDlgImgs.Model.getByName(&quot;Btn_Anterior&quot;).EnableVisible = False   
    End If
+
    Call Imagenes.Cargar_Parametros
 End Sub
 

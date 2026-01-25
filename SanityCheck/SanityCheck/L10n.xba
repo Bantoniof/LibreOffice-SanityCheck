@@ -16,8 +16,8 @@
  Dim C_Txt(21) As String
  Dim E_Txt(23) As String
  Dim F_Txt(30) As String
- Dim I_Txt(46) As String
- Dim P_Txt(23) As String
+ Dim I_Txt(48) As String
+ Dim P_Txt(25) As String
  Dim R_Txt(22) As String
  Dim Ref_Txt(7) As String
  Dim Ren_Txt(20) As String
@@ -532,6 +532,8 @@ Sub Trad_Imagenes
    I_Txt(45) =  &quot;Posible marco sin imagen o leyenda sobre la imagen&quot; &amp; Chr(13) &amp; &quot;Revisa  este marco y su contenido&quot;
    I_Txt(46) =  &quot;Texto de leyenda mal formado.&quot; &amp; Chr(13) &amp;  &quot;¿Figura X: y «espacio»?&quot; &amp; Chr(13) &amp; _
    &quot;- Revisa la leyenda y descripciones de marco e imagen&quot;
+   I_Txt(47) = &quot;La imagen &quot;
+   I_Txt(48) = &quot; está anclada a la página. Cambia el ancla &quot;&quot;al párrafo&quot;&quot; y prueba de nuevo.&quot;
 
    Case &quot;pt&quot;
    I_Txt(0) = &quot;Revisão de imagens&quot;
@@ -589,6 +591,8 @@ Sub Trad_Imagenes
    I_Txt(45) = &quot;Possível quadro sem imagem ou legenda acima da imagem&quot; &amp; Chr(13) &amp; &quot;- Revise este quadro e seu conteúdo&quot;
    I_Txt(46) = &quot;Texto da legenda mal formado.&quot; &amp; Chr(13) &amp;  &quot;Figura X: e &quot;&quot;espaço&quot;&quot;?&quot; &amp; Chr(13) &amp; _
    &quot;- Verifique a legenda e as descrições dos quadros e das imagens&quot;
+   I_Txt(47) = &quot;A imagem&quot;
+   I_Txt(48) = &quot;está ancorado na página. Mude a âncora &quot;&quot;para o parágrafo&quot;&quot; e tente novamente.&quot;
  
    Case Else
    I_Txt(0) = &quot;Images Review&quot;
@@ -647,6 +651,8 @@ Sub Trad_Imagenes
    &quot;- Review this frame and its contents&quot;
    I_Txt(46) = &quot;Badly formed caption text.&quot; &amp; Chr(13) &amp;  &quot;Figure X: and &apos;space&apos;?&quot; &amp; Chr(13) &amp; _
    &quot;- Check the caption, frame and image descriptions.&quot;
+   I_Txt(47) = &quot;The image &quot;&quot;&quot;
+   I_Txt(48) = &quot;&quot;&quot; is anchored to the page. Change the anchor &quot;&quot;to the paragraph&quot;&quot; and try again.&quot;
 
    End Select
 End Sub
@@ -690,7 +696,10 @@ Sub Trad_Plantilla
    P_Txt(22) = &quot; ◘ Actualizar directorio de plantilla&quot;
    P_Txt(23) = &quot; ◘ Al actualizar SanityCheck se cambia el directorio de macros y las plantillas.&quot; &amp; Chr(13) &amp;_
    &quot; ◘ Es necesario asociar el documento con la plantilla en su nueva ubicación&quot; &amp; Chr(13) &amp; Chr(13) &amp;  P_Txt(8)
-        
+   P_Txt(24) = &quot;Es necesario guardar y recargar el documento&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+   &quot;¿Guardar y recargar?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- No podrás deshacer los cambios efectuados hasta ahora&quot;
+   P_Txt(25) = &quot;No se encuentra la sección SEC_LOGO,&quot; &amp; Chr(13) &amp; &quot; no se modificará ni insertará la imagen correspondiente.&quot;
+
    Case &quot;pt&quot;
    P_Txt(0) = &quot;Vincular modelo&quot;
    P_Txt(1) = &quot;Documento vinculado ao modelo:&quot; &amp; Chr(13) &amp; Chr(9)
@@ -725,6 +734,9 @@ Sub Trad_Plantilla
    P_Txt(22) = &quot; ◘ Atualizar diretório de modelos&quot; 
    P_Txt(23) = &quot; ◘ A atualização do SanityCheck altera o diretório da macro e os modelos.&quot; &amp; Chr(13) &amp;_
    &quot; ◘ Você precisa associar o documento ao modelo em seu novo local&quot; &amp; Chr(13) &amp; Chr(13) &amp; P_Txt(8)   
+   P_Txt(24) = &quot;É necessário salvar e recarregar o documento &quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+   &quot;Salvar e recarregar?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- Você não poderá desfazer as alterações feitas até agora.&quot;
+   P_Txt(25) = &quot;A seção SEC_LOGO não foi encontrada,&quot; &amp; Chr(13) &amp; &quot; a imagem correspondente não será modificada ou inserida.&quot;
 
    Case else
    P_Txt(0) = &quot;Link Template&quot;
@@ -759,6 +771,9 @@ Sub Trad_Plantilla
    P_Txt(22) = &quot; ◘ Update template directory&quot;
    P_Txt(23) = &quot; ◘ Updating SanityCheck changes the macro directory and templates.&quot; &amp; Chr(13) &amp;_
    &quot; ◘ You need to link  the document with the template in its new location&quot; &amp; Chr(13) &amp; Chr(13) &amp; P_Txt(8)
+   P_Txt(24) = &quot;It is neccesary to save and reload the document&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+   &quot;Save and reload?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- You will not be able to undo the changes made so far.&quot;
+   P_Txt(25) = &quot;Section SEC_LOGO not found,&quot; &amp; Chr(13) &amp; &quot; the corresponding image will not be modified or inserted.&quot;
    End select
 End Sub
 
@@ -976,7 +991,7 @@ Sub Trad_Renombrar
    Ren_Txt(14) = &quot;There are no tables of contents or there are more than 1 index&quot;
    Ren_Txt(15) = &quot;Table of contents renamed&quot;
    Ren_Txt(16) = &quot;The document has been modified.&quot; &amp; Chr(13) &amp; &quot;To ensure that objects are named &quot; &amp; _
-   &quot;according to its appearance order&quot; &amp; Chr(13) &amp; &quot;you must to save the changes and reload the document&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
+   &quot;according to its appearance order&quot; &amp; Chr(13) &amp; &quot;It is neccesary to save the changes and reload the document&quot; &amp; Chr(13) &amp; Chr(13) &amp;_
    &quot;Save and reload?&quot;&amp; Chr(13) &amp; Chr(13) &amp; &quot;- You will not be able to undo the changes made so far.&quot;
    Ren_Txt(17) = &quot;Check the sections and their names.&quot;
    Ren_Txt(18) = &quot; &quot;&quot;SEC_COPYRIGHT&quot;&quot; moved to the beginning of &quot;&quot;SEC_DISPLAYAREA&quot;&quot; &quot;

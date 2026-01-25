@@ -433,12 +433,8 @@ End Function
 
  Rem ############
 Sub GuardaRecarga
-   If (ThisComponent.isModified()) Then
      If (ThisComponent.hasLocation() AND (Not ThisComponent.isReadOnly())) Then
        ThisComponent.store()
-     Else
-       setModified(False)
-     End If
    End If
  Dim document   as object
  Dim dispatcher as object

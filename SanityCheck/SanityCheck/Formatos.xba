@@ -50,6 +50,9 @@ Sub Dlg_Formatos
      .getbyname(&quot;Btn_Volver&quot;).Label = F_Txt(7)&apos;paso2
      .getbyname(&quot;Tx_Ayuda&quot;).Text = F_Txt(1)
      .getbyname(&quot;Btn_Ayuda&quot;).Label = &quot;?&quot;
+     .getbyname(&quot;Ch_Text&quot;).State = 1
+     .getbyname(&quot;Ch_Par&quot;).State = 1
+     .getbyname(&quot;Ch_Num&quot;).State = 1
    End With
    oDlgFmt.execute
 End Sub
@@ -246,7 +249,7 @@ End Function
 
  Rem ############
 Function F_Listados
- Rem Cambia el estilo anterior a lista 1 o Numeración 1
+ Rem Cambia el estilo anterior a lista 1 o Numeración 1 o Definition Term
  Rem si es Cuerpo de texto por Body Text List Intro (fallo generalizado)
    Call L10n.Trad_Formatos
    Call _Aux.EliminaComentarios(F_Txt(20))
@@ -417,7 +420,7 @@ Function F_ReiniciarLeyendasNum
  Dim oTablas As Object, oTabla As Object, Reinicio As Integer
  Dim nRow As Variant, ncol As Variant, ocell As Object
  Dim oEnum As Object, opar As Object, s As String
- Dim Detectar as Boolean
+ Dim Detectar as Boolean, oCursor as Object
    Detectar = 0
    oTablas = ThisComponent.TextTables
    For  i = 0 To oTablas.getCount -1

@@ -43,6 +43,12 @@ Sub Dlg_Renombrar
      .getbyName(&quot;Ch_Ole&quot;).Label = Ren_Txt(19)
      .getbyname(&quot;Tx_Registro&quot;).Text = &quot;&quot;
      .getbyname(&quot;Tx_Ayuda&quot;).text = Ren_Txt(4)
+     .getbyname(&quot;Ch_Secciones&quot;).State = 1
+     .getbyname(&quot;Ch_Indice&quot;).State = 1
+     .getbyname(&quot;Ch_Tablas&quot;).State = 1
+     .getbyname(&quot;Ch_Imgs&quot;).State = 1
+     .getbyname(&quot;Ch_Marcos&quot;).State = 1
+     .getbyname(&quot;Ch_Ole&quot;).State = 1
    End With
    oDlgRenombrar.execute
 End Sub
@@ -248,6 +254,7 @@ Function F_Renombra(Objetos As String, Optional separador ) As String
        oItem.Name = nombre
      Else
        separador = &quot;_&quot;   Rem solución nombres duplicados
+&apos;       nombre = prefijo &amp; Replace(n_archivo,&quot; &quot;,&quot;&quot;) &amp; separador &amp; contador
        nombre = prefijo &amp; Replace(n_archivo,&quot; &quot;,&quot;&quot;) &amp; separador &amp; contador
        oItem.Name = nombre
      End If
@@ -255,7 +262,7 @@ Function F_Renombra(Objetos As String, Optional separador ) As String
 
    If Objetos = &quot;Imagenes&quot; Then
      Dim oImg : oImg = Items.getbyIndex(0)
-     oImg.Name = &quot; LibreOfficeLogo&quot;
+     oImg.Name = &quot; LibreOffice Logo&quot;
    End If
    F_Renombra = Traduc &amp; Ren_Txt(13)
 End Function
