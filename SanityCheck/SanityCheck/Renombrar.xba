@@ -143,6 +143,9 @@ End Sub
      Exit function
    End If
 
+ Redim Preserve secciones (ubound(secciones)+1)
+ secciones(ubound(secciones)) = &quot;SEC_OLE&quot;
+
  Dim prefijo AS String, Contador AS String
    Prefijo =  left(Trim(FileNameoutofpath(ThisComponent.getURL)),7)
  Dim oSeccion as Object, nombre AS String

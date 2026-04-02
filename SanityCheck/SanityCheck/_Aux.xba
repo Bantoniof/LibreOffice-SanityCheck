@@ -70,6 +70,8 @@ Function F_EstilosPlantilla() As Integer &apos;comprueba Estilos, si no están d
    F_EstilosPlantilla = Contador
 End Function 
 
+
+
  Rem ############
 Function F_TipoDoc
    Call L10n.Trad_Plantilla
@@ -83,11 +85,14 @@ Function F_TipoDoc
      Case &quot;OTT&quot;,&quot;OTM&quot;
        F_TipoDoc = &quot;Plantilla&quot; 
      Case &quot;ODT&quot;
-       If left(nombre,2) &lt;&gt; &quot;BG&quot; XOR left(nombre,2) &lt;&gt; &quot;CG&quot; XOR _
-         left(nombre,2) &lt;&gt; &quot;DG&quot; XOR  left(nombre,2) &lt;&gt; &quot;GS&quot; XOR _
-         left(nombre,2) &lt;&gt; &quot;IG&quot; XOR  left(nombre,2) &lt;&gt; &quot;MG&quot; XOR _
-         left(nombre,2) &lt;&gt; &quot;WG&quot; Then
-         F_TipoDoc = &quot;Documento&quot;
+       If left(nombre,2) &lt;&gt; &quot;BG&quot;  XOR _
+          left(nombre,2) &lt;&gt; &quot;CG&quot;  XOR _
+          left(nombre,2) &lt;&gt; &quot;DG&quot;  XOR _
+          left(nombre,2) &lt;&gt; &quot;GS&quot;  XOR _
+          left(nombre,2) &lt;&gt; &quot;IG&quot;  XOR _
+          left(nombre,2) &lt;&gt; &quot;MG&quot;  XOR _
+          left(nombre,2) &lt;&gt; &quot;WG&quot;  then
+          F_TipoDoc = &quot;Documento&quot;
          Exit Function
        Else
          cuenta = left(Nombre,6) : cuenta = right(cuenta,4)

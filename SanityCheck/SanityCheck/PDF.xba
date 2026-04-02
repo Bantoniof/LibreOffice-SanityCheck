@@ -20,19 +20,20 @@ If _Aux.F_Prueba_Sel= 0 Then Exit sub  &apos;Comprobar selección
    oFCursor.GoRight(1, true)
    If oFCursor.String &lt;&gt; &quot;&quot; Then
    vCursor.gotorange(oFCursor,False) 
-     If Msgbox (&quot;Marco de solo texto o Las leyendas están Encima de las imágenes&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
-          &quot;¿Quieres cambiar la situación de las leyendas?&quot;,4+32+256, Extension) = 6 Then
-       F_AlternarLeyenda()
+     Msgbox (&quot;Parece que las leyendas están Encima de las imágenes o Marco de solo texto&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
+          &quot;NO se cambiará la situación de las leyendas?&quot;,0+32+256, Extension)
+     &apos;  F_AlternarLeyenda()
        goto Exportando
-     End If
    Else
-     If Msgbox (&quot;Las leyendas están Debajo de las imágenes&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
+     If Msgbox (&quot;Parece que Las leyendas están Debajo de las imágenes&quot; &amp; Chr(13) &amp; Chr(9) &amp; _
             &quot;¿Quieres cambiar la situación de las leyendas?&quot;,4+32+256, Extension) = 6 Then
        F_AlternarLeyenda()
      End If 
    End If
 Exportando:   
     F_Exporta
+
+
 End Sub
 
 Rem ############
@@ -81,11 +82,12 @@ end sub
 
  Rem ############
 Sub F_Exporta&apos; https://bugs.documentfoundation.org/show_bug.cgi?id=150600
- Rem IsAddStream,True = PDF híbrido
+ Rem IsAddStream - debe ser false (con true se crea PDF híbrido)
  Rem ViewPDFAfterExport - No disponible
  Rem AllowDuplicateFieldNames - Debe estar en true por si se repiten las llamadas a figuras etc.
  Rem IsSkipEmptyPages - Debe ser false para exportar guía (asegura portada en p Izq e Inicio cap. en p derecha.
  Rem UseLosslessCompression - True sobreescribe la compresión jpg, quality etc... 
+ Rem pdfversion antes 2 (1,7)ahora 4 (Pdf2/A)
 &apos;   Call _Aux.ActualizarTodo
    Call TOC_Update
  Dim FilterArgs()
@@ -95,7 +97,7 @@ Sub F_Exporta&apos; https://bugs.documentfoundation.org/show_bug.cgi?id=150600
    PropertyValue(&quot;MaxImageResolution&quot;,300),_
    PropertyValue(&quot;Watermark&quot;,&quot;&quot;),_
    PropertyValue(&quot;IsAddStream&quot;,false),_
-   PropertyValue(&quot;SelectPdfVersion&quot;,2),_
+   PropertyValue(&quot;SelectPdfVersion&quot;,4),_
    PropertyValue(&quot;UseTaggedPDF&quot;,true),_
    PropertyValue(&quot;PDFUACompliance&quot;,true),_
    PropertyValue(&quot;ExportFormFields&quot;,false),_

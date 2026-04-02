@@ -44,6 +44,7 @@ Sub Dlg_Tablas&apos;(oTabla)
      .Step = 1
      End With
      Call Parametros_Tablas
+	 oDlgTablas.addTopWindowlistener(createUnoListener(&quot;DT_Listen_&quot;, &quot;com.sun.star.awt.XTopWindowListener&quot;))
      Do While Dlg_Mostrado = True
        Wait 200
        oDlgTablas.SetVisible(True)
@@ -54,10 +55,38 @@ Sub Dlg_Tablas&apos;(oTabla)
 End Sub
 
  Rem ############
+Rem Aunque los métodos no hagan nada, se deben describir todos.
+Sub DT_Listen_WindowClosing
+   Dlg_Mostrado = False
+   Dlg_Activo = False
+End Sub
+Sub  DT_Listen_windowOpened
+End Sub
+Sub  DT_Listen_windowClosed
+End Sub
+Sub DT_Listen_windowMinimized
+End Sub
+Sub  DT_Listen_windowNormalized
+End Sub
+Sub  DT_Listen_windowActivated
+End Sub
+Sub  DT_Listen_windowDeactivated
+End Sub
+Sub  DT_Listen_disposing
+   MsgBox (T_Txt(19), 0+64+0, T_Txt(0) &amp; Extension)
+End Sub
+
+ Rem ############
+Sub OnBtn_Salir
+   Dlg_Mostrado = False
+&apos;  MsgBox (T_Txt(19), 0+64+0, T_Txt(0) &amp; Extension)
+End Sub
+
+ Rem ############
 Sub parar
  Rem solo para bloqueos del diálogo durante la programación
    Dlg_Mostrado = False
-   DLg_Activo = False
+   Dlg_Activo = False
 End Sub
 
  Rem ############
@@ -66,6 +95,7 @@ Sub Parametros_Tablas
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
    Ultima_Tbl = oTablas.getCount -1
    If Ultima_Tbl &lt; 0 Then : Dlg_Mostrado = False : MsgBox (T_Txt(17), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If   &apos;si se borran todas las tablas
+   
    oTabla = oTablas.getbyIndex(Indice_Tbl)
    vCursor.gotoRange(oTabla.Anchor,False)
    With oDlgTablas.getModel
@@ -126,10 +156,10 @@ Sub OnBtn_Anterior(oEv)
      Ultima_Tbl = oTablas.getCount -1
      MsgBox (T_Txt(18), 0+64+0, T_Txt(0) &amp; Extension )
      Indice_Tbl = 0
-   ElseIf Not Indice_Tbl &lt; 0 Then
+   ElseIf Not Indice_Tbl &lt;= 0 Then
      Indice_Tbl = Indice_Tbl -1
    End If
-   Call Parametros_Tablas
+  Call Parametros_Tablas
 End Sub
 
  Rem ############
@@ -143,12 +173,6 @@ Sub OnBtn_Siguiente(oEv)
      Indice_Tbl = Indice_Tbl + 1
    End If
    Call Parametros_Tablas
-End Sub
-
- Rem ############
-Sub OnBtn_Salir(oEv)
-   Dlg_Mostrado = False
-   MsgBox (T_Txt(19), 0+64+0, T_Txt(0) &amp; Extension)
 End Sub
 
  Rem ############
@@ -237,7 +261,7 @@ Sub Optimizar(oTabla As Object ,Tipo As String)
          If nRow = 0 Then
            Formato_Par(oCell.getText(), &quot;Table Heading&quot;) &apos;limpia formato directo y aplica estilo
          Else
-           Formato_Par(oCell.getText(), &quot;Table Contents&quot;)
+           Formato_Par(oCell.getText(), &quot;Table Contents&quot;) &apos; En Formato_ Par evito cambiar &quot;Legend Numbered&quot;
          End If
        Next
      Next 
@@ -251,7 +275,6 @@ Sub Optimizar(oTabla As Object ,Tipo As String)
          oRow.backColor = -1
        End If  
      Next
-
      Lineas (oTabla,2) &apos;lineas para los bordes
      Distancias (oTabla, 100) &apos;distancias al borde (celdas)&apos;antes común
      BorraEstiloTabla (&quot;LO User Guides&quot;) 
@@ -275,7 +298,9 @@ Sub Formato_Par(oText, sParStyle As String)
      oPar = oEnum.nextElement()
      If oPar.supportsService(&quot;com.sun.star.text.Paragraph&quot;) Then
        oPar.ParaVertAlignment = 3
-       oPar.ParaStyleName = sParStyle
+       If oPar.ParaStyleName &lt;&gt; &quot;Legend Numbered&quot; then &apos; mantengo este estilo.
+         oPar.ParaStyleName = sParStyle
+       End If
        tCursor = oPar.Text.CreateTextCursor&apos; limpiar formato directo
        tCursor.gotoStart(false) : tCursor.gotoEnd(True)
        tcursor.setAllPropertiestodefault

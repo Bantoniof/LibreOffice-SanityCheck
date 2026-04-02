@@ -282,6 +282,9 @@ End Sub
      If not DialogLibraries.isLibraryLoaded(&quot;SanityCheck&quot;) Then DialogLibraries.LoadLibrary(&quot;SanityCheck&quot;)
      oDlgImgs = CreateUNODialog(DialogLibraries.getByName(&quot;SanityCheck&quot;).getByName(&quot;DlgImagenes&quot;))
      If getGUIType &gt; 1 then oDlgImgs.getPeer().setProperty( &quot;NativeWidgetLook&quot;, False ) 
+
+&apos;	oDlgImgs.addTopWindowlistener(createUnoListener(&quot;TopListen_&quot;, &quot;com.sun.star.awt.XTopWindowListener&quot;))
+
      With oDlgImgs.Model()
        .TiTle = I_Txt(0) &amp; Extension : .PositionX = 530: .PositionY = 60: .Step = 1
        .GetByName(&quot;Btn_Img_Name&quot;).Label = I_Txt(1)
@@ -298,6 +301,9 @@ End Sub
        .GetByName(&quot;Lbl_Anclaje&quot;).Label = I_Txt(12)
        .GetByName(&quot;Tx_Ayuda&quot;).Text = I_Txt(9)
      End With
+
+	oDlgImgs.addTopWindowlistener(createUnoListener(&quot;DI_Listen_&quot;, &quot;com.sun.star.awt.XTopWindowListener&quot;))
+
      Call Imagenes.Cargar_Parametros
      Do While Dlg_Mostrado = True
        Wait 200
@@ -416,6 +422,34 @@ Sub Cargar_Parametros
 End Sub
 
  Rem ############
+Rem Aunque los métodos no hagan nada, se deben describir todos..
+Sub DI_Listen_WindowClosing
+   Dlg_Mostrado = False
+End Sub
+Sub  DI_Listen_windowOpened
+End Sub
+Sub  DI_Listen_windowClosed
+End Sub
+Sub DI_Listen_windowMinimized
+End Sub
+Sub  DI_Listen_windowNormalized
+End Sub
+Sub  DI_Listen_windowActivated
+End Sub
+Sub  DI_Listen_windowDeactivated
+End Sub
+Sub  DI_Listen_disposing
+   MsgBox (I_Txt(28), 0+64+0, I_Txt(0) &amp; Extension)
+End Sub
+
+ Rem ############
+Sub OnBtn_Salir
+   Dlg_Mostrado = False
+   Dlg_Activo = False
+ &apos;  MsgBox (I_Txt(28), 0+64+0, I_Txt(0) &amp; Extension)
+End Sub
+
+ Rem ############
 Sub OnBtn_Anterior(oEv)
    oDlgImgs = oEv.Source.Context
    If oImgs.getCount -1 &lt;&gt; Ultima_Img Then
@@ -443,13 +477,6 @@ Sub OnBtn_Siguiente(oEv)
      Indice_Img = Indice_Img + 1
    End If
    Call Imagenes.Cargar_Parametros
-End Sub
-
- Rem ############
-Sub OnBtn_Salir
-   Dlg_Mostrado = False
-   Dlg_Activo = False
-   MsgBox (I_Txt(28), 0+64+0, I_Txt(0) &amp; Extension)
 End Sub
 
  Rem ############
