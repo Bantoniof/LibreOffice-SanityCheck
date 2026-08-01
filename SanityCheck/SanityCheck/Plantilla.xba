@@ -16,20 +16,24 @@ Option explicit
  Dim oDlgPlantillas as Object
 
  Rem ############
-Sub IdiomaDoc
+Sub IdiomaDoc 
  Rem Cambia el idioma global del documento
  Rem la macro CharChapNum también está localizada
+ Dim oCursor : oCursor = ThisComponent.text.createTextCursor
+   oCursor.gotoend(true)
  Dim pais as string, idioma as String
  Dim Locales As New com.sun.star.lang.Locale
-   Select case F_getLang
-     Case &quot;es&quot; :  pais= &quot;es&quot; : idioma = &quot;es&quot;
-     Case &quot;pt&quot; : pais= &quot;br&quot; : idioma = &quot;pt&quot;
-     Case &quot;en&quot; : pais= &quot;us&quot; : idioma = &quot;en&quot;
+   Select case  L10n.F_getLang
+     Case &quot;es&quot; :  pais= &quot;ES&quot; : idioma = &quot;es&quot;
+     Case &quot;pt&quot; : pais= &quot;BR&quot; : idioma = &quot;pt&quot;
+     Case &quot;en&quot; : pais= &quot;US&quot; : idioma = &quot;en&quot;
      Case else : idioma = L10n.F_getLang
    End select
    Locales.Language = idioma
    Locales.Country = pais
-   ThisComponent.CharLocale = Locales
+ &apos;  ThisComponent.CharLocale = Locales
+   oCUrsor.CharLocale = Locales()
+   oCursor.gotoStart(false)
 end sub
 
  Rem ### MENU #####
@@ -159,7 +163,6 @@ Sub onBtn_Asociar(oEv)
          Case else : TemplateURL = F_PathExtension &amp; &quot;/template/en-US/LO_Doc/LO_UG_Chapters_26_EN.ott&quot;
        End Select 
    End Select   
-
   If  Not FileExists(TemplateURL) then
    Msgbox (&quot;Error, template not found&quot;,0+64+0,&quot;Error&quot;)
    exit sub
@@ -203,9 +206,9 @@ Sub CambiaLogo
            .Width = 13230
            .Height = 3700             
          ElseIf  _Aux.F_VersGuia &gt;= 26 then
-           .GraphicURL = F_PathExtension &amp; &quot;/icons/logo26.svg&quot; 
+           .GraphicURL = F_PathExtension &amp; &quot;/icons/logo26.png&quot; 
            .TopMargin = 0
-           .Width = 8420
+           .Width = 8470
            .Height = 2120        
          End If
          If _Aux.F_LOVersion &gt;= 7.5 Then oImg.Decorative = True           
@@ -352,7 +355,7 @@ Sub S_applyTemplate(doc as object, templateUrl as string)
        oRulesD.replaceByIndex(i, oRulesT.getByIndex(i))
      next
    end if
-   Call IdiomaDoc
+&apos; Print &quot;Elimino  Call IdiomaDoc&quot;
 end Sub
 
  Rem ########
@@ -443,12 +446,10 @@ end sub
 
   Rem ########
 Sub CortarEnlace&apos;no usado
-
    Call L10n.Trad_Plantilla
    DocSettings = ThisComponent.createInstance( &quot;com.sun.star.document.Settings&quot; )
    DocSettings.UpdateFromTemplate = FALSE
    S_setTemplateAndDate (ThisComponent, &quot;&quot;, &quot;&quot;)
    Msgbox (P_Txt(2),0+64+0, P_Txt(0) &amp; Extension)
 end sub
-
 </script:module>

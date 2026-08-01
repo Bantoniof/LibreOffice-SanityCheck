@@ -209,9 +209,9 @@ REM Título Documento
       Case &quot;Capitulo&quot;
         REM  Prefacio o Apéndice no lleva nº de capítulo
         If  .getbyname(&quot;Tx_Cap_N&quot;).Text &lt;&gt; &quot;&quot;  AND  .getbyname(&quot;Tx_Cap_T&quot;).Text &lt;&gt; &quot;&quot; Then
-          Dato = Dato &amp; &quot; - &quot; &amp;   .getbyName(&quot;Tx_Cap_N&quot;).Text &amp; &quot;, &quot; &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text      
+          Dato = Dato &amp; &quot; – &quot; &amp;   .getbyName(&quot;Tx_Cap_N&quot;).Text &amp; &quot;. &quot; &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text      
         ElseIf  .getbyname(&quot;Tx_Cap_N&quot;).Text = &quot;&quot;  AND  .getbyname(&quot;Tx_Cap_T&quot;).Text &lt;&gt; &quot;&quot; Then
-          Dato = Dato &amp; &quot; - &quot;  &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text               
+          Dato = Dato &amp; &quot; – &quot;  &amp; .getbyname(&quot;Tx_Cap_T&quot;).Text               
         End If
         oDocprops.Title = Dato
      End Select

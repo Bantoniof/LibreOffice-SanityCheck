@@ -43,7 +43,7 @@ Sub Dlg_Info
    With oDlgInfo.getModel
    .Title = &quot;LibreOffice &quot; &amp; F_LOVersion
    .getbyName(&quot;Img_Info&quot;).ImageURL = Icono
-   .getbyName(&quot;Lbl_Extension&quot;).Label = F_Extension &amp; &quot; - &quot;
+   .getbyName(&quot;Lbl_Extension&quot;).Label = F_Extension &amp; &quot; – &quot;
    .getByName(&quot;Btn_Ayuda&quot;).label = Inf_Txt(0)
    .getByName(&quot;Btn_Cerrar&quot;).label = Inf_Txt(1)
    .GetByName(&quot;Tx_Info&quot;).Text = Inf_Txt(2)

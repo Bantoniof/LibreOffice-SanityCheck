@@ -55,7 +55,10 @@ End Sub
  Rem ### MENU #########
 Sub CompEstilos
    Call L10n.Trad_Estilos
-   If _Aux.F_EstilosPlantilla &lt;&gt; 0  then exit Sub
+   If _Aux.F_EstilosPlantilla &lt;&gt; 0  then
+     Call Plantilla.Dlg_Plantillas
+     exit Sub
+   End If
    Call _Aux.EliminaComentarios(E_Txt(0))&apos; Evito que se dupliquen comentarios
    Avisos_Estilos_Ajenos(&quot;P&quot;)
    Avisos_Estilos_Ajenos(&quot;C&quot;)

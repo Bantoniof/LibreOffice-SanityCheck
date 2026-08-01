@@ -70,8 +70,6 @@ Function F_EstilosPlantilla() As Integer &apos;comprueba Estilos, si no están d
    F_EstilosPlantilla = Contador
 End Function 
 
-
-
  Rem ############
 Function F_TipoDoc
    Call L10n.Trad_Plantilla
@@ -85,20 +83,13 @@ Function F_TipoDoc
      Case &quot;OTT&quot;,&quot;OTM&quot;
        F_TipoDoc = &quot;Plantilla&quot; 
      Case &quot;ODT&quot;
-       If left(nombre,2) &lt;&gt; &quot;BG&quot;  XOR _
-          left(nombre,2) &lt;&gt; &quot;CG&quot;  XOR _
-          left(nombre,2) &lt;&gt; &quot;DG&quot;  XOR _
-          left(nombre,2) &lt;&gt; &quot;GS&quot;  XOR _
-          left(nombre,2) &lt;&gt; &quot;IG&quot;  XOR _
-          left(nombre,2) &lt;&gt; &quot;MG&quot;  XOR _
-          left(nombre,2) &lt;&gt; &quot;WG&quot;  then
-          F_TipoDoc = &quot;Documento&quot;
-         Exit Function
+       Dim Guias() As String : Guias = Array(&quot;BG&quot;,&quot;CG&quot;,&quot;DG&quot;,&quot;GS&quot;,&quot;IG&quot;,&quot;MG&quot;,&quot;WG&quot;,&quot;TG&quot;)
+       If F_Buscarenmatriz (Guias, left(nombre,2)) = 0 Then
+         F_TipoDoc = &quot;Documento&quot;
        Else
          cuenta = left(Nombre,6) : cuenta = right(cuenta,4)
          If Not isNumeric(cuenta) then
            F_TipoDoc = &quot;Guia&quot;
-           Exit Function
          ElseIf isNumeric(cuenta) Then
            F_TipoDoc = &quot;Capitulo&quot;
          End If

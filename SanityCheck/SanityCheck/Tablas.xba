@@ -95,7 +95,7 @@ Sub Parametros_Tablas
    If _Aux.F_Prueba_Sel = 0 Then : Exit Sub : End If
    Ultima_Tbl = oTablas.getCount -1
    If Ultima_Tbl &lt; 0 Then : Dlg_Mostrado = False : MsgBox (T_Txt(17), 0+48+0, T_Txt(0) &amp; Extension) : Exit Sub : End If   &apos;si se borran todas las tablas
-   
+   If Indice_Tbl &lt; 0 then Exit Sub
    oTabla = oTablas.getbyIndex(Indice_Tbl)
    vCursor.gotoRange(oTabla.Anchor,False)
    With oDlgTablas.getModel

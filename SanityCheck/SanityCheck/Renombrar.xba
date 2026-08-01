@@ -265,7 +265,11 @@ Function F_Renombra(Objetos As String, Optional separador ) As String
 
    If Objetos = &quot;Imagenes&quot; Then
      Dim oImg : oImg = Items.getbyIndex(0)
-     oImg.Name = &quot; LibreOffice Logo&quot;
+     If Not IsEmpty(oImg.Anchor.TextSection) Then 
+       If oImg.Anchor.TextSection.Name = &quot;SEC_LOGO&quot; Then
+         oImg.Name = &quot; LibreOffice Logo&quot;
+       End If
+     End If
    End If
    F_Renombra = Traduc &amp; Ren_Txt(13)
 End Function
@@ -313,6 +317,7 @@ Sub Corregir_NombresObjetos
 &apos;   F_Renombra(&quot;Tablas&quot;)&apos;,&quot;$&quot;) : F_Renombra(&quot;Tablas&quot;)
 &apos;   F_Renombra_Sec(&quot;$&quot;) : F_Renombra_Sec
 &apos;   F_RenombraOLE(&quot;$&quot;) : F_RenombraOLE
+Msgbox &quot;Hecho&quot;
 End Sub 
  Rem ================= Fin Renombrar ==================================================  
 </script:module>

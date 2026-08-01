@@ -862,7 +862,7 @@ Sub Trad_Resaltes
    R_Txt(11) = &quot;Caractere&quot;
    R_Txt(12) = &quot;Não modificado&quot;
    R_Txt(13) = &quot; - Erro na definição do estilo, falta &quot;&quot;Cor&quot;&quot;?&quot;
-   R_Txt(14) = &quot;- &quot;&quot;Linha&quot;&quot;, só pode ser 1 (Simple), 2 (Duplo) ou 12 (Espesso)&quot;
+   R_Txt(14) = &quot; - &quot;&quot;Linha&quot;&quot;, só pode ser 1 (Simple), 2 (Duplo) ou 12 (Espesso)&quot;
    R_Txt(15) = &quot;- nenhum tipo de linha foi indicado&quot;
    R_Txt(16) = &quot; - para &quot;&quot;Sublinhado&quot;&quot; uma segunda cor não é suportada&quot;
    R_Txt(17) = &quot; - A cor só pode ser &quot;&quot;Auto&quot;&quot; (para Automático) ou um valor numérico&quot;

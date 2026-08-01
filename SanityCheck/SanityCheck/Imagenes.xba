@@ -49,6 +49,8 @@ Function F_Ajuste_Imagenes_Marcos
    PBcounter = 0
    oImg = oImgs.getbyIndex(0)
 
+if Not IsEmpty(oImg.Anchor.TextSection) then
+If oImg.Anchor.TextSection.Name = &quot;SEC_LOGO&quot; Then
    With oImg
        .VertOrient = 2
        .AnchorType = 1
@@ -65,6 +67,8 @@ Function F_Ajuste_Imagenes_Marcos
          .getAnchor.ParaStyleName = &quot;New Chapter&quot;
        End If
      End With
+End If
+End If
 
    For i = 1 To oImgs.Count-1 &apos; con i = 1 evito que me cambie el logo 
    Wait 2

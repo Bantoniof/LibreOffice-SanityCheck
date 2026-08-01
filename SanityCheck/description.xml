@@ -7,7 +7,7 @@
 
 	<identifier value="vnd.bantoniof.sanitycheck"/>
 
-	<version value="26.4"/>
+	<version value="26.8"/>
 
 	<update-information>
 		<src xlink:href="https://githubraw.com/Bantoniof/LibreOffice-SanityCheck/master/SanityCheck.update.xml"/> 
